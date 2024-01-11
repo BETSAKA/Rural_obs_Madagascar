@@ -4,12 +4,12 @@ author: "Florent Bédécarrats"
 abstract: "This technical appendix accompanies a forthcoming data paper. It focuses on the georeferencing process of household panel data collected by the Rural Observatory Network (ROR) from 1995 to 2014. The ROR captured information about the diverse rural contexts in Madagascar. While the quality data gathered was carefully monitored, its geolocation attributes were not fully curated, restricting its utility in spatially integrated research or public policy evaluation. This appendix systematically aligns the varying spatial denominations found in the ROR dataset with a standardized geographic database, to provide a consistent correlation between each ROR observation and corresponding geospatial entities, namely communes and fokontany. We do so leveraging computational notebooks, specifically the Quarto format, utilizing the R programming language. This interactive setup fosters a blend of code, outcomes, explanations, and multimedia resources, ensuring that the ROR data becomes more dependable and user-friendly for spatial analysts and other researchers."
 format:
   html:
+    
     toc: true
     output-file: index.html
     embed-resources: true
     standalone: true
     code-fold: true
-    
 execute:
   warning: false
   error: false
@@ -34,7 +34,6 @@ library(tidyverse)    # A series of packages for data manipulation
 library(haven)        # Required for reading STATA files (.dta)
 library(labelled)     # To work with labelled data from STATA
 library(sf)           # for spatial data handling
-library(tidyverse)    # for data wrangling and visualization
 library(stringdist)   # for string distance and matching
 library(tmap)         # for mapping
 library(fuzzyjoin)    # for fuzzy joining
@@ -107,20 +106,20 @@ obs_count_wide <- obs_count %>%
 locations <- tibble(
   code = c(1, 2, 3, 4, 12, 13, 15, 16, 21, 22, 23, 24, 31, 25, 41, 42, 43, 51, 
            44, 45, 61, 17, 18, 19, 71, 52),
-  name = c("Antalaha", "Antsirabe", "Marovoay", "Toliara littoral", "Antsohihy", 
+  name = c("Antalaha", "Antsirabe", "Marovoay", "Toliara coastal", "Antsohihy", 
            "Tsiroanomandidy", "Farafangana", "Ambovombe", 
            "Alaotra", "Manjakandriana", "Toliara Nord", 
            "Fenerive Est", "Bekily", "Mahanoro", "Itasy", 
            "Menabe-Belo", "Fianarantsoa", "Tsivory", "Morondava", "Manandriana", 
            "Tanandava", "Ihosy", "Ambohimahasoa", "Manakara", "Tolanaro", 
            "Menabe-Nord-Est"),
-  latitude = c(-14.8833, -19.8659, -16.1000, -23.3558, -14.8796, -18.7713, 
-               -22.8167, -25.1667, -17.8319, -18.9167, -23.3558, -17.3500, 
+  latitude = c(-14.8833, -19.8659, -16.1000, -23.7574, -14.8796, -18.7713, 
+               -22.8167, -25.1667, -17.8319, -18.9167, -23.2941, -17.3500, 
                -24.6900, -19.9000, -19.1686, -19.6975, -21.4527, -24.4667, 
                -20.2833, -20.2333, -22.5711, -22.4000, -20.7145, -22.1333, 
                -25.0381, -20.5486),
-  longitude = c(50.2833, 47.0333, 46.6333, 43.6683, 47.9875, 46.0546, 47.8333, 
-                46.0833, 48.4167, 47.8000, 43.6683, 49.4167, 45.1700, 48.8000,
+  longitude = c(50.2833, 47.0333, 46.6333, 43.6770, 47.9875, 46.0546, 47.8333, 
+                46.0833, 48.4167, 47.8000, 43.7761, 49.4167, 45.1700, 48.8000,
                 46.7354, 44.5419, 47.0857, 45.4667, 44.2833, 47.3833, 45.0439, 
                 46.1167, 47.0389, 48.0167, 46.9562, 47.1597))
 
@@ -137,11 +136,12 @@ locations <- locations %>%
 
 # Create map plot with labels
 map_plot <- ggplot(data = madagascar) +
-  geom_sf(fill = "lightgray") +
+  geom_sf(fill = "lightgray", colour = "dimgrey") +
   geom_point(data = locations, aes(x = longitude, y = latitude, color = name), 
              size = 3) +
   geom_text(data = locations, aes(x = longitude, y = latitude, label = seq_num), 
-            vjust = -1, hjust = 1, size = 3) + 
+            vjust = -1, hjust = 1, size = 3, # check_overlap = TRUE,
+            fontface = "bold") + 
   theme_void() +
   theme(legend.position = "none")
 
@@ -160,7 +160,7 @@ timeline_plot <- ggplot(obs_count,
   geom_point(aes(size = survey_count), show.legend = F) +
   theme_minimal() +
   labs(y = NULL, x = NULL) +
-  theme(axis.text.y = element_text(size = 8),
+  theme(axis.text.y = element_text(size = 8, face = "bold"),
         legend.position = "none")
 
 # Stitch the plots together
@@ -200,7 +200,8 @@ obs_communes2 %>%
   tm_shape() +
   tm_polygons(col = "OBS_NAME") +
   tm_shape(Vahatra) +
-  tm_fill(col = "darkgreen", alpha = 0.3)
+  tm_fill(col = "darkgreen", alpha = 0.3) +
+  tm_scale_bar()
 ```
 
 We have the following time frame for observatories neighbouring Protected areas:
@@ -279,7 +280,6 @@ ggplot(obs_PA, aes(x = year, y = facet_label)) +
 
 As it can be seen here, the Ranomanfana protected area that was created well before the ROR surveys. Two protected areas where created during ROR survey years: Ankarafantsika protected area (Marovoay observatory) and Mikea (Toliara Nord observatory). 8 other protected areas were created after the ROR surveys had stoped: Vohidava, Tsimanampesotsoa, Menabe Antinmena, Lac Alaotra, Corridor Forestier Abositra-Vodronzo, Corridor Ankeniheny Zahamena, Complexe Zones Humides Mangoky Ihotry and Andohahela.
 
-
 ## Data Description and Initial Exploration with R
 
 ### ROR survey data
@@ -333,8 +333,7 @@ The code block above creates a data dictionnary, which you can download by click
 
 ### Panel attrition
 
-To assess the integrity of the panel data, we assess the attrition that characterizes it. That is, for each survey reiteration, we compute the percentage of household identified in the previous round that are still present in the subsequent round. Some adjustment must be made as households identification numbering system habe been reshuffled between 1995 and 1996. We also have to remove 2005 survey in Marovoay from the analysis, as this was a specific tracking survey intended to identify individuals from households that could not be re-interviewed in the previous years in one of the observatory sites [@vaillant2013].
-This produces the following result:
+To assess the integrity of the panel data, we assess the attrition that characterizes it. That is, for each survey reiteration, we compute the percentage of household identified in the previous round that are still present in the subsequent round. Some adjustment must be made as households identification numbering system habe been reshuffled between 1995 and 1996. We also have to remove 2005 survey in Marovoay from the analysis, as this was a specific tracking survey intended to identify individuals from households that could not be re-interviewed in the previous years in one of the observatory sites [@vaillant2013]. This produces the following result:
 
 ```{r}
 #| label: fig-attrition-ror
@@ -412,7 +411,7 @@ attrition_rates <- attrition_rates_detail  %>%
   drop_na(name)
 
 average_wo_outliers <- attrition_rates %>%
-  filter(attrition_rate < 80) %>%
+  filter(attrition_rate < 75) %>%
   summarise(mean = mean(attrition_rate))
 
 average_wo_outliers <- round(average_wo_outliers$mean, 1)
@@ -434,7 +433,7 @@ labs(x = "Year",
   theme(axis.text.y = element_text(size = 8)) 
 ```
 
-Annual attrition rates superior to 80% for a specific observatory are likely to be induced by new reshuffles of the household identification codes and we hope to be able to solve such issue later on. If we discard these outliers (attrition rates over 80%), we have an average attrition year of `r cat(average_wo_outliers)`% wich is very high, leading to a compound attrition rate of `r cat(compound_avg_10y)`% over 10 years. Attrition on ROR data has been studied @gubert2008; @vaillant2013.
+Annual attrition rates superior to 80% for a specific observatory are likely to be induced by new reshuffles of the household identification codes and we hope to be able to solve such issue later on. If we discard these outliers (attrition rates over 80%), we have an average attrition year of `r print(average_wo_outliers)`% wich is very high, leading to a compound attrition rate of `r print(compound_avg_10y)`% over 10 years. Attrition on ROR data has been studied @gubert2008; @vaillant2013.
 
 ### Administrative boundaries
 
@@ -1097,7 +1096,8 @@ tm_shape(selected_communes) +
           popup.vars = c("Year creation" = "an_crtn",
                          "IUCN category" = "cat_icn",
                          "Manager" = "gest_1",
-                         "Manager 2" = "gest_2")) 
+                         "Manager 2" = "gest_2")) +
+  tm_scale_bar()
 ```
 
 ## Conclusion
