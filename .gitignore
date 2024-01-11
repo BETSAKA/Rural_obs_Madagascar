@@ -7,6 +7,9 @@ merge/*
 .Rproj.user
 data/*
 *.xlsx
-Documentation*
+Documents Isabelle/*
+Documentation ROR/*
+Donn/*
+*/
 !review_muni_matches_correct.xlsx
 !ROR_Variable_Dictionary.xlsx

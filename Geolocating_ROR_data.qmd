@@ -90,7 +90,7 @@ obs_count <- map_df(years, load_and_count) %>%
   rename(observatory = j0)
 
 # Read observatory names
-observatory_names <- readxl::read_xlsx("Observatory_names.xlsx") %>%
+observatory_names <- readxl::read_xlsx("Observatory_names_reviewed.xlsx") %>%
   select(code, observatory_name = name)
 
 # PAss it to wide.
@@ -108,11 +108,11 @@ locations <- tibble(
            44, 45, 61, 17, 18, 19, 71, 52),
   name = c("Antalaha", "Antsirabe", "Marovoay", "Toliara coastal", "Antsohihy", 
            "Tsiroanomandidy", "Farafangana", "Ambovombe", 
-           "Alaotra", "Manjakandriana", "Toliara Nord", 
-           "Fenerive Est", "Bekily", "Mahanoro", "Itasy", 
+           "Alaotra", "Manjakandriana", "Toliara North", 
+           "Fenerive East", "Bekily", "Mahanoro", "Itasy", 
            "Menabe-Belo", "Fianarantsoa", "Tsivory", "Morondava", "Manandriana", 
            "Tanandava", "Ihosy", "Ambohimahasoa", "Manakara", "Tolanaro", 
-           "Menabe-Nord-Est"),
+           "Menabe-North-East"),
   latitude = c(-14.8833, -19.8659, -16.1000, -23.7574, -14.8796, -18.7713, 
                -22.8167, -25.1667, -17.8319, -18.9167, -23.2941, -17.3500, 
                -24.6900, -19.9000, -19.1686, -19.6975, -21.4527, -24.4667, 

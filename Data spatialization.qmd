@@ -13,10 +13,10 @@ editor_options:
 
 To accurately merge datasets with varying administrative names, we often have to utilize a combination of automated processes and manual review. Our approach consists of the following major steps:
 
-1. **Reading and Preprocessing Survey Data:** Initial handling of raw survey data to extract and standardize municipality names.
-2. **Processing GADM Data:** GADM offers a comprehensive spatial dataset, which we leverage for authoritative municipality names.
-3. **Fuzzy Matching:** Given the potential discrepancies between names in different datasets, a fuzzy string matching technique is applied to assess the degree in which the municipality names found in the ROR survey differ from their closest match in GADM dataset.
-4. **Computing Relative Distance and Preparing for Manual Review:** The relative difference between matched strings is used to guide our manual review process.
+1.  **Reading and Preprocessing Survey Data:** Initial handling of raw survey data to extract and standardize municipality names.
+2.  **Processing GADM Data:** GADM offers a comprehensive spatial dataset, which we leverage for authoritative municipality names.
+3.  **Fuzzy Matching:** Given the potential discrepancies between names in different datasets, a fuzzy string matching technique is applied to assess the degree in which the municipality names found in the ROR survey differ from their closest match in GADM dataset.
+4.  **Computing Relative Distance and Preparing for Manual Review:** The relative difference between matched strings is used to guide our manual review process.
 
 ```{r}
 # Load required libraries
@@ -106,8 +106,8 @@ muni_names_matches <- tibble(munis_ror = munis_ror_names,
 # Match to existing municipalities
 ```
 
-
 Attempt on 2007
+
 ```{r}
 # Prepare data for 2007
 loc_2007 <- location_values %>%
@@ -187,7 +187,6 @@ munis_gadm %>%
 # Source: https://agritrop.cirad.fr/558679/1/document_558679.pdf
 ```
 
-
 ```{r}
 # Define a function to load and count surveys per observatory for a given year
 load_and_count <- function(year) {
@@ -219,8 +218,6 @@ result_wide <- result %>%
 # Print the result
 print(result)
 ```
-
-
 
 ## Create a data dictionnary
 
@@ -288,5 +285,3 @@ for(i in seq_along(split_data)) {
 }
 
 ```
-
-

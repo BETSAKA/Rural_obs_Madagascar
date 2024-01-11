@@ -13,11 +13,9 @@ library(tidyverse)
 library(haven)
 ```
 
-
 ## Survey description
 
-The survey locations and conditions are stored in the `res_deb.dta`
-files.
+The survey locations and conditions are stored in the `res_deb.dta` files.
 
 For instance, we describe the 2015 data:
 
@@ -30,4 +28,3 @@ deb_2008 <- read_dta("enter/2008/res_deb.dta")
 deb_2015 <- read_dta("enter/2015/res_deb.dta")
 
 ```
-
