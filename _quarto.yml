@@ -17,7 +17,7 @@ book:
     - 04-ror-data-preparation.qmd
     - 05-bibliography.qmd
 
-bibliography: references.bib
+bibliography: bibliography.bib
 
 format:
   html:

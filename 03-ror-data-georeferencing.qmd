@@ -1,0 +1,20 @@
+# Georeferencing the Rural Observatory Data
+
+This section details the georeferencing process applied to household panel data collected by the Rural Observatory Network (ROR) from 1995 to 2014. The ROR gathered data on various rural contexts in Madagascar. While the data quality was carefully monitored, its geolocation attributes were not fully developed, limiting its use in spatially integrated research and public policy evaluation. This appendix aligns the ROR dataset's varied spatial denominations with a standardized geographic database, ensuring consistent correlation between each ROR observation and corresponding geospatial entities, namely communes and fokontany. Like in other sections of this document, the source code developed to perform all the data processing is accessible by unfolding the code blocks, like the one below.
+
+```{r load_libraries}
+library(tidyverse)    # A series of packages for data manipulation
+library(haven)        # Required for reading STATA files (.dta)
+library(labelled)     # To work with labelled data from STATA
+library(sf)           # for spatial data handling
+library(stringdist)   # for string distance and matching
+library(tmap)         # for mapping
+library(fuzzyjoin)    # for fuzzy joining
+library(readxl)       # Read data frames to Excel format
+library(writexl)      # Write data frames to Excel format
+library(gt)           # for nicely formatted tables
+library(cowplot)      # to combine plots
+library(gtsummary)    # to produce nice summary tables
+library(janitor)      # to simply add rowsums
+```
+
