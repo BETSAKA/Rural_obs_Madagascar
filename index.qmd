@@ -1,6 +1,6 @@
 # Introduction {.unnumbered}
 
-This document serves as a technical appendix accompanying the paper tied to opening of the data collected by the Rural observatory network (ROR, for its acronym in French) from 1995 to 2014. The ROR was a panel survey system that monitored the living conditions of populations in selected localities representing the diversity of rural contexts in Madagascar.  We do so leveraging computational notebooks, specifically the Quarto format, utilizing the R programming language. This interactive setup fosters a blend of code, outcomes, explanations, and multimedia resources, ensuring that the ROR data becomes more dependable and user-friendly for other researchers. The source code developed to perform all the data processing is accessible by unfolding the code blocks, like the one below.
+This technical appendix accompanies a scientific paper dedicated to the data from the Rural Observatory Network (ROR) collected between 1995 and 2014. It includes the source code for all figures and visualizations in the paper. It also offers a tutorial on how to georeference this data, which can serve as guidance for various types of analysis. We use computational notebooks in Quarto format with the R programming language, combining code, results, explanations, and multimedia in an interactive way. The source code can be accessed by expanding code blocks like the following one, which produced the figure below.
 
 
 ```{r}
@@ -19,7 +19,7 @@ library(cowplot)      # to combine plots
 # Define a function to load and count surveys per observatory for a given year
 load_and_count <- function(year, factorize = FALSE) {
   # Define file path
-  file_path <- paste0("data/", year, "/res_deb.dta")
+  file_path <- paste0("data/ROR_data/", year, "/res_deb.dta")
   
   # Load data
   data <- read_dta(file_path)
@@ -87,7 +87,8 @@ locations <- tibble(
 obs_count <- left_join(obs_count, locations, by = c("observatory_name" = "name"))
 
 
-madagascar <- st_read("../Entités administratives/OCHA_BNGRC frontières administratives/mdg_admbnda_adm0_BNGRC_OCHA_20181031.shp",
+madagascar <- st_read(paste0("data/Spatial_data/OCHA_BNGRC admin boundaries/",
+                             "mdg_admbnda_adm0_BNGRC_OCHA_20181031.shp"),
                       quiet = TRUE)
 
 # Sort locations by latitude to generate sequence numbers
@@ -132,8 +133,4 @@ ggsave("output/ROR_history.png", plot = combined_plot,
 
 print(combined_plot)
 ```
-
-The Rural Observatory Network (ROR) was established as part of the Madio project (1994-1999), a technical assistance program of the IRD to the national statistical institute (INSTAT) of Madagascar, as an innovative mechanism for monitoring and analyzing the country's agricultural sector. This initiative arose from the urgent need to compile statistics on the agricultural industry due to the breakdown of the existing statistical system following the socialist era and political turmoil in the country.
-
-Four initial observatories were established in 1995, each representing a different set of agricultural challenges in the country's diverse ecosystems. From 1995 to 2015, 22 other observatories were created, and existing were abandoned (see @fig-hist-ror). The ROR were supported by a variety of donors and NGOs during this period: European union, AFD, World Bank, GTZ, Swiss cooperation, Care and Rio Tinto. The selection of observation sites was based on a combination of criteria, including agroclimatic areas, dominant production systems, population density, accessibility, and the presence of support structures and development projects. These observatories aimed to provide insights into the dynamics of Malagasy agriculture, covering a range of issues such as isolated coastal communities of fishermen and livestock farmers, the impact of trade liberalization on vanilla producers, family smallholdings in the central plateau, and the restructuring of large irrigated rice-growing areas.
-
+@fig-hist-ror shows the coarse location of the 26 observatories composing the ROR, as well as the years in which data was collected in each one. 
