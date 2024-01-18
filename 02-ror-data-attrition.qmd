@@ -1,0 +1,105 @@
+
+
+### Panel attrition
+
+To assess the integrity of the panel data, we assess the attrition that characterizes it. That is, for each survey reiteration, we compute the percentage of household identified in the previous round that are still present in the subsequent round. Some adjustment must be made as households identification numbering system habe been reshuffled between 1995 and 1996. We also have to remove 2005 survey in Marovoay from the analysis, as this was a specific tracking survey intended to identify individuals from households that could not be re-interviewed in the previous years in one of the observatory sites [@vaillant2013]. This produces the following result:
+
+```{r}
+#| label: fig-attrition-ror
+#| fig-cap: "Attrition rate of ROR panels per observatory and survey round"
+
+# Function to read and process each file
+read_and_process <- function(year) {
+  file_path <- file.path("Données ROR/enter", as.character(year), "res_deb.dta")
+  data <- read_dta(file_path) %>%
+    select(j0, j5) %>%
+    mutate(year = year)
+  return(data)
+}
+
+# Use map to read and process files, then combine with bind_rows
+consolidated_data <- map_dfr(years, read_and_process) %>%
+  mutate(year = as.numeric(year))
+
+# NB : j5 codes have been modified in 1996
+# so we need to replace the ones from 1995
+hh_96 <- read_dta("Données ROR/enter/1996/res_deb.dta") %>%
+  select(j0, year, j5_96 = j5, j_1995, j12b) %>%
+  filter(j_1995 == 1) %>%
+  select(-j_1995) %>%
+  mutate(year = 1995) %>%
+  distinct(j12b, .keep_all = TRUE)
+
+consolidated_data <- consolidated_data %>%
+  left_join(hh_96, by = c("j0", "year", "j5" = "j12b")) %>%
+  mutate(j5 = ifelse(year == 1995 & !is.na(j5_96), j5_96, j5)) %>%
+  select(j0, j5, year)
+
+# We need also to discard the 2004 survey in Marovoay that is very particular
+# cf. Vaillant 2013.
+consolidated_data <- consolidated_data %>%
+  filter(!(j0 == 3 & year == 2005))
+
+# Remove duplicates and create the hh_all table
+hh_all <- consolidated_data %>%
+  distinct(j0, j5, year, .keep_all = TRUE) %>%
+  arrange(j0, j5)
+
+hh_grouped <- hh_all %>%
+  group_by(j0, year) %>%
+  summarise(j5_list = list(j5), .groups = 'drop') %>%
+  # Count the number of j5 in j5_list
+  mutate(j5_count = map_int(j5_list, length)) %>%
+  # Create a column to identify the most recent previous year with data for the same observatory
+  group_by(j0) %>%
+  mutate(previous_year = lag(year)) %>%
+  ungroup()
+  
+# Self-join to create previous_year_j5_list
+attrition_rates_detail <- hh_grouped %>%
+  left_join(hh_grouped %>% select(j0, year, 
+                                  previous_year_j5_list = j5_list,
+                                  j5_count_previous_year = j5_count), 
+            by = c("j0", "previous_year" = "year")) %>%
+  mutate(repeated_j5 = map_int(
+    seq_along(j5_list), 
+    ~length(intersect(j5_list[[.]], previous_year_j5_list[[.]]))),
+    attrition_rate = (j5_count_previous_year - repeated_j5) /
+      j5_count_previous_year * 100)
+
+
+# Pivot the data to have years as columns and observatory numbers as rows
+attrition_rates <- attrition_rates_detail  %>%
+  select(j0, year, attrition_rate) %>%
+  left_join(locations %>%
+              mutate(observatory_with_num = paste0(seq_num, ". ", name),
+                     observatory_with_num = fct_reorder(observatory_with_num, 
+                                                        latitude)) %>%
+              select(code, name, observatory_with_num), 
+            by = c("j0" = "code")) %>%
+  drop_na(name)
+
+average_wo_outliers <- attrition_rates %>%
+  filter(attrition_rate < 75) %>%
+  summarise(mean = mean(attrition_rate))
+
+average_wo_outliers <- round(average_wo_outliers$mean, 1)
+compound_avg_10y <- round((1-(1-(average_wo_outliers/100))^10)*100) 
+
+ggplot(attrition_rates, 
+       aes(x = year, y = observatory_with_num, 
+           fill = attrition_rate)) +
+  geom_tile() +  # Create the heatmap tiles
+  geom_text(aes(label = ifelse(is.na(attrition_rate), "", 
+                               round(attrition_rate))), 
+            color = "black", size = 2.5) +
+  scale_fill_gradient2(low = "darkgreen", mid = "yellow", high = "red", 
+                       midpoint = 30, na.value = "grey", name = "Attrition Rate (%)") +
+labs(x = "Year",
+       y = "Observatory (j0)") +
+  theme_minimal() +
+  labs(y = NULL, x = NULL) +
+  theme(axis.text.y = element_text(size = 8)) 
+```
+
+Annual attrition rates superior to 80% for a specific observatory are likely to be induced by new reshuffles of the household identification codes and we hope to be able to solve such issue later on. If we discard these outliers (attrition rates over 80%), we have an average attrition year of `r print(average_wo_outliers)`% wich is very high, leading to a compound attrition rate of `r print(compound_avg_10y)`% over 10 years. Attrition on ROR data has been studied @gubert2008; @vaillant2013.

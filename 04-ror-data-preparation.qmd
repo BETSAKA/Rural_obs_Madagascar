@@ -1,0 +1,13 @@
+# Data preparation
+
+## Data anonymization
+
+*To be completed*
+
+## Table naming
+
+*To be completed*
+
+## Data format conversions
+
+*To be completed*

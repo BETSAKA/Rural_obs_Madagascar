@@ -134,3 +134,4 @@ ggsave("output/ROR_history.png", plot = combined_plot,
 print(combined_plot)
 ```
 @fig-hist-ror shows the coarse location of the 26 observatories composing the ROR, as well as the years in which data was collected in each one. 
+

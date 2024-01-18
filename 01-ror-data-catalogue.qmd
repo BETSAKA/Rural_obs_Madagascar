@@ -1,5 +1,49 @@
-# Data cataloguing
+# ROR survey data
 
-The Rural Observatory Network (ROR) was established as part of the Madio project (1994-1999), a technical assistance program of the IRD to the national statistical institute (INSTAT) of Madagascar, as an innovative mechanism for monitoring and analyzing the country's agricultural sector. This initiative arose from the urgent need to compile statistics on the agricultural industry due to the breakdown of the existing statistical system following the socialist era and political turmoil in the country.
+## Spreadsheet catalogue
 
-Four initial observatories were established in 1995, each representing a different set of agricultural challenges in the country's diverse ecosystems. From 1995 to 2015, 22 other observatories were created, and existing were abandoned (see @fig-hist-ror). The ROR were supported by a variety of donors and NGOs during this period: European union, AFD, World Bank, GTZ, Swiss cooperation, Care and Rio Tinto. The selection of observation sites was based on a combination of criteria, including agroclimatic areas, dominant production systems, population density, accessibility, and the presence of support structures and development projects. These observatories aimed to provide insights into the dynamics of Malagasy agriculture, covering a range of issues such as isolated coastal communities of fishermen and livestock farmers, the impact of trade liberalization on vanilla producers, family smallholdings in the central plateau, and the restructuring of large irrigated rice-growing areas.
+The ROR survey data is organized in a collection of year-specfic folders ranging from 1995 to 2015. Each yearly folder houses multiple .dta files (Stata data format) -- about 85 per year -- with diverse filenames such as "res_as.dta" and "res_bp.dta". The code block below creates a data dictionnary, which can be downloaded by clicking [on this link](https://raw.githubusercontent.com/fBedecarrats/ROR/main/ROR_Variable_Dictionary.xlsx).
+
+```{r var_dict}
+# Function to extract variable info for a given year and file
+extract_variable_info <- function(year, file) {
+  
+  file_path <- paste0("Données ROR/enter/", year, "/", file)
+  
+  if (!file.exists(file_path)) return(tibble())
+  
+  data <- read_dta(file_path, n_max = 0)
+  
+  tibble(
+    file_name = file,
+    variable_name = names(data),
+    variable_label = var_label(data) %>% as.character(),
+    year = year)
+}
+
+# Obtain all years from the directory structure
+years <- list.dirs("Données ROR/enter/", recursive = FALSE, full.names = FALSE)
+
+# Use the tidyverse approach to map over years and files
+all_vars <- map_df(years, ~{
+  files_for_year <- list.files(paste0("Données ROR/enter/", .x), pattern = "\\.dta$", full.names = FALSE)
+  map_df(files_for_year, extract_variable_info, year = .x)
+})
+
+# Convert any NULL values in variable_label to "NA"
+all_vars$variable_label[is.na(all_vars$variable_label)] <- "NA"
+
+# Consolidate the information using the tidyverse approach
+variable_dictionary <- all_vars %>%
+  group_by(file_name, variable_name) %>%
+  arrange(year) %>%  
+  summarise(
+    variable_label = first(variable_label[variable_label != "NA"] %||% "NA"),
+    years_present = list(unique(year))) %>%
+  ungroup() %>%
+  mutate(years_present = map_chr(years_present, ~ paste(.x, collapse = ",")))
+
+# Write the variable dictionary to an Excel file
+write_xlsx(variable_dictionary, "ROR_Variable_Dictionary.xlsx")
+```
+
