@@ -1,8 +1,6 @@
-
-
 ### Panel attrition
 
-To assess the integrity of the panel data, we assess the attrition that characterizes it. That is, for each survey reiteration, we compute the percentage of household identified in the previous round that are still present in the subsequent round. Some adjustment must be made as households identification numbering system habe been reshuffled between 1995 and 1996. We also have to remove 2005 survey in Marovoay from the analysis, as this was a specific tracking survey intended to identify individuals from households that could not be re-interviewed in the previous years in one of the observatory sites [@vaillant2013]. This produces the following result:
+To assess the integrity of the panel data, we assess the attrition that characterizes it. That is, for each survey reiteration, we compute the percentage of household identified in the previous round that are still present in the subsequent round. Some adjustment must be made as households identification numbering system between 1995 and 1996. We also have to remove 2005 survey in Marovoay from the analysis, as this was a specific tracking survey intended to identify individuals from households that could not be re-interviewed in the previous years in one of the observatory sites [@vaillant2013]. This produces the following result:
 
 ```{r}
 #| label: fig-attrition-ror
@@ -102,4 +100,4 @@ labs(x = "Year",
   theme(axis.text.y = element_text(size = 8)) 
 ```
 
-Annual attrition rates superior to 80% for a specific observatory are likely to be induced by new reshuffles of the household identification codes and we hope to be able to solve such issue later on. If we discard these outliers (attrition rates over 80%), we have an average attrition year of `r print(average_wo_outliers)`% wich is very high, leading to a compound attrition rate of `r print(compound_avg_10y)`% over 10 years. Attrition on ROR data has been studied @gubert2008; @vaillant2013.
+Annual attrition rates superior to 75% for a specific observatory are likely to be induced by new reshuffles of the household identification codes and we hope to be able to solve such issue later on. If we discard these outliers (attrition rates over 75%), we have an average attrition year of `r print(average_wo_outliers)`% wich is very high, leading to a compound attrition rate of `r print(compound_avg_10y)`% over 10 years. Attrition on ROR data has been studied @gubert2008; @vaillant2013.
