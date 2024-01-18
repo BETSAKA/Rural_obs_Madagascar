@@ -1,0 +1,29 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Madagascar rural observatory network data validation, preparation, and georeferencing"
+  author: "Florent Bédécarrats"
+  date: "01/18/2024"
+  repo-url: https://github.com/fBedecarrats/ROR
+  # cover-image: figs/IRD_010664_ORI_small.png
+  # cover-image-alt: Déforestation à Madagascar © IRD - Bernard Moizo
+  chapters:
+    - index.qmd
+    - 01-ror-data-catalogue.qmd
+    - 02-ror-data-attrition.qmd
+    - 03-ror-data-georeferencing.qmd
+    - 04-ror-data-preparation.qmd
+    - 05-bibliography.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+    code-fold: true
+
+execute:
+  warning: false
+  error: false

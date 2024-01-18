@@ -5,3 +5,4 @@
 *.zip
 !review_muni_matches_correct.xlsx
 !ROR_Variable_Dictionary.xlsx
+/.quarto/
