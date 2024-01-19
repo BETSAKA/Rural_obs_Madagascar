@@ -6,9 +6,45 @@ To assess the integrity of the panel data, we assess the attrition that characte
 #| label: fig-attrition-ror
 #| fig-cap: "Attrition rate of ROR panels per observatory and survey round"
 
+library(tidyverse)    # A series of packages for data manipulation
+library(haven)        # Required for reading STATA files (.dta)
+library(labelled)     # To work with labelled data from STATA
+library(readxl)       # Read data frames to Excel format
+
+# Obtain all years from the directory structure
+ror_data_loc <- "data/ROR_data/"
+years <- list.dirs(ror_data_loc, recursive = FALSE, full.names = FALSE)
+
+# Add observatory approximate location
+locations <- tibble(
+  code = c(1, 2, 3, 4, 12, 13, 15, 16, 21, 22, 23, 24, 31, 25, 41, 42, 43, 51, 
+           44, 45, 61, 17, 18, 19, 71, 52),
+  name = c("Antalaha", "Antsirabe", "Marovoay", "Toliara coastal", "Antsohihy", 
+           "Tsiroanomandidy", "Farafangana", "Ambovombe", 
+           "Alaotra", "Manjakandriana", "Toliara North", 
+           "Fenerive East", "Bekily", "Mahanoro", "Itasy", 
+           "Menabe-Belo", "Fianarantsoa", "Tsivory", "Morondava", "Manandriana", 
+           "Tanandava", "Ihosy", "Ambohimahasoa", "Manakara", "Tolanaro", 
+           "Menabe-North-East"),
+  latitude = c(-14.8833, -19.8659, -16.1000, -23.7574, -14.8796, -18.7713, 
+               -22.8167, -25.1667, -17.8319, -18.9167, -23.2941, -17.3500, 
+               -24.6900, -19.9000, -19.1686, -19.6975, -21.4527, -24.4667, 
+               -20.2833, -20.2333, -22.5711, -22.4000, -20.7145, -22.1333, 
+               -25.0381, -20.5486),
+  longitude = c(50.2833, 47.0333, 46.6333, 43.6770, 47.9875, 46.0546, 47.8333, 
+                46.0833, 48.4167, 47.8000, 43.7761, 49.4167, 45.1700, 48.8000,
+                46.7354, 44.5419, 47.0857, 45.4667, 44.2833, 47.3833, 45.0439, 
+                46.1167, 47.0389, 48.0167, 46.9562, 47.1597))
+
+# Sort locations by latitude to generate sequence numbers
+locations <- locations %>%
+  arrange(desc(latitude)) %>%
+  mutate(seq_num = 1:n())
+
+
 # Function to read and process each file
 read_and_process <- function(year) {
-  file_path <- file.path("Données ROR/enter", as.character(year), "res_deb.dta")
+  file_path <- file.path(ror_data_loc, as.character(year), "res_deb.dta")
   data <- read_dta(file_path) %>%
     select(j0, j5) %>%
     mutate(year = year)
@@ -21,7 +57,7 @@ consolidated_data <- map_dfr(years, read_and_process) %>%
 
 # NB : j5 codes have been modified in 1996
 # so we need to replace the ones from 1995
-hh_96 <- read_dta("Données ROR/enter/1996/res_deb.dta") %>%
+hh_96 <- read_dta(paste0(ror_data_loc, "1996/res_deb.dta")) %>%
   select(j0, year, j5_96 = j5, j_1995, j12b) %>%
   filter(j_1995 == 1) %>%
   select(-j_1995) %>%

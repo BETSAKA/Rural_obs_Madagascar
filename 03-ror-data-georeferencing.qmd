@@ -16,11 +16,17 @@ library(gt)           # for nicely formatted tables
 library(cowplot)      # to combine plots
 library(gtsummary)    # to produce nice summary tables
 library(janitor)      # to simply add rowsums
+
+# Obtain all years from the directory structure
+ror_data_loc <- "data/ROR_data/"
+years <- list.dirs(ror_data_loc, recursive = FALSE, full.names = FALSE)
 ```
 
-### Challenges for opening the data
+## Shared geographing reference system
 
 In this notebook, our primary objective is to enhance the georeferencing of the ROR survey data for open data sharing. The initial ROR survey, initiated in 1995, recorded geographical information in varying formats: from "village" to a combination of "municipality", "village", and "site". A significant challenge arose from the fact that while data collection started in 1995, municipalities were only formally established in 1994, with several years required for stabilization. The inherent fluidity in toponyms, predominantly derived from oral traditions, resulted in varied written representations. Our endeavor is to identify, disambiguate, and georeference observations recorded in the ROR data, adopting the Common Operational Datasets (CODs) as a reference, which has been collaboratively defined by OCHA and Madagascar's BNGRC (National Disaster Management Office).
+
+### The Common Operational Dataset
 
 CODs stand as the bedrock for all preparedness and response operations, especially within the humanitarian sector. Adopted by the IASC in 2008 and revised in 2010, these datasets are pivotal for facilitating informed decision-making during the critical initial hours of a crisis. By ensuring consistency among stakeholders, they simplify data management and establish a shared operational picture of a crisis. Particularly relevant for our purpose is the incorporation of P-codes in CODs. These unique geographic identification codes, found in both Administrative Boundary CODs (COD-ABs) and Population Statistics CODs (COD-PSs), surmount challenges posed by variations in placenames and spellings. For instance, in Madagascar, 81 different administrative level 4 (ADM4) features are labeled "Morafeno", with six of these existing within ADM3 features also termed "Morafeno", distinguishable solely by their unique ADM2 features.
 
@@ -40,19 +46,19 @@ The "Madagascar Populated Places" dataset is also part of the Common Operational
 
 ```{r load_data}
 # Load datasets
-ROR_surveys_2007 <- read_dta("Données ROR/enter/2007/res_deb.dta")
-observatory_names <- read_xlsx("Observatory_names.xlsx")
+ROR_surveys_2007 <- read_dta(paste0(ror_data_loc, "2007/res_deb.dta"))
+observatory_names <- read_xlsx("references/observatory_names.xlsx")
 obs_communes <- st_read(
-  "data/observatoires/Observatoires_ROR_communes_COD_v2.gpkg",
+  "data/Spatial_data/Observatoires_ROR_communes_COD_v2.gpkg",
   quiet = TRUE) %>%
   left_join(select(observatory_names, name, code), 
             by = c("OBS_NAME" = "name")) %>%
   rename(OBS_CODE = code)
 pop_places <- st_read(
-  "../entités administratives/OCHA_BNGRC populated places/mdg_pplp_places_NGA_OCHA.shp", quiet = TRUE)
+  "data/Spatial_data/OCHA_BNGRC populated places/mdg_pplp_places_NGA_OCHA.shp", quiet = TRUE)
 ```
 
-## Methodology
+## Georeferencing methodology
 
 ### Simplify strings
 
@@ -212,7 +218,7 @@ years <- 1995:2014
 
 # Read all datasets and combine
 all_surveys_description <- map_df(years, function(year) {
-  df <- read_dta(paste0("Données ROR/enter/", year, "/res_deb.dta"))
+  df <- read_dta(paste0(ror_data_loc, year, "/res_deb.dta"))
     # Convert all columns to character to ensure consistency
   df <- df %>% mutate_all(as.character)
   return(df)
@@ -404,7 +410,7 @@ After successfully matching commune names with an official, normalized reference
 
 ```{r join_fokontany}
 # Load the ADM4 dataset, which corresponds to Fokontany
-fokontany <- st_read("../Entités administratives/OCHA_BNGRC frontières administratives/mdg_admbnda_adm4_BNGRC_OCHA_20181031.shp",
+fokontany <- st_read("data/Spatial_data/OCHA_BNGRC admin boundaries/mdg_admbnda_adm4_BNGRC_OCHA_20181031.shp",
                       quiet = TRUE) %>%
   mutate(ADM4_clean = clean_string(ADM4_EN))
 
@@ -626,7 +632,7 @@ We visually explore the the georeferenced data to observe its spatial distributi
 
 ```{r map_ror}
 #| label: fig-map-final
-#| fig-cap: "Map of the surveyed communes and fokonany in protected areas vicinity"
+#| fig-cap: "Map of the surveyed communes and fokonany"
 
 
 commmune_pcode_years <- correspondence_table3 %>%
@@ -666,11 +672,6 @@ selected_fokontany <- fokontany_pcode_years %>%
   st_sf()  %>%
   mutate(label = "Surveyed______")
 
-Vahatra <- st_read("../Aires protégées/Vahatra/Shapefiles/AP_Vahatra.shp", 
-                   quiet = TRUE) %>%
-  st_make_valid() %>%
-  mutate(label = "Protected area__")
-
 
 tmap_mode("view")
 tm_shape(selected_communes) + 
@@ -686,12 +687,6 @@ tm_shape(selected_communes) +
                          "Commune" = "ADM3_EN",
                          "District" = "ADM2_EN",
                          "Region" = "ADM1_EN")) +
-  tm_shape(Vahatra) + 
-  tm_fill(col = "label", palette = c("darkgreen"), alpha = 0.4,
-          popup.vars = c("Year creation" = "an_crtn",
-                         "IUCN category" = "cat_icn",
-                         "Manager" = "gest_1",
-                         "Manager 2" = "gest_2")) +
   tm_scale_bar()
 ```
 
