@@ -1,4 +1,4 @@
-# Georeferencing the Rural Observatory Data
+# Georeferencing
 
 This section details the georeferencing process applied to household panel data collected by the Rural Observatory Network (ROR) from 1995 to 2014. The ROR gathered data on various rural contexts in Madagascar. While the data quality was carefully monitored, its geolocation attributes were not fully developed, limiting its use in spatially integrated research and public policy evaluation. This appendix aligns the ROR dataset's varied spatial denominations with a standardized geographic database, ensuring consistent correlation between each ROR observation and corresponding geospatial entities, namely communes and fokontany. Like in other sections of this document, the source code developed to perform all the data processing is accessible by unfolding the code blocks, like the one below.
 
@@ -49,7 +49,7 @@ The "Madagascar Populated Places" dataset is also part of the Common Operational
 ROR_surveys_2007 <- read_dta(paste0(ror_data_loc, "2007/res_deb.dta"))
 observatory_names <- read_xlsx("references/observatory_names.xlsx")
 obs_communes <- st_read(
-  "data/Spatial_data/Observatoires_ROR_communes_COD_v2.gpkg",
+  "data/Spatial_data/Observatoires_ROR_communes_COD_v3.gpkg",
   quiet = TRUE) %>%
   left_join(select(observatory_names, name, code), 
             by = c("OBS_NAME" = "name")) %>%
@@ -364,7 +364,7 @@ correspondence_table <- correspondence_table %>%
 
 For the remaining, let's try matching with other village names for which municipality has been matched.
 
-Even after the above measures, there remained observations that had eluded a municipality match. The subsequent strategy was to juxtapose them with other village names that had already been successfully matched to a municipality. We assembled a dataset comprising of municipality names and their paired village names, using data from previous successful matches. UThen the still-unmatched village names were run through a fuzzy matching process against the known village names. We fine-tuned the algorithm with a restrictive matching threshold. Again, some matches stood out as anomalies. Labeled as 'false positives', these were sifted out and the newly matched data was incorporated into the main correspondence table.
+Even after the above measures, there remained observations that had eluded a municipality match. The subsequent strategy was to juxtapose them with other village names that had already been successfully matched to a municipality. We assembled a table comprising of municipality names and their paired village names, using data from previous successful matches. Then the still-unmatched village names were run through a fuzzy matching process against the known village names. We fine-tuned the algorithm with a restrictive matching threshold. Again, some matches stood out as anomalies. Labeled as 'false positives', these were sifted out and the newly matched data was incorporated into the main correspondence table.
 
 ```{r method_4}
 # Create a list of municipality names and village names for matched observations
@@ -672,18 +672,22 @@ selected_fokontany <- fokontany_pcode_years %>%
   st_sf()  %>%
   mutate(label = "Surveyed______")
 
+write_rds(selected_communes, "output/selected_communes.rds")
+write_rds(selected_fokontany, "output/selected_fokontany.rds")
 
 tmap_mode("view")
 tm_shape(selected_communes) + 
   tm_fill(col = "OBS_NAME", palette = "Set1", title = "Observatory",
-          id = "ADM3_EN",
-          popup.vars = c("Data collection years"  = "years",
+          id = "ADM3_EN", legend.show = FALSE,
+          popup.vars = c("Observatory" = "OBS_NAME",
+                         "Data collection years"  = "years",
                          "District" = "ADM2_EN",
                          "Region" = "ADM1_EN")) +
   tm_shape(selected_fokontany) + 
   tm_fill(col = "label", palette = c("black"), alpha = 0.6, title = "Fokontany", 
-          id = "ADM4_EN",
-          popup.vars = c("Data collection years"  = "years",
+          id = "ADM4_EN", legend.show = FALSE,
+          popup.vars = c("Observatory" = "OBS_NAME",
+                         "Data collection years"  = "years",
                          "Commune" = "ADM3_EN",
                          "District" = "ADM2_EN",
                          "Region" = "ADM1_EN")) +

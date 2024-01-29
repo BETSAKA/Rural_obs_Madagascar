@@ -1,5 +1,10 @@
 # Data preparation
 
+```{r}
+library(tidyverse)
+```
+
+
 ## Data anonymization
 
 *To be completed*
@@ -9,5 +14,28 @@
 *To be completed*
 
 ## Data format conversions
+
+
+```{r}
+# Install the latest version of DDIwR
+remotes::install_github("https://github.com/dusadrian/DDIwR")
+library(DDIwR)
+
+# Test on one package
+
+test_file <- ("data/ROR_data/2010/res_m_a.dta")
+
+convert(from = test_file,
+        to = "output/test.xml")
+convert(from = test_file,
+        to = "output/test.rds",
+        )
+
+test <- read_rds("output/test.rds")
+
+test2 <- read_dta(test_file)
+```
+
+
 
 *To be completed*

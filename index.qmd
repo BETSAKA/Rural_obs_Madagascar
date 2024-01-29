@@ -73,7 +73,7 @@ locations <- tibble(
            "Fenerive East", "Bekily", "Mahanoro", "Itasy", 
            "Menabe-Belo", "Fianarantsoa", "Tsivory", "Morondava", "Manandriana", 
            "Tanandava", "Ihosy", "Ambohimahasoa", "Manakara", "Tolanaro", 
-           "Menabe-North-East"),
+           "Menabe North-East"),
   latitude = c(-14.8833, -19.8659, -16.1000, -23.7574, -14.8796, -18.7713, 
                -22.8167, -25.1667, -17.8319, -18.9167, -23.2941, -17.3500, 
                -24.6900, -19.9000, -19.1686, -19.6975, -21.4527, -24.4667, 

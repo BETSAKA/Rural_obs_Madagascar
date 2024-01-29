@@ -16,7 +16,7 @@ book:
     - 03-ror-data-georeferencing.qmd
     - 04-ror-data-preparation.qmd
     - 05-bibliography.qmd
-
+    
 bibliography: bibliography.bib
 
 format:
