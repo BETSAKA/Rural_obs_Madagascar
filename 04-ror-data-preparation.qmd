@@ -1,11 +1,235 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Data preparation
 
 ```{r}
-library(tidyverse)
+library(tidyverse)    # A series of packages for data manipulation
+library(haven)        # Required for reading STATA files (.dta)
 ```
 
 
+## Data selection
+
+First we start with creating a copy of the original unfiltered and un-anonymized data.
+
+```{r copy-data}
+
+# Define the paths for the source and target folders
+source_folder <- "data/ROS_data_original"
+target_folder <- "data/ROS_data_prepared"
+
+# Create the target folder if it does not exist
+if (!dir.exists(target_folder)) {
+  dir.create(target_folder, recursive = TRUE)
+}
+
+# Empty the target folder if it already contains files
+if (length(list.files(target_folder, recursive = TRUE)) > 0) {
+  # List all files within the target folder recursively
+  files_to_remove <- list.files(target_folder, full.names = TRUE, recursive = TRUE)
+  # Remove these files
+  file.remove(files_to_remove)
+}
+
+# Function to recursively copy files from source to target
+copy_files <- function(source, target) {
+  # Ensure the target directory exists
+  if (!dir.exists(target)) {
+    dir.create(target, recursive = TRUE)
+  }
+  
+  # List all files and directories in the source
+  contents <- list.files(source, full.names = TRUE)
+  
+  # Separate files and directories
+  dirs <- contents[which(sapply(contents, function(x) file.info(x)$isdir))]
+  files <- contents[which(sapply(contents, function(x) !file.info(x)$isdir))]
+  
+  # Copy files
+  if (length(files) > 0) {
+    file.copy(files, target, overwrite = TRUE)
+  }
+  
+  # Recursively copy directories
+  if (length(dirs) > 0) {
+    for (dir in dirs) {
+      new_source <- dir
+      new_target <- file.path(target, basename(dir))
+      copy_files(new_source, new_target)
+    }
+  }
+}
+
+# Copy all files and folders from source to target
+copy_files(source_folder, target_folder)
+
+```
+
+For 2015, we have 4 observatories. One that existed on the previous years, Menabe Nord-Est, and 3 new ones: Ambatofinandrahana, Anjozorobe et Maintirano. The data collection of the ROS kept on until 2017, but we lack documentation since 2015 and the data has not yet been harmonized for 2016 and 2017. For this reason, we only kept the data for Menabe North-East for 2015.
+
+```{r}
+# Define the path to the 2015 folder within the target folder
+folder_2015 <- "data/ROS_data_prepared/2015"
+
+# List all .dta files in the 2015 folder
+dta_files <- list.files(folder_2015, pattern = "\\.dta$", full.names = TRUE)
+
+# Initialize a variable to track if all files were successfully filtered
+all_files_filtered <- TRUE
+
+# Loop through each .dta file
+for (file_path in dta_files) {
+  # Load the dataset
+  data <- read_dta(file_path)
+  
+  # Check if 'j5' exists and is a character variable
+  if ("j5" %in% names(data) && is.character(data$j5)) {
+    # Filter for j5 == "52"
+    filtered_data <- data[data$j5 == "52", ]
+    
+    # Save the filtered dataset back to the same file (or to a new file/path)
+    write_dta(filtered_data, file_path)
+  } else {
+    # Set the flag to FALSE if j5 does not exist or is not character in any file
+    all_files_filtered <- FALSE
+    break  # Exit the loop as we found a file not meeting the criteria
+  }
+}
+
+# Check if all files were successfully filtered and print a message
+if (!all_files_filtered) {
+  cat("Error: Not all files were filtered. At least one file does not contain 'j5' as a character variable.")
+}
+```
+
+If no error message is displayed, the filtering went on correctly.
+
 ## Data anonymization
+
+```{r}
+library(tidyverse)    # A series of packages for data manipulation
+library(haven)        # Required for reading STATA files (.dta)
+
+# Where ROR data was stored
+ror_data_loc <- "data/ROS_data_prepared/"
+# Obtain all years from the directory structure
+years <- list.dirs(ror_data_loc, recursive = FALSE, full.names = FALSE)
+
+test <- read_dta("data/ROR_data/2004/res_m_a.dta")
+test2 <- read_dta("data/ROR_data/2004/res_vo.dta")
+test3 <- read_dta("data/ROR_data/1995/res_m.dta")
+test <- read_dta("data/ROR_data/2004/res_deb.dta")
+```
+
+
+```{r}
+library(tidyverse)
+library(haven)
+library(stringdist)
+library(stringi) # For string normalization
+
+ror_data_loc <- "data/ROR_data/"
+
+# Function to generate a normalized version of names
+normalize_name <- function(name) {
+  stri_trans_general(name, "Latin-ASCII") %>%
+    tolower() %>%
+    gsub("[^a-z ]", "", .) %>%
+    str_trim()
+}
+
+# Function to read individual data, normalize names, and anonymize
+read_and_anonymize <- function(year) {
+  file_name <- if(year == 1995) "res_m.dta" else "res_m_a.dta"
+  file_path <- file.path(ror_data_loc, as.character(year), file_name)
+  
+  if(!file.exists(file_path)) return(NULL)
+  
+  data <- read_dta(file_path) %>%
+    select(m1, year, j5) %>%
+    mutate(name_normalized = normalize_name(m1))
+  
+  return(data)
+}
+
+# Read and process all files
+all_data <- map_df(1995:2014, read_and_anonymize)
+
+# Compute unique identifiers based on name similarity and household
+# This part is conceptual and needs further refinement for your exact needs
+all_data <- all_data %>%
+  group_by(j5) %>%
+  mutate(individual_id = rank(name_normalized)) %>%
+  ungroup()
+
+# Example of generating pseudonymized names
+all_data <- all_data %>%
+  mutate(pseudonym = paste0("Prenom_", str_pad(individual_id, width = 2, pad = "0")))
+
+# The pseudonym digit are still in alphabetical order. We shuffle so the 
+# number is now random
+
+# Randomize pseudonyms within each household and create pseudonym2
+all_data <- all_data %>%
+  group_by(j5) %>%
+  mutate(
+    # Convert pseudonym to a factor and ensure its levels are unique to avoid clashes
+    pseudonym_factor = factor(pseudonym, levels = unique(pseudonym)),
+    # Shuffle the levels of the factor randomly
+    pseudonym_factor = factor(pseudonym_factor, levels = sample(levels(pseudonym_factor))),
+    # Extract the numeric representation of the factor
+    factor_number = as.integer(pseudonym_factor)
+  ) %>%
+  ungroup() %>%
+  # Use the factor number to create a new pseudonym
+  mutate(pseudonym = paste0("Individual_", str_pad(factor_number, width = 2, pad = "0")))
+########################
+
+# Function to calculate match ratios within households
+calculate_match_ratios <- function(data) {
+  unique_names <- unique(data$name_normalized)
+  
+  # Prepare an empty dataframe to store results
+  results <- tibble(name_normalized = character(), closest_match = character(), match_ratio = numeric())
+  
+  for (name in unique_names) {
+    # Calculate string distances
+    distances <- stringdist::stringdist(name, unique_names)
+    
+    # Calculate match ratios, excluding self-comparison
+    match_ratios <- 1 - (distances / nchar(name))
+    names(match_ratios) <- unique_names
+    match_ratios[name] <- NA  # Exclude self-comparison
+    
+    # Find the closest match and its ratio
+    closest_match <- names(which.max(match_ratios))
+    highest_ratio <- max(match_ratios, na.rm = TRUE)
+    
+    # If highest match ratio is more than 50%, add to results
+    if (highest_ratio > 0.5) {
+      results <- rbind(results, tibble(name_normalized = name, closest_match = closest_match, match_ratio = highest_ratio))
+    }
+  }
+  
+  return(results)
+}
+
+# Apply the function to each household
+match_results <- all_data %>%
+  group_by(j5) %>%
+  group_modify(~ calculate_match_ratios(.x)) %>%
+  ungroup()
+
+match_resuls2 <- match_results %>%
+  filter(nchar(name_normalized) >= 6) %>%
+  filter()
+
+```
+
+
 
 *To be completed*
 
