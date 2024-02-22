@@ -113,15 +113,15 @@ If no error message is displayed, the filtering went on correctly.
 library(tidyverse)    # A series of packages for data manipulation
 library(haven)        # Required for reading STATA files (.dta)
 
-# Where ROR data was stored
-ror_data_loc <- "data/ROS_data_prepared/"
+# Where ROS data was stored
+ros_data_loc <- "data/ROS_data_prepared/"
 # Obtain all years from the directory structure
-years <- list.dirs(ror_data_loc, recursive = FALSE, full.names = FALSE)
+years <- list.dirs(ros_data_loc, recursive = FALSE, full.names = FALSE)
 
-test <- read_dta("data/ROR_data/2004/res_m_a.dta")
-test2 <- read_dta("data/ROR_data/2004/res_vo.dta")
-test3 <- read_dta("data/ROR_data/1995/res_m.dta")
-test <- read_dta("data/ROR_data/2004/res_deb.dta")
+test <- read_dta("data/ROS_data/2004_prepared/res_m_a.dta")
+test2 <- read_dta("data/ROS_data/2004_prepared/res_vo.dta")
+test3 <- read_dta("data/ROS_data/1995_prepared/res_m.dta")
+test <- read_dta("data/ROS_data_prepared/2004/res_deb.dta")
 ```
 
 
@@ -131,7 +131,7 @@ library(haven)
 library(stringdist)
 library(stringi) # For string normalization
 
-ror_data_loc <- "data/ROR_data/"
+ros_data_loc <- "data/ROS_data_prepared/"
 
 # Function to generate a normalized version of names
 normalize_name <- function(name) {
@@ -144,7 +144,7 @@ normalize_name <- function(name) {
 # Function to read individual data, normalize names, and anonymize
 read_and_anonymize <- function(year) {
   file_name <- if(year == 1995) "res_m.dta" else "res_m_a.dta"
-  file_path <- file.path(ror_data_loc, as.character(year), file_name)
+  file_path <- file.path(ros_data_loc, as.character(year), file_name)
   
   if(!file.exists(file_path)) return(NULL)
   
@@ -247,7 +247,7 @@ library(DDIwR)
 
 # Test on one package
 
-test_file <- ("data/ROR_data/2010/res_m_a.dta")
+test_file <- ("data/ROS_data_prepared/2010/res_m_a.dta")
 
 convert(from = test_file,
         to = "output/test.xml")

@@ -1,6 +1,6 @@
 # Data catalogue
 
-The ROR survey data is organized in a collection of year-specfic folders ranging from 1995 to 2015. Each yearly folder houses multiple .dta files (Stata data format) -- about 85 per year -- with diverse filenames such as "res_as.dta" and "res_bp.dta". The code block below creates a data dictionnary, which can be downloaded by clicking [on this link](https://raw.githubusercontent.com/fBedecarrats/ROR/main/output/ROR_Variable_Dictionary.xlsx 
+The ROS survey data is organized in a collection of year-specfic folders ranging from 1995 to 2015. Each yearly folder houses multiple .dta files (Stata data format) -- about 85 per year -- with diverse filenames such as "res_as.dta" and "res_bp.dta". The code block below creates a data dictionnary, which can be downloaded by clicking [on this link](https://raw.githubusercontent.com/fBedecarrats/Rural_Obs_Madagascar/main/output/ROS_Variable_Dictionary.xlsx 
 ).
 
 ```{r var_dict}
@@ -9,12 +9,12 @@ library(haven)        # Required for reading STATA files (.dta)
 library(labelled)     # To work with labelled data from STATA
 library(writexl)      # Write data frames to Excel format
 
-ror_data_loc <- "data/ROR_data/"
+ros_data_loc <- "data/ROS_data_prepared/"
 
 # Function to extract variable info for a given year and file
 extract_variable_info <- function(year, file) {
   
-  file_path <- paste0(ror_data_loc, year, "/", file)
+  file_path <- paste0(ros_data_loc, year, "/", file)
   
   if (!file.exists(file_path)) return(tibble())
   
@@ -28,11 +28,11 @@ extract_variable_info <- function(year, file) {
 }
 
 # Obtain all years from the directory structure
-years <- list.dirs(ror_data_loc, recursive = FALSE, full.names = FALSE)
+years <- list.dirs(ros_data_loc, recursive = FALSE, full.names = FALSE)
 
 # Use the tidyverse approach to map over years and files
 all_vars <- map_df(years, ~{
-  files_for_year <- list.files(paste0(ror_data_loc, .x), pattern = "\\.dta$", full.names = FALSE)
+  files_for_year <- list.files(paste0(ros_data_loc, .x), pattern = "\\.dta$", full.names = FALSE)
   map_df(files_for_year, extract_variable_info, year = .x)
 })
 
@@ -50,6 +50,6 @@ variable_dictionary <- all_vars %>%
   mutate(years_present = map_chr(years_present, ~ paste(.x, collapse = ",")))
 
 # Write the variable dictionary to an Excel file
-write_xlsx(variable_dictionary, "output/ROR_Variable_Dictionary.xlsx")
+write_xlsx(variable_dictionary, "output/ROS_Variable_Dictionary.xlsx")
 ```
 

@@ -1,6 +1,6 @@
 # Georeferencing
 
-This section details the georeferencing process applied to household panel data collected by the Rural Observatory Network (ROR) from 1995 to 2014. The ROR gathered data on various rural contexts in Madagascar. While the data quality was carefully monitored, its geolocation attributes were not fully developed, limiting its use in spatially integrated research and public policy evaluation. This appendix aligns the ROR dataset's varied spatial denominations with a standardized geographic database, ensuring consistent correlation between each ROR observation and corresponding geospatial entities, namely communes and fokontany. Like in other sections of this document, the source code developed to perform all the data processing is accessible by unfolding the code blocks, like the one below.
+This section details the georeferencing process applied to household panel data collected by the Rural Observatory System (ROS) from 1995 to 2014. The ROS gathered data on various rural contexts in Madagascar. While the data quality was carefully monitored, its geolocation attributes were not fully developed, limiting its use in spatially integrated research and public policy evaluation. This appendix aligns the ROS dataset's varied spatial denominations with a standardized geographic database, ensuring consistent correlation between each ROS observation and corresponding geospatial entities, namely communes and fokontany. Like in other sections of this document, the source code developed to perform all the data processing is accessible by unfolding the code blocks, like the one below.
 
 ```{r load_libraries}
 library(tidyverse)    # A series of packages for data manipulation
@@ -18,19 +18,19 @@ library(gtsummary)    # to produce nice summary tables
 library(janitor)      # to simply add rowsums
 
 # Obtain all years from the directory structure
-ror_data_loc <- "data/ROR_data/"
-years <- list.dirs(ror_data_loc, recursive = FALSE, full.names = FALSE)
+ros_data_loc <- "data/ROS_data_prepared/"
+years <- list.dirs(ros_data_loc, recursive = FALSE, full.names = FALSE)
 ```
 
 ## Shared geographing reference system
 
-In this notebook, our primary objective is to enhance the georeferencing of the ROR survey data for open data sharing. The initial ROR survey, initiated in 1995, recorded geographical information in varying formats: from "village" to a combination of "municipality", "village", and "site". A significant challenge arose from the fact that while data collection started in 1995, municipalities were only formally established in 1994, with several years required for stabilization. The inherent fluidity in toponyms, predominantly derived from oral traditions, resulted in varied written representations. Our endeavor is to identify, disambiguate, and georeference observations recorded in the ROR data, adopting the Common Operational Datasets (CODs) as a reference, which has been collaboratively defined by OCHA and Madagascar's BNGRC (National Disaster Management Office).
+In this notebook, our primary objective is to enhance the georeferencing of the ROS survey data for open data sharing. The initial ROS survey, initiated in 1995, recorded geographical information in varying formats: from "village" to a combination of "municipality", "village", and "site". A significant challenge arose from the fact that while data collection started in 1995, municipalities were only formally established in 1994, with several years required for stabilization. The inherent fluidity in toponyms, predominantly derived from oral traditions, resulted in varied written representations. Our endeavor is to identify, disambiguate, and georeference observations recorded in the ROS data, adopting the Common Operational Datasets (CODs) as a reference, which has been collaboratively defined by OCHA and Madagascar's BNGRC (National Disaster Management Office).
 
 ### The Common Operational Dataset
 
 CODs stand as the bedrock for all preparedness and response operations, especially within the humanitarian sector. Adopted by the IASC in 2008 and revised in 2010, these datasets are pivotal for facilitating informed decision-making during the critical initial hours of a crisis. By ensuring consistency among stakeholders, they simplify data management and establish a shared operational picture of a crisis. Particularly relevant for our purpose is the incorporation of P-codes in CODs. These unique geographic identification codes, found in both Administrative Boundary CODs (COD-ABs) and Population Statistics CODs (COD-PSs), surmount challenges posed by variations in placenames and spellings. For instance, in Madagascar, 81 different administrative level 4 (ADM4) features are labeled "Morafeno", with six of these existing within ADM3 features also termed "Morafeno", distinguishable solely by their unique ADM2 features.
 
-P-codes act as reliable geographic identifiers, eliminating errors arising from identical or variably spelled geographic locations. Leveraging the HDX platform, an open platform for cross-crisis data sharing, we fetch this data to ensure the accurate georeferencing of our ROR data. By harnessing the standardized and official spelling of places provided by P-codes, we can amalgamate, harmonize, and analyze data from diverse sources, offering a comprehensive, geo-accurate view of the survey's findings.
+P-codes act as reliable geographic identifiers, eliminating errors arising from identical or variably spelled geographic locations. Leveraging the HDX platform, an open platform for cross-crisis data sharing, we fetch this data to ensure the accurate georeferencing of our ROS data. By harnessing the standardized and official spelling of places provided by P-codes, we can amalgamate, harmonize, and analyze data from diverse sources, offering a comprehensive, geo-accurate view of the survey's findings.
 
 
 Although there's an element of harmonization achieved, especially regarding certain variables and household identifiers, the data varies in terms of geographical granularity. Initial years primarily provide a singular field denoting the village name. As the years progress, this evolves to include a municipality name, and in the latter years, an additional "site" name occasionally appears. A comprehensive overview of the observations can be gleaned from the "res_deb.dta" files within each year.
@@ -46,10 +46,10 @@ The "Madagascar Populated Places" dataset is also part of the Common Operational
 
 ```{r load_data}
 # Load datasets
-ROR_surveys_2007 <- read_dta(paste0(ror_data_loc, "2007/res_deb.dta"))
+ROS_surveys_2007 <- read_dta(paste0(ros_data_loc, "2007/res_deb.dta"))
 observatory_names <- read_xlsx("references/observatory_names.xlsx")
 obs_communes <- st_read(
-  "data/Spatial_data/Observatoires_ROR_communes_COD_v3.gpkg",
+  "data/Spatial_data/Observatoires_ROS_communes_COD_v3.gpkg",
   quiet = TRUE) %>%
   left_join(select(observatory_names, name, code), 
             by = c("OBS_NAME" = "name")) %>%
@@ -180,7 +180,7 @@ end
 %% Observatory Logic
 
 subgraph "Observatory Logic"
-E[Observatory network]
+E[Observatory system]
 F[Observatory]
 G[Commune]
 H[Village]
@@ -198,11 +198,11 @@ H -.- I
 C -.- G
 ```
 
-Madagascar's current administrative setup is straightforward: regions contain districts; districts have communes; and communes are made up of Fokontany. Though a Fokontany should in principle be a single village, it often includes multiple villages or populated areas. It's worth noting that while the idea of communes has been around for a while, they were only officially recognized in 1994. However, rolling them out took some time after 1994. Before 1994, "communes" simply described local government areas without any formal administrative status. The regions were created in 2004. On the ROR side, observatory refereed during the first surveys to villages. A systematic registry of the communes only started in the 2004 and 2005 round, depending on the observatories. A mention to "sites" also appeared in 2011 but was scarcely documented. Our strategy was to established links between the village information and populated places, and between communes.
+Madagascar's current administrative setup is straightforward: regions contain districts; districts have communes; and communes are made up of Fokontany. Though a Fokontany should in principle be a single village, it often includes multiple villages or populated areas. It's worth noting that while the idea of communes has been around for a while, they were only officially recognized in 1994. However, rolling them out took some time after 1994. Before 1994, "communes" simply described local government areas without any formal administrative status. The regions were created in 2004. On the ROS side, observatory refereed during the first surveys to villages. A systematic registry of the communes only started in the 2004 and 2005 round, depending on the observatories. A mention to "sites" also appeared in 2011 but was scarcely documented. Our strategy was to established links between the village information and populated places, and between communes.
 
 ## A Detailed walk-through
 
-We now break down our approach to describe each subsequent step. We began by exploring the ROR documentation, and in particular the reports associated to community survey, that contain descriptions of the area surveyed by each observatory. While doing so, we updated the COD subnational administrative boundary dataset by adding a field named `OBS_Y_N`. This field was marked as '1' if the municipality was listed in an observatory survey; if not, it was left empty. Additionally, we added another field, `OBS_NUM`, which would store the observatory number. If the municipality wasn't part of any survey, this field was left empty. The list of observatories and surveyed municipalities can be found in the @tbl-list-muni.
+We now break down our approach to describe each subsequent step. We began by exploring the ROS documentation, and in particular the reports associated to community survey, that contain descriptions of the area surveyed by each observatory. While doing so, we updated the COD subnational administrative boundary dataset by adding a field named `OBS_Y_N`. This field was marked as '1' if the municipality was listed in an observatory survey; if not, it was left empty. Additionally, we added another field, `OBS_NUM`, which would store the observatory number. If the municipality wasn't part of any survey, this field was left empty. The list of observatories and surveyed municipalities can be found in the @tbl-list-muni.
 
 Next, we moved on to geolocation, which took place in four stages. Each stage depended heavily on the data quality and completeness obtained from the previous ones.
 
@@ -218,7 +218,7 @@ years <- 1995:2014
 
 # Read all datasets and combine
 all_surveys_description <- map_df(years, function(year) {
-  df <- read_dta(paste0(ror_data_loc, year, "/res_deb.dta"))
+  df <- read_dta(paste0(ros_data_loc, year, "/res_deb.dta"))
     # Convert all columns to character to ensure consistency
   df <- df %>% mutate_all(as.character)
   return(df)
@@ -406,7 +406,7 @@ correspondence_table <- correspondence_table %>%
 
 ## Matching villages
 
-After successfully matching commune names with an official, normalized reference, our next goal is to align the villages as identified by the ROR with their administrative counterpart, known as Fokontany. This task presents challenges, notably because the ROR's village identifications weren't directly linked to Fokontany names, and the Fokontany names themselves have undergone changes. Additionally, variations in village naming within the ROR dataset complicate the process. Our approach involves several steps: First, we load the official COD Fokontany dataset. Next, we standardize the place names using our previously discussed `clean_string` function. Then, using the purpose-built `fuzzy_match_village` function, we assess the similarity between the village names in the ROR dataset and the Fokontany names within the same commune, specifically by calculating the Jaro-Winkler distance between the strings. We the names with the highest degree of matching. During a manual review of these results, we closely examined the matches, especially those with larger Jaro-Winkler distance. From this examination, we derived a distance of 0.2, below which the majority of matches were accurate. Notably, some matches above this threshold were deemed accurate and retained, while a small number of matches below this threshold were identified as false positives and subsequently discarded.
+After successfully matching commune names with an official, normalized reference, our next goal is to align the villages as identified by the ROS with their administrative counterpart, known as Fokontany. This task presents challenges, notably because the ROS village identifications weren't directly linked to Fokontany names, and the Fokontany names themselves have undergone changes. Additionally, variations in village naming within the ROS dataset complicate the process. Our approach involves several steps: First, we load the official COD Fokontany dataset. Next, we standardize the place names using our previously discussed `clean_string` function. Then, using the purpose-built `fuzzy_match_village` function, we assess the similarity between the village names in the ROS dataset and the Fokontany names within the same commune, specifically by calculating the Jaro-Winkler distance between the strings. We the names with the highest degree of matching. During a manual review of these results, we closely examined the matches, especially those with larger Jaro-Winkler distance. From this examination, we derived a distance of 0.2, below which the majority of matches were accurate. Notably, some matches above this threshold were deemed accurate and retained, while a small number of matches below this threshold were identified as false positives and subsequently discarded.
 
 ```{r join_fokontany}
 # Load the ADM4 dataset, which corresponds to Fokontany
@@ -538,7 +538,7 @@ We first look at the distribution of the unique observations that were successfu
 
 ```{r stats_methods}
 #| label: tbl-stats-matching
-#| tbl-cap: "Number of ROR observation which commune and village were matched"
+#| tbl-cap: "Number of ROS observation which commune and village were matched"
 
 # Re-format modality labels  
 matching_tbl <- correspondence_table3 %>%
@@ -624,13 +624,13 @@ fokontany_list %>%
              subtitle = "Breakdown by Observatory and Commune") 
 ```
 
-We compare this with the ROR documentation to assess which villages might have been omitted by our algorithm.
+We compare this with the ROS documentation to assess which villages might have been omitted by our algorithm.
 
 ### Visual exploration and avenues for continuous corrections
 
 We visually explore the the georeferenced data to observe its spatial distribution and spot eventual anomalies or clustering patterns that might not be immediately obvious from numerical summaries. The visualization below maps out our matched municipalities alongside villages. Discrepancies or clusters may indicate a need for further refinement or correction.
 
-```{r map_ror}
+```{r map_ros}
 #| label: fig-map-final
 #| fig-cap: "Map of the surveyed communes and fokonany"
 
@@ -696,8 +696,8 @@ tm_shape(selected_communes) +
 
 ## Conclusion
 
-Given the variability in location labels recorded in the ROR data, we emphasized standardizing and aligning toponyms. We introduced the clean_string function to unify place names, addressing variances in language, letter casing, and other descriptors. Utilizing fuzzy matching, we connected similar text strings, using the Levenshtein distance as a benchmark. To heighten accuracy, a hierarchical data matching strategy was applied, reflecting the inherent structure of geographical units, where regions envelop districts, which further consist of municipalities and localities. The COD data, curated by BNGRC and OCHA, was our reference point for these matches. Various techniques, including hierarchical fuzzy matching and visual checks, were employed.
+Given the variability in location labels recorded in the ROS data, we emphasized standardizing and aligning toponyms. We introduced the clean_string function to unify place names, addressing variances in language, letter casing, and other descriptors. Utilizing fuzzy matching, we connected similar text strings, using the Levenshtein distance as a benchmark. To heighten accuracy, a hierarchical data matching strategy was applied, reflecting the inherent structure of geographical units, where regions envelop districts, which further consist of municipalities and localities. The COD data, curated by BNGRC and OCHA, was our reference point for these matches. Various techniques, including hierarchical fuzzy matching and visual checks, were employed.
 
-As a result, 98% of commune name variations in the dataset matched with an official commune, and 73% of village name variations correlated with a fokontany. The outcomes are consistent with ROR's internal documentation, and the spatial representations can be further inspected for validation. Future corrections and enhancements are anticipated, and our system, leveraging Quarto notebook and reproducible R code, is poised to facilitate these refinements.
+As a result, 98% of commune name variations in the dataset matched with an official commune, and 73% of village name variations correlated with a fokontany. The outcomes are consistent with ROS's internal documentation, and the spatial representations can be further inspected for validation. Future corrections and enhancements are anticipated, and our system, leveraging Quarto notebook and reproducible R code, is poised to facilitate these refinements.
 
-ROR began its data collection at a time when geolocation best practices weren't as evolved as they are today. Should more survey rounds be conducted in the future, the intricate georeferencing process demonstrated here should serve both as a cautionary tale and a guide on optimizing data registration (for instance, using PCODES). We're optimistic that refining the georeferencing of past ROR data, as presented in this work, will amplify the data's utility for both research and policy decisions.
+ROS began its data collection at a time when geolocation best practices weren't as evolved as they are today. Should more survey rounds be conducted in the future, the intricate georeferencing process demonstrated here should serve both as a cautionary tale and a guide on optimizing data registration (for instance, using PCODES). We're optimistic that refining the georeferencing of past ROS data, as presented in this work, will amplify the data's utility for both research and policy decisions.
