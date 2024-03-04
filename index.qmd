@@ -17,7 +17,7 @@ library(readxl)       # Read data frames to Excel format
 library(cowplot)      # to combine plots
 
 # Select appropriate folder as data source
-data_path <- "data/ROS_data_prepaed/"
+data_path <- "data/ROS_data_prepared/"
 
 # Define a function to load and count surveys per observatory for a given year
 load_and_count <- function(year, factorize = FALSE) {
