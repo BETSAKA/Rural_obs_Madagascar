@@ -3,19 +3,19 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
 # Data preparation
 
-```{r}
-library(tidyverse)    # A series of packages for data manipulation
-library(haven)        # Required for reading STATA files (.dta)
-```
-
+In this section, we describe and reproduce the procedure followed to prepared the Rural Observatory System (ROS) data. This process entails selecting the relevant files and organizing them in the local file system, removing the names and replacing them with pseudonyms, enriching the metadata with table names, and converting the file formats to propose an open standard version alongside STATA.
 
 ## Data selection
 
 First we start with creating a copy of the original unfiltered and un-anonymized data.
 
 ```{r copy-data}
+
+library(tidyverse)    # A series of packages for data manipulation
+library(haven)        # Required for reading STATA files (.dta)
 
 # Define the paths for the source and target folders
 source_folder <- "data/ROS_data_original"
@@ -109,136 +109,312 @@ If no error message is displayed, the filtering went on correctly.
 
 ## Data anonymization
 
-```{r}
-library(tidyverse)    # A series of packages for data manipulation
-library(haven)        # Required for reading STATA files (.dta)
+During the rural observatory surveys, the names of the household members were collected in the questionnaire called the roaster. To prevent re-identification of personal data, we will replace these names with pseudonyms such as "individual_01", "individual_02", and so on. These pseudonyms are not related to the original names and individuals with the same name in different households will be given different pseudonyms. However, the same household members will have the same pseudonym in subsequent surveys. For example, in a particular household, "individual_05" in 1998 is the same person as "individual_05" in the 1999, 2000, 2001, and 2002 survey rounds.
 
-# Where ROS data was stored
-ros_data_loc <- "data/ROS_data_prepared/"
-# Obtain all years from the directory structure
-years <- list.dirs(ros_data_loc, recursive = FALSE, full.names = FALSE)
-
-test <- read_dta("data/ROS_data/2004_prepared/res_m_a.dta")
-test2 <- read_dta("data/ROS_data/2004_prepared/res_vo.dta")
-test3 <- read_dta("data/ROS_data/1995_prepared/res_m.dta")
-test <- read_dta("data/ROS_data_prepared/2004/res_deb.dta")
-```
-
+The main challenge with this procedure is that the names were provided orally by the respondent, written down by the surveyors, and later entered into the system by data entry clerks. As a result, we have a wide range of variations in the character strings in our data, even though they correspond to the names of the same individuals. To carry out this pseudonymization process, we follow several steps that involve fuzzy matching and consistency checks with individual age and sex. We begin by loading and consolidating the content of the survey roasters for all survey years.
 
 ```{r}
 library(tidyverse)
-library(haven)
 library(stringdist)
-library(stringi) # For string normalization
+library(haven) # for read_dta
+library(tictoc)
+library(progressr)
+library(future)
+library(furrr)
+library(gt)
 
+# Usage
 ros_data_loc <- "data/ROS_data_prepared/"
+years <- 1995:2015
 
-# Function to generate a normalized version of names
+# Normalizing function as you've provided
 normalize_name <- function(name) {
-  stri_trans_general(name, "Latin-ASCII") %>%
-    tolower() %>%
-    gsub("[^a-z ]", "", .) %>%
+  name %>%
+    stringi::stri_trans_general("Latin-ASCII") %>%
+    str_to_lower() %>%
+    str_replace_all("[^a-z ]", "") %>%
     str_trim()
 }
 
-# Function to read individual data, normalize names, and anonymize
-read_and_anonymize <- function(year) {
-  file_name <- if(year == 1995) "res_m.dta" else "res_m_a.dta"
+# Function to read and preprocess data
+read_and_normalize <- function(year, ros_data_loc) {
+  
+  file_name <- if (year == 1995) "res_m.dta" else "res_m_a.dta"
   file_path <- file.path(ros_data_loc, as.character(year), file_name)
   
-  if(!file.exists(file_path)) return(NULL)
+  if (!file.exists(file_path)) return(NULL)
   
-  data <- read_dta(file_path) %>%
-    select(m1, year, j5) %>%
-    mutate(name_normalized = normalize_name(m1))
-  
-  return(data)
+  read_dta(file_path) %>%
+    select(m1, year, j5, m4, m5) %>%
+    mutate(m5 = as.numeric(m5),
+           name_normalized = normalize_name(m1),
+           line_number = row_number())
 }
 
-# Read and process all files
-all_data <- map_df(1995:2014, read_and_anonymize)
+all_data <- map_df(years, ~read_and_normalize(.x, ros_data_loc))
 
-# Compute unique identifiers based on name similarity and household
-# This part is conceptual and needs further refinement for your exact needs
-all_data <- all_data %>%
-  group_by(j5) %>%
-  mutate(individual_id = rank(name_normalized)) %>%
-  ungroup()
+# Get a list of unique household IDs
+household_ids <- unique(all_data$j5)
 
-# Example of generating pseudonymized names
-all_data <- all_data %>%
-  mutate(pseudonym = paste0("Prenom_", str_pad(individual_id, width = 2, pad = "0")))
+# Count household ids and observations
+nb_hh <- nrow(household_ids)
+nb_i <- nrow(all_data)
+```
 
-# The pseudonym digit are still in alphabetical order. We shuffle so the 
-# number is now random
+We have a total 590 524 individual observations of 29 493 unique households. To match name variations within subsequent surveys of the same household, we use the Jaro-Winkler algorithm as implemented in the \`stringdist\` package and described as followed by the package author [@vanderloo2014a, p. 119]:
 
-# Randomize pseudonyms within each household and create pseudonym2
-all_data <- all_data %>%
-  group_by(j5) %>%
-  mutate(
-    # Convert pseudonym to a factor and ensure its levels are unique to avoid clashes
-    pseudonym_factor = factor(pseudonym, levels = unique(pseudonym)),
-    # Shuffle the levels of the factor randomly
-    pseudonym_factor = factor(pseudonym_factor, levels = sample(levels(pseudonym_factor))),
-    # Extract the numeric representation of the factor
-    factor_number = as.integer(pseudonym_factor)
-  ) %>%
-  ungroup() %>%
-  # Use the factor number to create a new pseudonym
-  mutate(pseudonym = paste0("Individual_", str_pad(factor_number, width = 2, pad = "0")))
-########################
+> "The Jaro distance was originally developed at the U.S. Bureau of the Census for the purpose of linking records based on inaccurate text ﬁelds. (...) It has been been successfully applied to statistical matching problems concerning fairly short strings, typically name and address data [@jaro1989]. The reasoning behind the Jaro distance is that character mismatches and transpositions are caused by typing or phonetic transcription errors but matches between remote characters are unlikely to be caused by such kind of errors. (...) Winkler [-@winkler1990] extended the Jaro distance by incorporating an extra penalty for character mismatches in the first four characters. (...) The reasoning is that apparently, people are less apt to make mistakes in the first four characters or perhaps they are more easily noted, so differences in the first four characters point to a larger probability of two strings being actually different."
 
-# Function to calculate match ratios within households
-calculate_match_ratios <- function(data) {
-  unique_names <- unique(data$name_normalized)
+We refined a procedure that applies this algorithm in three steps:
+
+1.  **Initial reference:** the initial survey year of each household, member names are cataloged to serve as a reference;
+2.  **Close Match Identification:**For each ensuing survey, we scout for names that not only exhibit the smallest Jaro-Winkler distance from the reference names but also fall below a stringent threshold of 0.2 (ie. we only take in account the name when the names are very similar);
+3.  **Expanded Criteria for Matches:** Absence of matches at step 2. for a given year prompts an extended search within the household, this time accommodating names with a distance below 0.3 if they align in sex and age, accounting for a 5-year margin to mitigate inaccuracies in age recall (ie. we allow for slightly more dissimilar names if sex and age match);
+4.  **Validation of Matches:** For each match identified at step 2. or 3., we verify that there is no other household member name that is a better match based on the Jaro-Winkler distance. If so, we remove it from the matched names.
+5.  **Pseudonym Assignment:** matched names get a pseudonym "Individual_XX", with "XX" representing a sequential number..
+6.  **Sequential Application:** this procedure iterates through all names from the initial survey year, extending to unmatched names in subsequent years, thereby ensuring comprehensive coverage.
+
+The code was adapted to handle gracefully edge cases, for instance when sex data or age is missing.
+
+```{r}
+pseudonymize_household <- function(pool, distance_threshold1 = 0.2, 
+                                   distance_threshold2 = 0.3,
+                                   tolerance_yeardiff = 5) {
+  years <- unique(pool$year) # extract list of existing years in dataset
+  pseudonymized <- data.frame() # create empty dataframe
+  next_pseudonym_id <- 1 # initialize the pseudonym id
   
-  # Prepare an empty dataframe to store results
-  results <- tibble(name_normalized = character(), closest_match = character(), match_ratio = numeric())
-  
-  for (name in unique_names) {
-    # Calculate string distances
-    distances <- stringdist::stringdist(name, unique_names)
-    
-    # Calculate match ratios, excluding self-comparison
-    match_ratios <- 1 - (distances / nchar(name))
-    names(match_ratios) <- unique_names
-    match_ratios[name] <- NA  # Exclude self-comparison
-    
-    # Find the closest match and its ratio
-    closest_match <- names(which.max(match_ratios))
-    highest_ratio <- max(match_ratios, na.rm = TRUE)
-    
-    # If highest match ratio is more than 50%, add to results
-    if (highest_ratio > 0.5) {
-      results <- rbind(results, tibble(name_normalized = name, closest_match = closest_match, match_ratio = highest_ratio))
+  for (current_year in years) {
+    staging <- subset(pool, year == current_year)
+    # For subsequent years, attempt to match with existing pseudonyms
+    for (i in seq_len(nrow(staging))) {
+      name <- staging$name_normalized[i]
+      sex <- staging$m4[i]
+      age <- staging$m5[i]
+      
+      pool <- pool %>%
+        mutate(dist = stringdist(name_normalized, name, method = "jw"),
+               age_diff = abs(m5 - age - (year - current_year))) %>%
+        group_by(year) %>%
+        mutate(
+          match = case_when(
+            # First level of matching based on distance_threshold1
+            dist == min(dist) & dist < distance_threshold1 ~ "matched",
+            
+            # Second level of matching based on distance_threshold2
+            dist == min(dist) & dist < distance_threshold2 & 
+              (is.na(m4) | m4 == sex) & age_diff <= tolerance_yeardiff ~ "matched",
+            TRUE ~ "unmatched"), # default
+          pseudonym = ifelse(match == "matched", 
+                             sprintf("individual_%02d", next_pseudonym_id), 
+                             NA_character_)) %>%
+        ungroup()
+      
+      # Ensure 'match' column is explicitly treated as a character
+      pool$match <- as.character(pool$match)
+      
+      # Then perform the operation to compute min_dist_unmatch and re-evaluate 'match'
+      if (any(pool$match == "matched")) {
+        unmatched_names <- pool$name_normalized[pool$match == "unmatched"]
+        pool <- pool %>%
+          rowwise() %>%
+          mutate(min_dist_unmatch = if_else(match == "matched" & 
+                                              length(unmatched_names) > 0,
+                                            min(stringdist(name_normalized, 
+                                                           unmatched_names, 
+                                                           method = "jw"), 
+                                                na.rm = TRUE),
+                                            NA_real_),
+                 match = if_else(match == "matched" & min_dist_unmatch < dist & 
+                                   !is.na(min_dist_unmatch), "unmatched", match),
+                 pseudonym = if_else(match == "unmatched", NA_character_, 
+                                     pseudonym)) %>%
+          ungroup()
+      }
+     
+      # Identify and adjust duplicate pseudonyms within the same year for matched cases
+      pool <- pool %>%
+        group_by(year, pseudonym) %>%
+        mutate(dup_count = n()) %>%
+        ungroup() %>%
+        mutate(is_dup = ifelse(dup_count > 1 & match == "matched", TRUE, FALSE)) %>%
+        group_by(year, pseudonym) %>%
+        mutate(dup_rank = ifelse(is_dup, row_number(), NA_integer_)) %>%
+        ungroup() %>%
+        mutate(match = ifelse(is_dup & dup_rank > 1, "unmatched", match),
+               pseudonym = ifelse(is_dup & dup_rank > 1, NA_character_, pseudonym)) %>%
+        select(-dup_count, -is_dup, -dup_rank)
+
+      
+      pool$match <- as.character(pool$match)
+      pool$pseudonym <- as.character(pool$pseudonym)
+      
+      pseudonymized <- pseudonymized %>%
+        bind_rows(filter(pool, match == "matched"))
+      pool <- filter(pool, match != "matched")
+      next_pseudonym_id <- next_pseudonym_id + 1
     }
   }
-  
-  return(results)
+  return(pseudonymized)
 }
 
-# Apply the function to each household
-match_results <- all_data %>%
-  group_by(j5) %>%
-  group_modify(~ calculate_match_ratios(.x)) %>%
+# The following process is very long (~1h with a good computer)
+# We only run it once
+pseudo_loc <- "output/pseudonymized_all.rds"
+
+if (!file.exists(pseudo_loc)) {
+  # Set up parallel plan
+  plan(multisession, workers = 6)
+  
+  # Define your processing function to include progress signaling
+  process_household_with_progress <- function(household_id, .progress) {
+    .progress()  # Signal progress update
+    pool <- all_data %>% filter(j5 == household_id)
+    pseudonymized <- pseudonymize_household(pool)
+    return(pseudonymized)
+  }
+  
+  # tic()
+  # Wrap processing in with_progress
+  pseudonymized_all <- with_progress({
+    # Create a progressor function inside with_progress
+    p <- progressor(along = household_ids)
+    
+    future_map_dfr(household_ids
+                   , ~process_household_with_progress(.x, p), .progress = FALSE)
+  })
+  # toc() # 3197.55 sec elapsed, 53 minutes
+  
+  write_rds(pseudonymized_all, pseudo_loc)
+} else { # Otherwise we read the existing milestone
+  pseudonymized_all <- read_rds(pseudo_loc)
+}
+
+for (year in years) {
+  
+  # Determine the file name based on the year
+  file_name <- if (year == 1995) "res_m.dta" else "res_m_a.dta"
+  file_path <- file.path(ros_data_loc, as.character(year), file_name)
+  
+  # Read the full dataset for the year
+  res_m <- read_dta(file_path) %>%
+    mutate(m5 = as.numeric(m5),  # Convert m5 to numeric
+           line_number = row_number())
+  
+  # Merge pseudonym information from pseudonymized_all
+  res_m_with_pseudonym <- res_m %>%
+    left_join(pseudonymized_all %>% 
+                select(m1, j5, m4, m5, year, line_number, pseudonym), 
+              by = c("m1", "j5", "m4", "m5", "line_number", "year")) %>%
+    relocate(pseudonym, .after = m1) %>% # Move pseudonym column after m1 if needed
+    select(-m1, -line_number)
+  
+  # Check for missing pseudonym values
+  missing_pseudonyms <- sum(is.na(res_m_with_pseudonym$pseudonym))
+  if (missing_pseudonyms > 0) {
+    stop(paste("Error: Missing pseudonym values found in year", year, 
+               "- Total missing:", missing_pseudonyms))
+  }
+  
+  # Write the dataset back to a Stata file
+  write_dta(res_m_with_pseudonym, file_path)
+}
+```
+
+After this process, the column "m1" containing the name of household members has been removed from all the data files and it has been replaced by the column "pseudonym". While anonymizing the data, this process enabled the tracking of repeated observations of the same individuals. We are now able to compute the number of unique individuals that have been surveyed throughout the ears
+
+```{r}
+#| label: tbl-ind-number-ros
+#| tbl-cap: "Number of observations and unique entities in the ROR data from 1995 to 2015" 
+
+# Total number of individual observations
+total_individual_observations <- nrow(pseudonymized_all)
+
+# Total number of unique households
+unique_households <- pseudonymized_all %>% 
+  distinct(j5) %>% 
+  nrow()
+
+# Total number of household observations across years
+household_observations_across_years <- pseudonymized_all %>% 
+  group_by(year) %>% 
+  summarise(n_distinct_j5 = n_distinct(j5)) %>% 
+  summarise(total = sum(n_distinct_j5))
+
+# Average number of times a household was surveyed
+average_surveys_per_household <- pseudonymized_all %>% 
+  group_by(j5) %>% 
+  summarise(n_surveys = n_distinct(year)) %>% 
+  summarise(average = mean(n_surveys))
+
+# Number of unique individuals (considering both household ID and pseudonym)
+unique_individuals <- pseudonymized_all %>% 
+  distinct(j5, pseudonym) %>% 
+  nrow()
+
+# Average number of times an individual was surveyed
+average_surveys_per_individual <- total_individual_observations / unique_individuals
+
+# Creating a summary table
+summary_table <- tibble(
+  Unique_households = unique_households,
+  Household_observations = household_observations_across_years$total,
+  Average_surveys_per_household = average_surveys_per_household$average,  
+  Unique_individuals = unique_individuals,
+  Individual_observations = total_individual_observations,
+  Average_surveys_per_individual = average_surveys_per_individual) %>% 
+  pivot_longer(cols = everything(), names_to = "Metric", values_to = "Value") %>%
+  mutate(Metric = str_replace_all(Metric, "_", " "),
+         FormattedValue = case_when(
+           Value == floor(Value) ~ format(as.integer(Value), big.mark = ","),
+           TRUE ~ sprintf("%.2f", Value)))
+
+gt(summary_table)  %>%
+  cols_label(FormattedValue = "Value") %>% # Renaming 'Value' to 'Formatted Value' for display
+  cols_hide(column = "Value") # Optionally hide the original 'Value' column
+```
+
+As we see in the @tbl-ind-number-ros, we have `r format(as.integer(total_individual_observations), big.mark = ",")` unique individuals that were surveyed in average `r sprintf("%.2f", average_surveys_per_individual)` times.
+
+## Table naming
+
+```{r}
+library(readxl)
+
+# Define the base path for your folders
+base_path <- "data/ROS_data_prepared"
+
+# Get the list of yearly folders
+year_folders <- list.dirs(base_path, full.names = TRUE, recursive = FALSE)
+
+# Function to read .dta file names from a given directory
+read_dta_filenames <- function(path) {
+  list.files(path, pattern = "\\.dta$", full.names = FALSE) %>%
+    unique()
+}
+
+# Create a data frame with file names and corresponding years
+files_years_df <- map_df(year_folders, function(folder) {
+  year <- basename(folder)
+  filenames <- read_dta_filenames(folder)
+  tibble(filename = filenames, year = year)
+}, .id = "folder") %>%
+  group_by(filename) %>%
+  summarise(years = toString(unique(year))) %>%
   ungroup()
 
-match_resuls2 <- match_results %>%
-  filter(nchar(name_normalized) >= 6) %>%
-  filter()
+# Load the Excel file
+file_labels <- read_excel("references/file_labels.xlsx")
+file_labels <- left_join(files_years_df, file_labels, by = c("filename" = "file"))
+
+writexl::write_xlsx(file_labels, "references/file_labels2.xlsx")
 
 ```
 
 
 
-*To be completed*
-
-## Table naming
-
-*To be completed*
 
 ## Data format conversions
-
 
 ```{r}
 # Install the latest version of DDIwR
@@ -259,7 +435,5 @@ test <- read_rds("output/test.rds")
 
 test2 <- read_dta(test_file)
 ```
-
-
 
 *To be completed*
