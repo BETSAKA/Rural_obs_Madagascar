@@ -6,3 +6,4 @@ data/
 output/ROR_Variable_Dictionary.xlsx
 prep/
 *.rds
+test/*
