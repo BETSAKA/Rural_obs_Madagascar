@@ -8,15 +8,25 @@ editor_options:
 
 In this section, we describe and reproduce the procedure followed to prepared the Rural Observatory System (ROS) data. This process entails selecting the relevant files and organizing them in the local file system, removing the names and replacing them with pseudonyms, enriching the metadata with table names, and converting the file formats to propose an open standard version alongside STATA.
 
+```{r, output=FALSE}
+library(tidyverse)    # A series of packages for data manipulation
+library(haven)        # Required for reading STATA files (.dta)
+library(tidyverse)
+library(stringdist)
+library(tictoc)
+library(progressr)
+library(future)
+library(furrr)
+library(gt)
+library(readxl)
+```
+
+
 ## Data selection
 
 First we start with creating a copy of the original unfiltered and un-anonymized data.
 
-```{r copy-data}
-
-library(tidyverse)    # A series of packages for data manipulation
-library(haven)        # Required for reading STATA files (.dta)
-
+```{r copy-data, eval=FALSE}
 # Define the paths for the source and target folders
 source_folder <- "data/ROS_data_original"
 target_folder <- "data/ROS_data_prepared"
@@ -70,7 +80,7 @@ copy_files(source_folder, target_folder)
 
 For 2015, we have 4 observatories. One that existed on the previous years, Menabe Nord-Est, and 3 new ones: Ambatofinandrahana, Anjozorobe et Maintirano. The data collection of the ROS kept on until 2017, but we lack documentation since 2015 and the data has not yet been harmonized for 2016 and 2017. For this reason, we only kept the data for Menabe North-East for 2015.
 
-```{r}
+```{r, eval=FALSE}
 # Define the path to the 2015 folder within the target folder
 folder_2015 <- "data/ROS_data_prepared/2015"
 
@@ -113,16 +123,7 @@ During the rural observatory surveys, the names of the household members were co
 
 The main challenge with this procedure is that the names were provided orally by the respondent, written down by the surveyors, and later entered into the system by data entry clerks. As a result, we have a wide range of variations in the character strings in our data, even though they correspond to the names of the same individuals. To carry out this pseudonymization process, we follow several steps that involve fuzzy matching and consistency checks with individual age and sex. We begin by loading and consolidating the content of the survey roasters for all survey years.
 
-```{r}
-library(tidyverse)
-library(stringdist)
-library(haven) # for read_dta
-library(tictoc)
-library(progressr)
-library(future)
-library(furrr)
-library(gt)
-
+```{r, eval=FALSE}
 # Usage
 ros_data_loc <- "data/ROS_data_prepared/"
 years <- 1995:2015
@@ -176,7 +177,7 @@ We refined a procedure that applies this algorithm in three steps:
 
 The code was adapted to handle gracefully edge cases, for instance when sex data or age is missing.
 
-```{r}
+```{r, eval=FALSE}
 pseudonymize_household <- function(pool, distance_threshold1 = 0.2, 
                                    distance_threshold2 = 0.3,
                                    tolerance_yeardiff = 5) {
@@ -327,6 +328,9 @@ After this process, the column "m1" containing the name of household members has
 #| label: tbl-ind-number-ros
 #| tbl-cap: "Number of observations and unique entities in the ROR data from 1995 to 2015" 
 
+pseudo_loc <- "output/pseudonymized_all.rds"
+pseudonymized_all <- read_rds(pseudo_loc)
+
 # Total number of individual observations
 total_individual_observations <- nrow(pseudonymized_all)
 
@@ -378,45 +382,64 @@ As we see in the @tbl-ind-number-ros, we have `r format(as.integer(total_individ
 
 ## Table naming
 
-```{r}
-library(readxl)
+We add labels to the Stata tables.
+
+```{r, eval=FALSE}
+# Load the Excel file containing file names and labels
+file_labels <- read_excel("references/file_labels.xlsx")
+
+# Check and trim labels to 80 characters, and collect filenames needing trimming
+file_labels <- file_labels %>% 
+  mutate(needs_trimming = nchar(title_en) > 80,
+         title_en = if_else(needs_trimming, substr(title_en, 1, 80), title_en))
+files_with_trimmed_labels <- file_labels %>% 
+  filter(needs_trimming) %>%
+  pull(filename)
+
+# Warn if any labels were trimmed
+if (length(files_with_trimmed_labels) > 0) {
+  warning("Labels for the following files were trimmed to 80 characters: ", paste(files_with_trimmed_labels, collapse = ", "))
+}
+# res_ccp3.dta, rx_jn.dta, rx_tj4.dta, rx_tj5.dta 
+
 
 # Define the base path for your folders
 base_path <- "data/ROS_data_prepared"
 
-# Get the list of yearly folders
+# Get the list of yearly folders using base R
 year_folders <- list.dirs(base_path, full.names = TRUE, recursive = FALSE)
 
-# Function to read .dta file names from a given directory
-read_dta_filenames <- function(path) {
-  list.files(path, pattern = "\\.dta$", full.names = FALSE) %>%
-    unique()
+# Function to read, check label length, and write .dta files
+process_files <- function(year_folder) {
+  dta_files <- list.files(year_folder, pattern = "\\.dta$", full.names = TRUE)
+  
+  purrr::walk(dta_files, function(file_path) {
+    file_name <- basename(file_path)
+    
+    # Find corresponding label in the file_labels dataframe
+    label <- file_labels %>%
+      filter(filename == file_name) %>%
+      pull(title_en) %>%
+      first()
+    
+    # Proceed only if label is found
+    if (!is.na(label)) {
+      data <- read_dta(file_path)
+      # Write the .dta file back with the new label
+      write_dta(data, file_path, label = label)
+    } 
+  })
 }
 
-# Create a data frame with file names and corresponding years
-files_years_df <- map_df(year_folders, function(folder) {
-  year <- basename(folder)
-  filenames <- read_dta_filenames(folder)
-  tibble(filename = filenames, year = year)
-}, .id = "folder") %>%
-  group_by(filename) %>%
-  summarise(years = toString(unique(year))) %>%
-  ungroup()
-
-# Load the Excel file
-file_labels <- read_excel("references/file_labels.xlsx")
-file_labels <- left_join(files_years_df, file_labels, by = c("filename" = "file"))
-
-writexl::write_xlsx(file_labels, "references/file_labels2.xlsx")
-
+# Process files in each year folder
+purrr::walk(year_folders, process_files)
 ```
 
-
-
+*To be completed*
 
 ## Data format conversions
 
-```{r}
+```{r, eval=FALSE}
 # Install the latest version of DDIwR
 remotes::install_github("https://github.com/dusadrian/DDIwR")
 library(DDIwR)
