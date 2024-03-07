@@ -380,9 +380,9 @@ gt(summary_table)  %>%
 
 As we see in the @tbl-ind-number-ros, we have `r format(as.integer(total_individual_observations), big.mark = ",")` unique individuals that were surveyed in average `r sprintf("%.2f", average_surveys_per_individual)` times.
 
-## Table naming
+## Table labelling
 
-We add labels to the Stata tables.
+We add labels to the STATA tables.
 
 ```{r, eval=FALSE}
 # Load the Excel file containing file names and labels
