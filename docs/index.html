@@ -9,7 +9,7 @@
 <meta name="author" content="Florent Bédécarrats">
 <meta name="dcterms.date" content="2024-01-18">
 
-<title>Madagascar rural observatory network data validation, preparation, and georeferencing</title>
+<title>Madagascar rural observatory system data validation, preparation, and georeferencing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01-ror-data-catalogue.html" rel="next">
+<link href="./01-ros-data-catalogue.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -124,9 +124,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Madagascar rural observatory network data validation, preparation, and georeferencing</a> 
+      <a href="./">Madagascar rural observatory system data validation, preparation, and georeferencing</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/fBedecarrats/ROR" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/fBedecarrats/Rural_Obs_Madagascar" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
     </div>
       </div>
@@ -145,25 +145,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-ror-data-catalogue.html" class="sidebar-item-text sidebar-link">
+  <a href="./01-ros-data-catalogue.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data catalogue</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-ror-data-attrition.html" class="sidebar-item-text sidebar-link">
+  <a href="./02-ros-data-attrition.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Panel attrition</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-ror-data-georeferencing.html" class="sidebar-item-text sidebar-link">
+  <a href="./03-ros-data-georeferencing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Georeferencing</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-ror-data-preparation.html" class="sidebar-item-text sidebar-link">
+  <a href="./04-ros-data-preparation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data preparation</span></span></a>
   </div>
 </li>
@@ -192,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Madagascar rural observatory network data validation, preparation, and georeferencing</h1>
+<h1 class="title">Madagascar rural observatory system data validation, preparation, and georeferencing</h1>
 </div>
 
 
@@ -221,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="introduction" class="level1 unnumbered">
 <h1 class="unnumbered">Introduction</h1>
-<p>This technical appendix accompanies a scientific paper dedicated to the data from the Rural Observatory Network (ROR) collected between 1995 and 2014. It includes the source code for all figures and visualizations in the paper. It also offers a tutorial on how to georeference this data, which can serve as guidance for various types of analysis. We use computational notebooks in Quarto format with the R programming language, combining code, results, explanations, and multimedia in an interactive way. The source code can be accessed by expanding code blocks like the following one, which produced the figure below.</p>
+<p>This technical appendix accompanies a scientific paper dedicated to the data from the Rural Observatory System (ROS) collected between 1995 and 2014. It includes the source code for all figures and visualizations in the paper. It also offers a tutorial on how to georeference this data, which can serve as guidance for various types of analysis beyond this specific application. We use computational notebooks in Quarto format with the R programming language, combining code, results, explanations, and multimedia in an interactive way. The source code can be accessed by expanding code blocks like the following one, which produced the figure below.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -234,133 +234,136 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)       <span class="co"># Read data frames to Excel format</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)      <span class="co"># to combine plots</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to load and count surveys per observatory for a given year</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>load_and_count <span class="ot">&lt;-</span> <span class="cf">function</span>(year, <span class="at">factorize =</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define file path</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"data/ROR_data/"</span>, year, <span class="st">"/res_deb.dta"</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load data</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(file_path)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Select appropriate folder as data source</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="st">"data/ROS_data_prepared/"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to load and count surveys per observatory for a given year</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>load_and_count <span class="ot">&lt;-</span> <span class="cf">function</span>(year, <span class="at">factorize =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define file path</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> <span class="fu">paste0</span>(data_path, year, <span class="st">"/res_deb.dta"</span>)</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract label and convert to factors if option</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (factorize) {</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.character),</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>             <span class="fu">across</span>(<span class="fu">where</span>(is.labelled), <span class="sc">~</span> <span class="fu">as.character</span>(<span class="fu">as_factor</span>(.))))</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Count surveys per observatory</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  count_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(j0) <span class="sc">%&gt;%</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">survey_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year =</span> year)  <span class="co"># Add year column</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(count_data)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a list of years</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="dv">1995</span><span class="sc">:</span><span class="dv">2014</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load data</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(file_path)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract label and convert to factors if option</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (factorize) {</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.character),</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>             <span class="fu">across</span>(<span class="fu">where</span>(is.labelled), <span class="sc">~</span> <span class="fu">as.character</span>(<span class="fu">as_factor</span>(.))))</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Count surveys per observatory</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  count_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(j0) <span class="sc">%&gt;%</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">survey_count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year =</span> year)  <span class="co"># Add year column</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(count_data)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Use purrr::map_df to loop through each year and bind results</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>obs_count <span class="ot">&lt;-</span> <span class="fu">map_df</span>(years, load_and_count) <span class="sc">%&gt;%</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove rows with observatory "7 " and "NA", whch are errors</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(j0 <span class="sc">!=</span> <span class="dv">7</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(j0)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">observatory =</span> j0)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Read observatory names</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>observatory_names <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"references/observatory_names.xlsx"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(code, <span class="at">observatory_name =</span> name)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co"># PAss it to wide.</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>obs_count <span class="ot">&lt;-</span> obs_count <span class="sc">%&gt;%</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(observatory_names, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"observatory"</span> <span class="ot">=</span> <span class="st">"code"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(observatory_name, year) <span class="sc">%&gt;%</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">survey_count =</span> <span class="fu">sum</span>(survey_count))</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>obs_count_wide <span class="ot">&lt;-</span> obs_count <span class="sc">%&gt;%</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> survey_count)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a list of years</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="dv">1995</span><span class="sc">:</span><span class="dv">2015</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Use purrr::map_df to loop through each year and bind results</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>obs_count <span class="ot">&lt;-</span> <span class="fu">map_df</span>(years, load_and_count) <span class="sc">%&gt;%</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove rows with observatory "7 " and "NA", whch are errors</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(j0 <span class="sc">!=</span> <span class="dv">7</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(j0)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">observatory =</span> j0)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Read observatory names</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>observatory_names <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"references/observatory_names.xlsx"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(code, <span class="at">observatory_name =</span> name)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co"># PAss it to wide.</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>obs_count <span class="ot">&lt;-</span> obs_count <span class="sc">%&gt;%</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(observatory_names, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"observatory"</span> <span class="ot">=</span> <span class="st">"code"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(observatory_name, year) <span class="sc">%&gt;%</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">survey_count =</span> <span class="fu">sum</span>(survey_count))</span>
 <span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Add observatory approximate location</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>locations <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">code =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">31</span>, <span class="dv">25</span>, <span class="dv">41</span>, <span class="dv">42</span>, <span class="dv">43</span>, <span class="dv">51</span>, </span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>           <span class="dv">44</span>, <span class="dv">45</span>, <span class="dv">61</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">19</span>, <span class="dv">71</span>, <span class="dv">52</span>),</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"Antalaha"</span>, <span class="st">"Antsirabe"</span>, <span class="st">"Marovoay"</span>, <span class="st">"Toliara coastal"</span>, <span class="st">"Antsohihy"</span>, </span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Tsiroanomandidy"</span>, <span class="st">"Farafangana"</span>, <span class="st">"Ambovombe"</span>, </span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Alaotra"</span>, <span class="st">"Manjakandriana"</span>, <span class="st">"Toliara North"</span>, </span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Fenerive East"</span>, <span class="st">"Bekily"</span>, <span class="st">"Mahanoro"</span>, <span class="st">"Itasy"</span>, </span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Menabe-Belo"</span>, <span class="st">"Fianarantsoa"</span>, <span class="st">"Tsivory"</span>, <span class="st">"Morondava"</span>, <span class="st">"Manandriana"</span>, </span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Tanandava"</span>, <span class="st">"Ihosy"</span>, <span class="st">"Ambohimahasoa"</span>, <span class="st">"Manakara"</span>, <span class="st">"Tolanaro"</span>, </span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Menabe North-East"</span>),</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">latitude =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">14.8833</span>, <span class="sc">-</span><span class="fl">19.8659</span>, <span class="sc">-</span><span class="fl">16.1000</span>, <span class="sc">-</span><span class="fl">23.7574</span>, <span class="sc">-</span><span class="fl">14.8796</span>, <span class="sc">-</span><span class="fl">18.7713</span>, </span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fl">22.8167</span>, <span class="sc">-</span><span class="fl">25.1667</span>, <span class="sc">-</span><span class="fl">17.8319</span>, <span class="sc">-</span><span class="fl">18.9167</span>, <span class="sc">-</span><span class="fl">23.2941</span>, <span class="sc">-</span><span class="fl">17.3500</span>, </span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fl">24.6900</span>, <span class="sc">-</span><span class="fl">19.9000</span>, <span class="sc">-</span><span class="fl">19.1686</span>, <span class="sc">-</span><span class="fl">19.6975</span>, <span class="sc">-</span><span class="fl">21.4527</span>, <span class="sc">-</span><span class="fl">24.4667</span>, </span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fl">20.2833</span>, <span class="sc">-</span><span class="fl">20.2333</span>, <span class="sc">-</span><span class="fl">22.5711</span>, <span class="sc">-</span><span class="fl">22.4000</span>, <span class="sc">-</span><span class="fl">20.7145</span>, <span class="sc">-</span><span class="fl">22.1333</span>, </span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fl">25.0381</span>, <span class="sc">-</span><span class="fl">20.5486</span>),</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>  <span class="at">longitude =</span> <span class="fu">c</span>(<span class="fl">50.2833</span>, <span class="fl">47.0333</span>, <span class="fl">46.6333</span>, <span class="fl">43.6770</span>, <span class="fl">47.9875</span>, <span class="fl">46.0546</span>, <span class="fl">47.8333</span>, </span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>                <span class="fl">46.0833</span>, <span class="fl">48.4167</span>, <span class="fl">47.8000</span>, <span class="fl">43.7761</span>, <span class="fl">49.4167</span>, <span class="fl">45.1700</span>, <span class="fl">48.8000</span>,</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>                <span class="fl">46.7354</span>, <span class="fl">44.5419</span>, <span class="fl">47.0857</span>, <span class="fl">45.4667</span>, <span class="fl">44.2833</span>, <span class="fl">47.3833</span>, <span class="fl">45.0439</span>, </span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>                <span class="fl">46.1167</span>, <span class="fl">47.0389</span>, <span class="fl">48.0167</span>, <span class="fl">46.9562</span>, <span class="fl">47.1597</span>))</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>obs_count <span class="ot">&lt;-</span> <span class="fu">left_join</span>(obs_count, locations, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"observatory_name"</span> <span class="ot">=</span> <span class="st">"name"</span>))</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>obs_count_wide <span class="ot">&lt;-</span> obs_count <span class="sc">%&gt;%</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> survey_count)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Add observatory approximate location</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>locations <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  <span class="at">code =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">21</span>, <span class="dv">22</span>, <span class="dv">23</span>, <span class="dv">24</span>, <span class="dv">31</span>, <span class="dv">25</span>, <span class="dv">41</span>, <span class="dv">42</span>, <span class="dv">43</span>, <span class="dv">51</span>, </span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>           <span class="dv">44</span>, <span class="dv">45</span>, <span class="dv">61</span>, <span class="dv">17</span>, <span class="dv">18</span>, <span class="dv">19</span>, <span class="dv">71</span>, <span class="dv">52</span>),</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"Antalaha"</span>, <span class="st">"Antsirabe"</span>, <span class="st">"Marovoay"</span>, <span class="st">"Toliara coastal"</span>, <span class="st">"Antsohihy"</span>, </span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Tsiroanomandidy"</span>, <span class="st">"Farafangana"</span>, <span class="st">"Ambovombe"</span>, </span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Alaotra"</span>, <span class="st">"Manjakandriana"</span>, <span class="st">"Toliara North"</span>, </span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Fenerive East"</span>, <span class="st">"Bekily"</span>, <span class="st">"Mahanoro"</span>, <span class="st">"Itasy"</span>, </span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Menabe-Belo"</span>, <span class="st">"Fianarantsoa"</span>, <span class="st">"Tsivory"</span>, <span class="st">"Morondava"</span>, <span class="st">"Manandriana"</span>, </span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Tanandava"</span>, <span class="st">"Ihosy"</span>, <span class="st">"Ambohimahasoa"</span>, <span class="st">"Manakara"</span>, <span class="st">"Tolanaro"</span>, </span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Menabe North-East"</span>),</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>  <span class="at">latitude =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">14.8833</span>, <span class="sc">-</span><span class="fl">19.8659</span>, <span class="sc">-</span><span class="fl">16.1000</span>, <span class="sc">-</span><span class="fl">23.7574</span>, <span class="sc">-</span><span class="fl">14.8796</span>, <span class="sc">-</span><span class="fl">18.7713</span>, </span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fl">22.8167</span>, <span class="sc">-</span><span class="fl">25.1667</span>, <span class="sc">-</span><span class="fl">17.8319</span>, <span class="sc">-</span><span class="fl">18.9167</span>, <span class="sc">-</span><span class="fl">23.2941</span>, <span class="sc">-</span><span class="fl">17.3500</span>, </span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fl">24.6900</span>, <span class="sc">-</span><span class="fl">19.9000</span>, <span class="sc">-</span><span class="fl">19.1686</span>, <span class="sc">-</span><span class="fl">19.6975</span>, <span class="sc">-</span><span class="fl">21.4527</span>, <span class="sc">-</span><span class="fl">24.4667</span>, </span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fl">20.2833</span>, <span class="sc">-</span><span class="fl">20.2333</span>, <span class="sc">-</span><span class="fl">22.5711</span>, <span class="sc">-</span><span class="fl">22.4000</span>, <span class="sc">-</span><span class="fl">20.7145</span>, <span class="sc">-</span><span class="fl">22.1333</span>, </span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>               <span class="sc">-</span><span class="fl">25.0381</span>, <span class="sc">-</span><span class="fl">20.5486</span>),</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">longitude =</span> <span class="fu">c</span>(<span class="fl">50.2833</span>, <span class="fl">47.0333</span>, <span class="fl">46.6333</span>, <span class="fl">43.6770</span>, <span class="fl">47.9875</span>, <span class="fl">46.0546</span>, <span class="fl">47.8333</span>, </span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>                <span class="fl">46.0833</span>, <span class="fl">48.4167</span>, <span class="fl">47.8000</span>, <span class="fl">43.7761</span>, <span class="fl">49.4167</span>, <span class="fl">45.1700</span>, <span class="fl">48.8000</span>,</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>                <span class="fl">46.7354</span>, <span class="fl">44.5419</span>, <span class="fl">47.0857</span>, <span class="fl">45.4667</span>, <span class="fl">44.2833</span>, <span class="fl">47.3833</span>, <span class="fl">45.0439</span>, </span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>                <span class="fl">46.1167</span>, <span class="fl">47.0389</span>, <span class="fl">48.0167</span>, <span class="fl">46.9562</span>, <span class="fl">47.1597</span>))</span>
 <span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>madagascar <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="fu">paste0</span>(<span class="st">"data/Spatial_data/OCHA_BNGRC admin boundaries/"</span>,</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"mdg_admbnda_adm0_BNGRC_OCHA_20181031.shp"</span>),</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>                      <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort locations by latitude to generate sequence numbers</span></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>locations <span class="ot">&lt;-</span> locations <span class="sc">%&gt;%</span></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(latitude)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">seq_num =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>())</span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="co"># Create map plot with labels</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>map_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> madagascar) <span class="sc">+</span></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">colour =</span> <span class="st">"dimgrey"</span>) <span class="sc">+</span></span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> locations, <span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude, <span class="at">color =</span> name), </span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> locations, <span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude, <span class="at">label =</span> seq_num), </span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="co"># check_overlap = TRUE,</span></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>            <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span> </span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="co"># Add sequence numbers to observatory names in obs_count dataframe</span></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>obs_count <span class="ot">&lt;-</span> obs_count <span class="sc">%&gt;%</span></span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(locations <span class="sc">%&gt;%</span></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(name, seq_num), </span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"observatory_name"</span> <span class="ot">=</span> <span class="st">"name"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observatory_with_num =</span> <span class="fu">paste0</span>(seq_num, <span class="st">". "</span>, observatory_name))</span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="co"># Create timeline plot using modified obs_count with observatory_with_num</span></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>timeline_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(obs_count, </span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>                            <span class="at">y =</span> <span class="fu">fct_reorder</span>(observatory_with_num, latitude), </span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>                            <span class="at">color =</span> observatory_name)) <span class="sc">+</span></span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> survey_count), <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="co"># Stitch the plots together</span></span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>combined_plot <span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(map_plot, timeline_plot, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="fl">1.3</span>, <span class="dv">2</span>))</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>obs_count <span class="ot">&lt;-</span> <span class="fu">left_join</span>(obs_count, locations, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"observatory_name"</span> <span class="ot">=</span> <span class="st">"name"</span>))</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>madagascar <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="fu">paste0</span>(<span class="st">"data/Spatial_data/OCHA_BNGRC admin boundaries/"</span>,</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"mdg_admbnda_adm0_BNGRC_OCHA_20181031.shp"</span>),</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>                      <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort locations by latitude to generate sequence numbers</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>locations <span class="ot">&lt;-</span> locations <span class="sc">%&gt;%</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(latitude)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">seq_num =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>())</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="co"># Create map plot with labels</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>map_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> madagascar) <span class="sc">+</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">fill =</span> <span class="st">"lightgray"</span>, <span class="at">colour =</span> <span class="st">"dimgrey"</span>) <span class="sc">+</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> locations, <span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude, <span class="at">color =</span> name), </span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> locations, <span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude, <span class="at">label =</span> seq_num), </span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="co"># check_overlap = TRUE,</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>            <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span> </span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="co"># Add sequence numbers to observatory names in obs_count dataframe</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>obs_count <span class="ot">&lt;-</span> obs_count <span class="sc">%&gt;%</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(locations <span class="sc">%&gt;%</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>              <span class="fu">select</span>(name, seq_num), </span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"observatory_name"</span> <span class="ot">=</span> <span class="st">"name"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observatory_with_num =</span> <span class="fu">paste0</span>(seq_num, <span class="st">". "</span>, observatory_name))</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="co"># Create timeline plot using modified obs_count with observatory_with_num</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>timeline_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(obs_count, </span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">aes</span>(<span class="at">x =</span> year, </span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>                            <span class="at">y =</span> <span class="fu">fct_reorder</span>(observatory_with_num, latitude), </span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>                            <span class="at">color =</span> observatory_name)) <span class="sc">+</span></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> survey_count), <span class="at">show.legend =</span> F) <span class="sc">+</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">x =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
 <span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"output/ROR_history.png"</span>, <span class="at">plot =</span> combined_plot, </span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">7</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="co"># Stitch the plots together</span></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>combined_plot <span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(map_plot, timeline_plot, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="fl">1.3</span>, <span class="dv">2</span>))</span>
 <span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(combined_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"output/ROS_history.png"</span>, <span class="at">plot =</span> combined_plot, </span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">7</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(combined_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-hist-ror" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-hist-ros" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="index_files/figure-html/fig-hist-ror-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/fig-hist-ros-1.png" class="img-fluid figure-img" width="672"></p>
 <figcaption class="figure-caption">Figure&nbsp;1: Coarse location of rural observatory and survey years</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-hist-ror">Figure&nbsp;<span>1</span></a> shows the coarse location of the 26 observatories composing the ROR, as well as the years in which data was collected in each one.</p>
+<p><a href="#fig-hist-ros">Figure&nbsp;<span>1</span></a> shows the coarse location of the 26 observatories composing the ROS, as well as the years in which data was collected in each one.</p>
 
 
 </section>
@@ -603,7 +606,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01-ror-data-catalogue.html" class="pagination-link">
+      <a href="./01-ros-data-catalogue.html" class="pagination-link">
         <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data catalogue</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
