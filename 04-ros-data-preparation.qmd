@@ -6,7 +6,7 @@ editor_options:
 
 # Data preparation
 
-In this section, we describe and reproduce the procedure followed to prepared the Rural Observatory System (ROS) data. This process entails selecting the relevant files and organizing them in the local file system, removing the names and replacing them with pseudonyms, enriching the metadata with table names, and converting the file formats to propose an open standard version alongside STATA.
+In this section, we describe and reproduce the procedure followed to prepared the Rural Observatory System (ROS) data. We made all the operation on the raw source data explicitly coded, and the data published online is the result of applying the following steps. This process entails selecting the relevant files and organizing them in the local file system, removing the names and replacing them with pseudonyms, enriching the metadata with table names, and converting the file formats to propose an open standard version alongside STATA.
 
 ```{r, output=FALSE}
 library(tidyverse)    # A series of packages for data manipulation
@@ -90,16 +90,20 @@ dta_files <- list.files(folder_2015, pattern = "\\.dta$", full.names = TRUE)
 # Initialize a variable to track if all files were successfully filtered
 all_files_filtered <- TRUE
 
+# Get households in selected observatory (Menabe Nord-Est)
+hh_to_keep <- read_dta("data/ROS_data_prepared/2015/res_deb.dta") %>%
+  filter(j0 == 52) %>%
+  pluck("j5")
+
 # Loop through each .dta file
 for (file_path in dta_files) {
   # Load the dataset
   data <- read_dta(file_path)
-  
   # Check if 'j5' exists and is a character variable
   if ("j5" %in% names(data) && is.character(data$j5)) {
-    # Filter for j5 == "52"
-    filtered_data <- data[data$j5 == "52", ]
-    
+    # Filter for j5 
+    filtered_data <- data %>%
+      filter(j5 %in% hh_to_keep)
     # Save the filtered dataset back to the same file (or to a new file/path)
     write_dta(filtered_data, file_path)
   } else {
@@ -118,6 +122,8 @@ if (!all_files_filtered) {
 If no error message is displayed, the filtering went on correctly.
 
 ## Data anonymization
+
+### Anonymization of survey respondents
 
 During the rural observatory surveys, the names of the household members were collected in the questionnaire called the roaster. To prevent re-identification of personal data, we will replace these names with pseudonyms such as "individual_01", "individual_02", and so on. These pseudonyms are not related to the original names and individuals with the same name in different households will be given different pseudonyms. However, the same household members will have the same pseudonym in subsequent surveys. For example, in a particular household, "individual_05" in 1998 is the same person as "individual_05" in the 1999, 2000, 2001, and 2002 survey rounds.
 
@@ -380,9 +386,25 @@ gt(summary_table)  %>%
 
 As we see in the @tbl-ind-number-ros, we have `r format(as.integer(total_individual_observations), big.mark = ",")` unique individuals that were surveyed in average `r sprintf("%.2f", average_surveys_per_individual)` times.
 
+### Anonymization of surveyors
+
+The Surveyors, supervisors and data entry clerks id numbers are included in the datasets. For the years 2011 to 2015, their names have also been included. We remove them before data publication. 
+
+```{r remove_surveyor_names}
+for (year in  2011:2015) {
+  loc <- paste0("data/ROS_data_prepared/", year, "/res_deb.dta")
+  df <- read_dta(loc) %>%
+    select(-j1_a, -j2_a, -j3_a) %>%
+    write_dta(loc)
+}
+
+```
+
+At this stage, there is not any personal name in the survey dataset.
+
 ## Table labelling
 
-We add labels to the STATA tables.
+Labels are included for all variables in the raw data, but not for the tables. We recoded them manually from the questionnaires and we include them in the STATA files. 
 
 ```{r, eval=FALSE}
 # Load the Excel file containing file names and labels
@@ -435,9 +457,11 @@ process_files <- function(year_folder) {
 purrr::walk(year_folders, process_files)
 ```
 
-*To be completed*
+The table labels can now be included in the data catalog published with the survey.
 
 ## Data format conversions
+
+The ROS survey data was natively entered and managed in STATA, which is a proprietary format. To facilitate the processing by all user, we also publish the data in an open format (tabulation-separated values, tsv).
 
 ```{r, eval=FALSE}
 # Install the latest version of DDIwR
@@ -459,4 +483,3 @@ test <- read_rds("output/test.rds")
 test2 <- read_dta(test_file)
 ```
 
-*To be completed*
