@@ -6,7 +6,7 @@ editor_options:
 
 # Data preparation
 
-In this section, we describe and reproduce the procedure followed to prepared the Rural Observatory System (ROS) data. We made all the operation on the raw source data explicitly coded, and the data published online is the result of applying the following steps. This process entails selecting the relevant files and organizing them in the local file system, removing the names and replacing them with pseudonyms, enriching the metadata with table names, and converting the file formats to propose an open standard version alongside STATA.
+In this section, we describe and reproduce the procedure followed to prepare the Rural Observatory System (ROS) data. We made all the operation on the raw source data explicitly coded, and the data published online is the result of applying the following steps. This process entails selecting the relevant files and organizing them in the local file system, removing the names and replacing them with pseudonyms, enriching the metadata with table names, and converting the file formats to propose an open standard version alongside STATA.
 
 ```{r, output=FALSE}
 library(tidyverse)    # A series of packages for data manipulation
@@ -19,14 +19,15 @@ library(future)
 library(furrr)
 library(gt)
 library(readxl)
+library(fs)
 ```
 
 
 ## Data selection
 
-First we start with creating a copy of the original unfiltered and un-anonymized data.
+First, we start with creating a copy of the original unfiltered and un-anonymized data.
 
-```{r copy-data, eval=FALSE}
+```{r copy-data}
 # Define the paths for the source and target folders
 source_folder <- "data/ROS_data_original"
 target_folder <- "data/ROS_data_prepared"
@@ -78,9 +79,9 @@ copy_files(source_folder, target_folder)
 
 ```
 
-For 2015, we have 4 observatories. One that existed on the previous years, Menabe Nord-Est, and 3 new ones: Ambatofinandrahana, Anjozorobe et Maintirano. The data collection of the ROS kept on until 2017, but we lack documentation since 2015 and the data has not yet been harmonized for 2016 and 2017. For this reason, we only kept the data for Menabe North-East for 2015.
+For 2015, we have 4 observatories. One that existed in the previous years, Menabe Nord-Est, and 3 new ones: Ambatofinandrahana, Anjozorobe et Maintirano. The data collection of the ROS continued until 2017, but we lack documentation since 2015 and the data has not yet been harmonized for 2016 and 2017. For this reason, we only kept the data for Menabe North-East for 2015.
 
-```{r, eval=FALSE}
+```{r}
 # Define the path to the 2015 folder within the target folder
 folder_2015 <- "data/ROS_data_prepared/2015"
 
@@ -119,17 +120,17 @@ if (!all_files_filtered) {
 }
 ```
 
-If no error message is displayed, the filtering went on correctly.
+If no error message is displayed, the filtering went correctly.
 
 ## Data anonymization
 
-### Anonymization of survey respondents
+### Anonymization of survey respondents {#sec-anonymization}
 
 During the rural observatory surveys, the names of the household members were collected in the questionnaire called the roaster. To prevent re-identification of personal data, we will replace these names with pseudonyms such as "individual_01", "individual_02", and so on. These pseudonyms are not related to the original names and individuals with the same name in different households will be given different pseudonyms. However, the same household members will have the same pseudonym in subsequent surveys. For example, in a particular household, "individual_05" in 1998 is the same person as "individual_05" in the 1999, 2000, 2001, and 2002 survey rounds.
 
-The main challenge with this procedure is that the names were provided orally by the respondent, written down by the surveyors, and later entered into the system by data entry clerks. As a result, we have a wide range of variations in the character strings in our data, even though they correspond to the names of the same individuals. To carry out this pseudonymization process, we follow several steps that involve fuzzy matching and consistency checks with individual age and sex. We begin by loading and consolidating the content of the survey roasters for all survey years.
+The main challenge with this procedure is that the names were provided orally by the respondent, written down by the surveyors, and later entered into the system by data entry clerks. As a result, we have a wide range of variations in the character strings in our data, even though they correspond to the names of the same individuals. To carry out this pseudonymization process, we follow several steps that involve fuzzy matching and consistency checks with individual age and sex. We begin by loading and consolidating the content of the survey rosters for all survey years.
 
-```{r, eval=FALSE}
+```{r}
 # Usage
 ros_data_loc <- "data/ROS_data_prepared/"
 years <- 1995:2015
@@ -168,22 +169,22 @@ nb_hh <- nrow(household_ids)
 nb_i <- nrow(all_data)
 ```
 
-We have a total 590 524 individual observations of 29 493 unique households. To match name variations within subsequent surveys of the same household, we use the Jaro-Winkler algorithm as implemented in the \`stringdist\` package and described as followed by the package author [@vanderloo2014a, p. 119]:
+We have a total of 590,524 individual observations of 29,493 unique households. To match name variations within subsequent surveys of the same household, we use the Jaro-Winkler algorithm as implemented in the `stringdist` package. This algorithm is described as follows by the package author [van_der_loo_stringdist_2014, p. 119]:
 
-> "The Jaro distance was originally developed at the U.S. Bureau of the Census for the purpose of linking records based on inaccurate text ﬁelds. (...) It has been been successfully applied to statistical matching problems concerning fairly short strings, typically name and address data [@jaro1989]. The reasoning behind the Jaro distance is that character mismatches and transpositions are caused by typing or phonetic transcription errors but matches between remote characters are unlikely to be caused by such kind of errors. (...) Winkler [-@winkler1990] extended the Jaro distance by incorporating an extra penalty for character mismatches in the first four characters. (...) The reasoning is that apparently, people are less apt to make mistakes in the first four characters or perhaps they are more easily noted, so differences in the first four characters point to a larger probability of two strings being actually different."
+> "The Jaro distance was originally developed at the U.S. Bureau of the Census for the purpose of linking records based on inaccurate text ﬁelds. (...) It has been successfully applied to statistical matching problems concerning fairly short strings, typically name and address data [@jaro1989]. The reasoning behind the Jaro distance is that character mismatches and transpositions are caused by typing or phonetic transcription errors but matches between remote characters are unlikely to be caused by such kind of errors. (...) Winkler [-@winkler1990] extended the Jaro distance by incorporating an extra penalty for character mismatches in the first four characters. (...) The reasoning is that apparently, people are less apt to make mistakes in the first four characters or perhaps they are more easily noted, so differences in the first four characters point to a larger probability of two strings being actually different."
 
 We refined a procedure that applies this algorithm in three steps:
 
-1.  **Initial reference:** the initial survey year of each household, member names are cataloged to serve as a reference;
-2.  **Close Match Identification:**For each ensuing survey, we scout for names that not only exhibit the smallest Jaro-Winkler distance from the reference names but also fall below a stringent threshold of 0.2 (ie. we only take in account the name when the names are very similar);
-3.  **Expanded Criteria for Matches:** Absence of matches at step 2. for a given year prompts an extended search within the household, this time accommodating names with a distance below 0.3 if they align in sex and age, accounting for a 5-year margin to mitigate inaccuracies in age recall (ie. we allow for slightly more dissimilar names if sex and age match);
+1.  **Initial reference:** The initial survey year of each household, member names are cataloged to serve as a reference;
+2.  **Close Match Identification:** For each ensuing survey, we scout for names that not only exhibit the smallest Jaro-Winkler distance from the reference names but also fall below a stringent threshold of 0.2 (ie. we only take into account the name when the names are very similar);
+3.  **Expanded Criteria for Matches:** Absence of matches at step 2. for a given year prompts an extended search within the household, this time accommodating names with a distance below 0.3 if they align in sex and age, accounting for a 5-year margin to mitigate inaccuracies in age recall (i.e. we allow for slightly more dissimilar names if sex and age match);
 4.  **Validation of Matches:** For each match identified at step 2. or 3., we verify that there is no other household member name that is a better match based on the Jaro-Winkler distance. If so, we remove it from the matched names.
-5.  **Pseudonym Assignment:** matched names get a pseudonym "Individual_XX", with "XX" representing a sequential number..
-6.  **Sequential Application:** this procedure iterates through all names from the initial survey year, extending to unmatched names in subsequent years, thereby ensuring comprehensive coverage.
+5.  **Pseudonym Assignment:** Matched names get a pseudonym "Individual_XX", with "XX" representing a sequential number..
+6.  **Sequential Application:** This procedure iterates through all names from the initial survey year, extending to unmatched names in subsequent years, thereby ensuring comprehensive coverage.
 
 The code was adapted to handle gracefully edge cases, for instance when sex data or age is missing.
 
-```{r, eval=FALSE}
+```{r pseudonymize_function}
 pseudonymize_household <- function(pool, distance_threshold1 = 0.2, 
                                    distance_threshold2 = 0.3,
                                    tolerance_yeardiff = 5) {
@@ -328,9 +329,9 @@ for (year in years) {
 }
 ```
 
-After this process, the column "m1" containing the name of household members has been removed from all the data files and it has been replaced by the column "pseudonym". While anonymizing the data, this process enabled the tracking of repeated observations of the same individuals. We are now able to compute the number of unique individuals that have been surveyed throughout the ears
+After this process, the column "m1" containing the name of household members has been removed from all the data files and it has been replaced by the column "pseudonym". While anonymizing the data, this process enabled the tracking of repeated observations of the same individuals. We are now able to compute the number of unique individuals that have been surveyed throughout the years.
 
-```{r}
+```{r pseudonymization_stats}
 #| label: tbl-ind-number-ros
 #| tbl-cap: "Number of observations and unique entities in the ROR data from 1995 to 2015" 
 
@@ -384,13 +385,13 @@ gt(summary_table)  %>%
   cols_hide(column = "Value") # Optionally hide the original 'Value' column
 ```
 
-As we see in the @tbl-ind-number-ros, we have `r format(as.integer(total_individual_observations), big.mark = ",")` unique individuals that were surveyed in average `r sprintf("%.2f", average_surveys_per_individual)` times.
+As we see in @tbl-ind-number-ros, we have `r format(as.integer(total_individual_observations), big.mark = ",")` unique individuals who were surveyed an average of `r sprintf("%.2f", average_surveys_per_individual)` times.
 
 ### Anonymization of surveyors
 
 The Surveyors, supervisors and data entry clerks id numbers are included in the datasets. For the years 2011 to 2015, their names have also been included. We remove them before data publication. 
 
-```{r remove_surveyor_names}
+```{r remove_surveyor_names, eval = FALSE}
 for (year in  2011:2015) {
   loc <- paste0("data/ROS_data_prepared/", year, "/res_deb.dta")
   df <- read_dta(loc) %>%
@@ -402,11 +403,11 @@ for (year in  2011:2015) {
 
 At this stage, there is not any personal name in the survey dataset.
 
-## Table labelling
+## Table labels
 
-Labels are included for all variables in the raw data, but not for the tables. We recoded them manually from the questionnaires and we include them in the STATA files. 
+Labels are included for all variables in the raw data, but not for the tables. We manually recoded them  from the questionnaires and includes them in the STATA files. 
 
-```{r, eval=FALSE}
+```{r}
 # Load the Excel file containing file names and labels
 file_labels <- read_excel("references/file_labels.xlsx")
 
@@ -461,25 +462,51 @@ The table labels can now be included in the data catalog published with the surv
 
 ## Data format conversions
 
-The ROS survey data was natively entered and managed in STATA, which is a proprietary format. To facilitate the processing by all user, we also publish the data in an open format (tabulation-separated values, tsv).
+The ROS survey data was originally entered and managed in STATA, which is a proprietary format. To facilitate processing by all users, we also publish the data in an open format (tabulation-separated values, tsv).
 
-```{r, eval=FALSE}
-# Install the latest version of DDIwR
-remotes::install_github("https://github.com/dusadrian/DDIwR")
-library(DDIwR)
+```{r convert_data}
+# Define source and target directories
+source_dir <- "data/ROS_data_prepared"
+target_dir <- "data/ROS_data_tsv"
 
-# Test on one package
+# Remove the target directory if it exists
+if (dir_exists(target_dir)) {
+  dir_delete(target_dir)
+}
 
-test_file <- ("data/ROS_data_prepared/2010/res_m_a.dta")
+# Create the target directory
+dir_create(target_dir)
 
-convert(from = test_file,
-        to = "output/test.xml")
-convert(from = test_file,
-        to = "output/test.rds",
-        )
+# Get the list of year directories
+year_dirs <- dir_ls(source_dir)
 
-test <- read_rds("output/test.rds")
+for (year_dir in year_dirs) {
+  # Extract the year from the path
+  year <- basename(year_dir)
+  
+  # Create the corresponding year directory in the target
+  target_year_dir <- file.path(target_dir, year)
+  dir_create(target_year_dir)
+  
+  # Get a list of Stata files in the current year directory
+  stata_files <- dir_ls(year_dir, glob = "*.dta")
+  
+  for (stata_file in stata_files) {
+    # Read the Stata file, preserving variable labels
+    data <- read_dta(stata_file)
+    
+    # Convert labelled variables to factors where applicable
+    data <- data %>% 
+      mutate(across(where(~is.labelled(.x)), as_factor))
+    
+    # Define the output TSV file path
+    tsv_file <- file.path(target_year_dir, paste0(basename(stata_file), ".tsv"))
+    
+    # Save the data frame as a TSV file
+    write_tsv(data, tsv_file)
+  }
+}
 
-test2 <- read_dta(test_file)
 ```
 
+The data is now ready to be uploaded in both formats: the STATA proprietary format and the tsv open format.
