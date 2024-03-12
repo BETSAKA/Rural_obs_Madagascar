@@ -18,7 +18,7 @@ library(gtsummary)    # to produce nice summary tables
 library(janitor)      # to simply add rowsums
 
 # Obtain all years from the directory structure
-ros_data_loc <- "data/ROS_data_prepared/"
+ros_data_loc <- "data/dta_format/"
 years <- list.dirs(ros_data_loc, recursive = FALSE, full.names = FALSE)
 ```
 

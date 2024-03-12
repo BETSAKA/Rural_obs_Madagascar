@@ -12,7 +12,7 @@ library(labelled)     # To work with labelled data from STATA
 library(readxl)       # Read data frames to Excel format
 
 # Obtain all years from the directory structure
-ros_data_loc <- "data/ROS_data_prepared/"
+ros_data_loc <- "data/dta_format/"
 years <- list.dirs(ros_data_loc, recursive = FALSE, full.names = FALSE)
 
 # Add observatory approximate location

@@ -30,7 +30,7 @@ First, we start with creating a copy of the original unfiltered and un-anonymize
 ```{r copy-data}
 # Define the paths for the source and target folders
 source_folder <- "data/ROS_data_original"
-target_folder <- "data/ROS_data_prepared"
+target_folder <- "data/dta_format"
 
 # Create the target folder if it does not exist
 if (!dir.exists(target_folder)) {
@@ -83,7 +83,7 @@ For 2015, we have 4 observatories. One that existed in the previous years, Menab
 
 ```{r}
 # Define the path to the 2015 folder within the target folder
-folder_2015 <- "data/ROS_data_prepared/2015"
+folder_2015 <- "data/dta_format/2015"
 
 # List all .dta files in the 2015 folder
 dta_files <- list.files(folder_2015, pattern = "\\.dta$", full.names = TRUE)
@@ -92,7 +92,7 @@ dta_files <- list.files(folder_2015, pattern = "\\.dta$", full.names = TRUE)
 all_files_filtered <- TRUE
 
 # Get households in selected observatory (Menabe Nord-Est)
-hh_to_keep <- read_dta("data/ROS_data_prepared/2015/res_deb.dta") %>%
+hh_to_keep <- read_dta("data/dta_format/2015/res_deb.dta") %>%
   filter(j0 == 52) %>%
   pluck("j5")
 
@@ -132,7 +132,7 @@ The main challenge with this procedure is that the names were provided orally by
 
 ```{r}
 # Usage
-ros_data_loc <- "data/ROS_data_prepared/"
+ros_data_loc <- "data/dta_format/"
 years <- 1995:2015
 
 # Normalizing function as you've provided
@@ -393,7 +393,7 @@ The Surveyors, supervisors and data entry clerks id numbers are included in the 
 
 ```{r remove_surveyor_names, eval = FALSE}
 for (year in  2011:2015) {
-  loc <- paste0("data/ROS_data_prepared/", year, "/res_deb.dta")
+  loc <- paste0("data/dta_format/", year, "/res_deb.dta")
   df <- read_dta(loc) %>%
     select(-j1_a, -j2_a, -j3_a) %>%
     write_dta(loc)
@@ -427,7 +427,7 @@ if (length(files_with_trimmed_labels) > 0) {
 
 
 # Define the base path for your folders
-base_path <- "data/ROS_data_prepared"
+base_path <- "data/dta_format"
 
 # Get the list of yearly folders using base R
 year_folders <- list.dirs(base_path, full.names = TRUE, recursive = FALSE)
@@ -466,8 +466,8 @@ The ROS survey data was originally entered and managed in STATA, which is a prop
 
 ```{r convert_data}
 # Define source and target directories
-source_dir <- "data/ROS_data_prepared"
-target_dir <- "data/ROS_data_tsv"
+source_dir <- "data/dta_format"
+target_dir <- "data/tsv_format"
 
 # Remove the target directory if it exists
 if (dir_exists(target_dir)) {

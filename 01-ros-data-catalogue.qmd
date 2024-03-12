@@ -9,7 +9,7 @@ library(haven)        # Required for reading STATA files (.dta)
 library(labelled)     # To work with labelled data from STATA
 library(writexl)      # Write data frames to Excel format
 
-ros_data_loc <- "data/ROS_data_prepared/"
+ros_data_loc <- "data/dta_format/"
 
 # Function to extract variable info for a given year and file
 extract_variable_info <- function(year, file) {
