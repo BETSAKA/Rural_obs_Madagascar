@@ -55,6 +55,8 @@ variable_dictionary <- all_vars %>%
 
 # Write the variable dictionary to an Excel file
 write_xlsx(variable_dictionary, "output/ROS_Variable_Dictionary.xlsx")
+# To include in published dataset
+write_xlsx(variable_dictionary, "data/ROS_Variable_Dictionary.xlsx")
 
 # Display in interactive format
 DT::datatable(variable_dictionary)

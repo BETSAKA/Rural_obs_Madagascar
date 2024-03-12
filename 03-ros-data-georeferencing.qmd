@@ -612,16 +612,10 @@ fokontany_list <- correspondence_table3 %>%
   mutate(ADM4_EN = map_chr(ADM4_EN, ~ str_c(.x, collapse = ", ")))
 
 fokontany_list %>%
-  gt() %>%
-  # Set column labels
-  cols_label(
-    OBS_NAME = "Observatory Name",
-    ADM3_EN = "Commune Name",
-    ADM4_EN = "Fokontany Names") %>%
-  # Add a title
-  tab_header(title = "Summary of Fokontany List",
-             subtitle = "Breakdown by Observatory and Commune") 
-
+  rename(`Observatory Name` = OBS_NAME,
+         `Commune Name` = ADM3_EN,
+         `Fokontany Names` = ADM4_EN) %>%
+  DT::datatable()
 
 ```
 

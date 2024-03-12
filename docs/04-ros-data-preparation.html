@@ -257,7 +257,7 @@ div.csl-indent {
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the paths for the source and target folders</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>source_folder <span class="ot">&lt;-</span> <span class="st">"data/ROS_data_original"</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>target_folder <span class="ot">&lt;-</span> <span class="st">"data/ROS_data_prepared"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>target_folder <span class="ot">&lt;-</span> <span class="st">"data/dta_format"</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the target folder if it does not exist</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(target_folder)) {</span>
@@ -554,7 +554,7 @@ div.csl-indent {
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the path to the 2015 folder within the target folder</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>folder_2015 <span class="ot">&lt;-</span> <span class="st">"data/ROS_data_prepared/2015"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>folder_2015 <span class="ot">&lt;-</span> <span class="st">"data/dta_format/2015"</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># List all .dta files in the 2015 folder</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>dta_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder_2015, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.dta$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
@@ -563,7 +563,7 @@ div.csl-indent {
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>all_files_filtered <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Get households in selected observatory (Menabe Nord-Est)</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>hh_to_keep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"data/ROS_data_prepared/2015/res_deb.dta"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>hh_to_keep <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"data/dta_format/2015/res_deb.dta"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(j0 <span class="sc">==</span> <span class="dv">52</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pluck</span>(<span class="st">"j5"</span>)</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
@@ -603,7 +603,7 @@ div.csl-indent {
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ros_data_loc <span class="ot">&lt;-</span> <span class="st">"data/ROS_data_prepared/"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ros_data_loc <span class="ot">&lt;-</span> <span class="st">"data/dta_format/"</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="dv">1995</span><span class="sc">:</span><span class="dv">2015</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizing function as you've provided</span></span>
@@ -857,23 +857,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-ind-number-ros" class="anchored">
 
-<div id="xjdncggwuo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#xjdncggwuo table {
+<div id="hvxiduqwen" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hvxiduqwen table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#xjdncggwuo thead, #xjdncggwuo tbody, #xjdncggwuo tfoot, #xjdncggwuo tr, #xjdncggwuo td, #xjdncggwuo th {
+#hvxiduqwen thead, #hvxiduqwen tbody, #hvxiduqwen tfoot, #hvxiduqwen tr, #hvxiduqwen td, #hvxiduqwen th {
   border-style: none;
 }
 
-#xjdncggwuo p {
+#hvxiduqwen p {
   margin: 0;
   padding: 0;
 }
 
-#xjdncggwuo .gt_table {
+#hvxiduqwen .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -899,12 +899,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_caption {
+#hvxiduqwen .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#xjdncggwuo .gt_title {
+#hvxiduqwen .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -916,7 +916,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#xjdncggwuo .gt_subtitle {
+#hvxiduqwen .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -928,7 +928,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#xjdncggwuo .gt_heading {
+#hvxiduqwen .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -940,13 +940,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_bottom_border {
+#hvxiduqwen .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_col_headings {
+#hvxiduqwen .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -961,7 +961,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_col_heading {
+#hvxiduqwen .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -981,7 +981,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#xjdncggwuo .gt_column_spanner_outer {
+#hvxiduqwen .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -993,15 +993,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#xjdncggwuo .gt_column_spanner_outer:first-child {
+#hvxiduqwen .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xjdncggwuo .gt_column_spanner_outer:last-child {
+#hvxiduqwen .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xjdncggwuo .gt_column_spanner {
+#hvxiduqwen .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1013,11 +1013,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#xjdncggwuo .gt_spanner_row {
+#hvxiduqwen .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#xjdncggwuo .gt_group_heading {
+#hvxiduqwen .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1043,7 +1043,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#xjdncggwuo .gt_empty_group_heading {
+#hvxiduqwen .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1058,15 +1058,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#xjdncggwuo .gt_from_md > :first-child {
+#hvxiduqwen .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xjdncggwuo .gt_from_md > :last-child {
+#hvxiduqwen .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xjdncggwuo .gt_row {
+#hvxiduqwen .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1085,7 +1085,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#xjdncggwuo .gt_stub {
+#hvxiduqwen .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1098,7 +1098,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#xjdncggwuo .gt_stub_row_group {
+#hvxiduqwen .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1112,15 +1112,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#xjdncggwuo .gt_row_group_first td {
+#hvxiduqwen .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xjdncggwuo .gt_row_group_first th {
+#hvxiduqwen .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#xjdncggwuo .gt_summary_row {
+#hvxiduqwen .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1130,16 +1130,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#xjdncggwuo .gt_first_summary_row {
+#hvxiduqwen .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_first_summary_row.thick {
+#hvxiduqwen .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xjdncggwuo .gt_last_summary_row {
+#hvxiduqwen .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1149,7 +1149,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_grand_summary_row {
+#hvxiduqwen .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1159,7 +1159,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#xjdncggwuo .gt_first_grand_summary_row {
+#hvxiduqwen .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1169,7 +1169,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_last_grand_summary_row_top {
+#hvxiduqwen .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1179,11 +1179,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_striped {
+#hvxiduqwen .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xjdncggwuo .gt_table_body {
+#hvxiduqwen .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1192,7 +1192,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_footnotes {
+#hvxiduqwen .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1206,7 +1206,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_footnote {
+#hvxiduqwen .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1215,7 +1215,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#xjdncggwuo .gt_sourcenotes {
+#hvxiduqwen .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1229,7 +1229,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#xjdncggwuo .gt_sourcenote {
+#hvxiduqwen .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1237,63 +1237,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#xjdncggwuo .gt_left {
+#hvxiduqwen .gt_left {
   text-align: left;
 }
 
-#xjdncggwuo .gt_center {
+#hvxiduqwen .gt_center {
   text-align: center;
 }
 
-#xjdncggwuo .gt_right {
+#hvxiduqwen .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xjdncggwuo .gt_font_normal {
+#hvxiduqwen .gt_font_normal {
   font-weight: normal;
 }
 
-#xjdncggwuo .gt_font_bold {
+#hvxiduqwen .gt_font_bold {
   font-weight: bold;
 }
 
-#xjdncggwuo .gt_font_italic {
+#hvxiduqwen .gt_font_italic {
   font-style: italic;
 }
 
-#xjdncggwuo .gt_super {
+#hvxiduqwen .gt_super {
   font-size: 65%;
 }
 
-#xjdncggwuo .gt_footnote_marks {
+#hvxiduqwen .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#xjdncggwuo .gt_asterisk {
+#hvxiduqwen .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xjdncggwuo .gt_indent_1 {
+#hvxiduqwen .gt_indent_1 {
   text-indent: 5px;
 }
 
-#xjdncggwuo .gt_indent_2 {
+#hvxiduqwen .gt_indent_2 {
   text-indent: 10px;
 }
 
-#xjdncggwuo .gt_indent_3 {
+#hvxiduqwen .gt_indent_3 {
   text-indent: 15px;
 }
 
-#xjdncggwuo .gt_indent_4 {
+#hvxiduqwen .gt_indent_4 {
   text-indent: 20px;
 }
 
-#xjdncggwuo .gt_indent_5 {
+#hvxiduqwen .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1336,7 +1336,7 @@ to 2015</p> </caption>
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (year <span class="cf">in</span>  <span class="dv">2011</span><span class="sc">:</span><span class="dv">2015</span>) {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  loc <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"data/ROS_data_prepared/"</span>, year, <span class="st">"/res_deb.dta"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  loc <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"data/dta_format/"</span>, year, <span class="st">"/res_deb.dta"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(loc) <span class="sc">%&gt;%</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>j1_a, <span class="sc">-</span>j2_a, <span class="sc">-</span>j3_a) <span class="sc">%&gt;%</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write_dta</span>(loc)</span>
@@ -1371,7 +1371,7 @@ to 2015</p> </caption>
 <span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the base path for your folders</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>base_path <span class="ot">&lt;-</span> <span class="st">"data/ROS_data_prepared"</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>base_path <span class="ot">&lt;-</span> <span class="st">"data/dta_format"</span></span>
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the list of yearly folders using base R</span></span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>year_folders <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(base_path, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
@@ -1411,8 +1411,8 @@ to 2015</p> </caption>
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define source and target directories</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>source_dir <span class="ot">&lt;-</span> <span class="st">"data/ROS_data_prepared"</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>target_dir <span class="ot">&lt;-</span> <span class="st">"data/ROS_data_tsv"</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>source_dir <span class="ot">&lt;-</span> <span class="st">"data/dta_format"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>target_dir <span class="ot">&lt;-</span> <span class="st">"data/tsv_format"</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the target directory if it exists</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">dir_exists</span>(target_dir)) {</span>
