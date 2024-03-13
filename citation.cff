@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite it as below."
+authors:
+- family-names: "Bédécarrats"
+  given-names: "Florent"
+  orcid: "https://orcid.org/0000-0003-1001-5540"
+title: "Madagascar rural observatory data cataloging, assessment, anonymization and geolocation"
+version: 1.0
+doi: 10.23708/WNM6LW
+date-released: 2024-03-13
+url: "https://github.com/BETSAKA/Rural_obs_Madagascar"
