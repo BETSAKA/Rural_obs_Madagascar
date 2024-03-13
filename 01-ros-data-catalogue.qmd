@@ -8,6 +8,7 @@ library(tidyverse)    # A series of packages for data manipulation
 library(haven)        # Required for reading STATA files (.dta)
 library(labelled)     # To work with labelled data from STATA
 library(writexl)      # Write data frames to Excel format
+library(readxl)
 
 ros_data_loc <- "data/dta_format/"
 
@@ -39,6 +40,10 @@ all_vars <- map_df(years, ~{
 # Convert any NULL values in variable_label to "NA"
 all_vars$variable_label[is.na(all_vars$variable_label)] <- "NA"
 
+# retreive the file labels
+file_labels <- read_excel("references/File_labels.xlsx") %>%
+  select(file_name = filename, file_label = title_en)
+
 # Consolidate the information using the tidyverse approach
 variable_dictionary <- all_vars %>%
   group_by(file_name, variable_name) %>%
@@ -48,6 +53,8 @@ variable_dictionary <- all_vars %>%
     years_present = list(unique(year))) %>%
   ungroup() %>%
   mutate(years_present = map_chr(years_present, ~ paste(.x, collapse = ","))) %>%
+  left_join(file_labels, by = "file_name", .before) %>%
+  relocate(file_label, .after = file_name) %>%
   arrange(substr(years_present, 1, 4), # To have 1st variables of 1995
           case_when(file_name == "res_deb.dta" ~ as.integer(1),
                     file_name == "res_h.dta" ~ as.integer(2),

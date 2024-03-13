@@ -27,7 +27,7 @@ library(fs)
 
 First, we start with creating a copy of the original unfiltered and un-anonymized data.
 
-```{r copy-data}
+```{r copy-data, output=FALSE}
 # Define the paths for the source and target folders
 source_folder <- "data/ROS_data_original"
 target_folder <- "data/dta_format"
@@ -407,7 +407,7 @@ At this stage, there is not any personal name in the survey dataset.
 
 Labels are included for all variables in the raw data, but not for the tables. We manually recoded them  from the questionnaires and includes them in the STATA files. 
 
-```{r}
+```{r label_tables}
 # Load the Excel file containing file names and labels
 file_labels <- read_excel("references/file_labels.xlsx")
 

@@ -5,10 +5,8 @@ project:
 book:
   title: "Madagascar rural observatory system data validation, preparation, and georeferencing"
   author: "Florent Bédécarrats"
-  date: "01/18/2024"
-  repo-url: https://github.com/fBedecarrats/Rural_Obs_Madagascar
-  # cover-image: figs/IRD_010664_ORI_small.png
-  # cover-image-alt: Déforestation à Madagascar © IRD - Bernard Moizo
+  date: "12/03/2024"
+  repo-url: https://github.com/BETSAKA/Rural_obs_Madagascar
   chapters:
     - index.qmd
     - 01-ros-data-catalogue.qmd

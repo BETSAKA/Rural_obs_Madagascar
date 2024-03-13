@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Introduction {.unnumbered}
 
 This technical appendix is a companion to a data descriptor article, submitted to Nature Scientific Data, that focuses on data collected by the Rural Observatory System (ROS) between 1995 and 2015. It provides the source code for all figures and visualizations presented in the paper. It also offers a tutorial on how to georeference this data, which can serve as guidance for various types of analysis beyond this specific application. We use computational notebooks in Quarto format with the R programming language, combining code, results, explanations, and multimedia in an interactive way. The source code can be accessed by expanding code blocks like the following one, which produced the figure below.
