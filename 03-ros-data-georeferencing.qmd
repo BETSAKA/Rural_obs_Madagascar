@@ -615,7 +615,7 @@ fokontany_list %>%
   rename(`Observatory Name` = OBS_NAME,
          `Commune Name` = ADM3_EN,
          `Fokontany Names` = ADM4_EN) %>%
-  DT::datatable()
+  DT::datatable(caption = "List of fokontany per commune and observatory")
 
 ```
 
