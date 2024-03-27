@@ -53,8 +53,8 @@ years <- 1995:2015
 
 # Use purrr::map_df to loop through each year and bind results
 obs_count <- map_df(years, load_and_count) %>%
-  # Remove rows with observatory "7 " and "NA", whch are errors
-  filter(j0 != 7 & !is.na(j0)) %>%
+  # Remove rows with observatory "7 " and "NA", which are errors
+  filter(j0 != 7 & !is.na(j0) & survey_count > 1) %>%
   rename(observatory = j0)
 
 # Read observatory names
