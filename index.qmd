@@ -126,7 +126,7 @@ timeline_plot <- ggplot(obs_count,
                         aes(x = year, 
                             y = fct_reorder(observatory_with_num, latitude), 
                             color = observatory_name)) +
-  geom_point(aes(size = survey_count), show.legend = F) +
+  geom_point(aes(size = 1), show.legend = F) +
   theme_minimal() +
   labs(y = NULL, x = NULL) +
   theme(axis.text.y = element_text(size = 8, face = "bold"),
