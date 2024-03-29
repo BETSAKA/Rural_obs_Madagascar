@@ -135,7 +135,7 @@ The main challenge with this procedure is that the names were provided orally by
 ros_data_loc <- "data/dta_format/"
 years <- 1995:2015
 
-# Normalizing function as you've provided
+# Normalizing function 
 normalize_name <- function(name) {
   name %>%
     stringi::stri_trans_general("Latin-ASCII") %>%
@@ -274,7 +274,7 @@ if (!file.exists(pseudo_loc)) {
   # Set up parallel plan
   plan(multisession, workers = 6)
   
-  # Define your processing function to include progress signaling
+  # Define processing function to include progress signaling
   process_household_with_progress <- function(household_id, .progress) {
     .progress()  # Signal progress update
     pool <- all_data %>% filter(j5 == household_id)
@@ -382,7 +382,7 @@ summary_table <- tibble(
 
 gt(summary_table)  %>%
   cols_label(FormattedValue = "Value") %>% # Renaming 'Value' to 'Formatted Value' for display
-  cols_hide(column = "Value") # Optionally hide the original 'Value' column
+  cols_hide(column = "Value")
 ```
 
 As we see in @tbl-ind-number-ros, we have `r format(as.integer(total_individual_observations), big.mark = ",")` unique individuals who were surveyed an average of `r sprintf("%.2f", average_surveys_per_individual)` times.
@@ -426,7 +426,7 @@ if (length(files_with_trimmed_labels) > 0) {
 # res_ccp3.dta, rx_jn.dta, rx_tj4.dta, rx_tj5.dta 
 
 
-# Define the base path for your folders
+# Define the base path for  folders
 base_path <- "data/dta_format"
 
 # Get the list of yearly folders using base R

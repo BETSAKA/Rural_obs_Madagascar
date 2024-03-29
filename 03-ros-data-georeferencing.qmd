@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Georeferencing
 
 This section provides details about the georeferencing process applied to household panel data collected by the Rural Observatory System (ROS) from 1995 to 2014. The ROS gathered data on various rural contexts in Madagascar. While the data quality was carefully monitored, its geolocation attributes were not fully developed, limiting its use in spatially integrated research and public policy evaluation. This appendix aligns the ROS dataset's various spatial designations with a standardized geographic database, ensuring consistent correlation between each ROS observation and the corresponding geospatial entities, namely communes and fokontany. Similar to other sections of this document, the source code developed to perform all the data processing is accessible by expanding the code blocks, as shown below.
@@ -110,7 +115,7 @@ fuzzy_match <- function(target_string, dataframe, column_name, observatory_code,
   # Use stringdist to find the closest match
   distances <- stringdist::stringdistmatrix(target_string, filtered_reference[[column_name]], method = "jw")
   
-  # If there are no valid distances, set min_distance to Inf (this should help avoid the error)
+  # If there are no valid distances, set min_distance to Inf
   if(all(is.na(distances))) {
     min_distance <- Inf
   } else {
