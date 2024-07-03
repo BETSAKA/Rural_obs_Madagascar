@@ -8,14 +8,16 @@ data <- read_csv("graph_modules/modules_en.csv") %>%
 
 # Convert the data to long format
 data_long <- data %>%
-  pivot_longer(cols = starts_with("19") | starts_with("20"), names_to = "Year", values_to = "Present")
+  pivot_longer(cols = starts_with("19") | starts_with("20"), names_to = "Year", 
+               values_to = "Present")
 
 # Convert 'Present' to logical for easier filtering and ordering
 data_long <- data_long %>%
   mutate(Present = as.logical(Present))
 
 # Create the lollipop chart
-plot <- ggplot(data_long %>% filter(Present), aes(x = Year, y = factor(Module, levels = rev(data$Module)))) +
+plot <- ggplot(data_long %>% filter(Present), 
+               aes(x = Year, y = factor(Module, levels = rev(data$Module)))) +
   geom_segment(aes(xend = Year, yend = Module), size = 1) +
   geom_point(size = 4, color = "black") +
   theme_minimal() +
