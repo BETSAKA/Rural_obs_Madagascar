@@ -1,6 +1,6 @@
 # Data catalog
 
-The ROS survey data is organized in a collection of year-specific folders ranging from 1995 to 2015. Each yearly folder houses multiple .dta files (Stata data format) -- about 85 per year -- with diverse filenames such as "res_as.dta" and "res_bp.dta". The code block below creates a data dictionary, which can be downloaded by clicking [on this link](https://raw.githubusercontent.com/fBedecarrats/Rural_Obs_Madagascar/main/output/ROS_Variable_Dictionary.xlsx 
+The ROS survey data is organized in a collection of year-specific folders ranging from 1995 to 2015. Each yearly folder houses multiple .dta files (Stata data format) -- about 85 per year -- with diverse filenames such as "res_as.dta" and "res_bp.dta". The code block below creates a data dictionary, which can be downloaded by clicking [on this link](https://raw.githubusercontent.com/BETSAKA/Rural_Obs_Madagascar/main/output/ROS_Variable_Dictionary.xlsx 
 ). It also displays the interactive table below, which can be browsed or searched.
 
 ```{r var_dict}
