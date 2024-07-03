@@ -1,0 +1,228 @@
+---
+title: "ROS costs updated"
+author: "Florent Bédécarrats"
+editor: visual
+abstract: "This analysis aims to provide update and compare the annual budget of rural observatories in Madagascar from 1995 to 1998 with current prices in Malagasy Ariary and Euros. Historical financial data, originally reported in French francs, is converted to Malagasy francs using historical exchange rates. Subsequent adjustments for inflation are made based on annual consumer price indices obtained from the World Bank. The final figures are then converted to Euros using the latest exchange rates. "
+bibliography: references.bib
+execute:
+  echo: true
+  warning: false
+  message: false
+code-fold: true
+embed-resources: true
+toc: true
+toc-location: left
+editor_options: 
+  chunk_output_type: console
+---
+
+## Objective
+
+We find the followingreport on the is the original annual budget of the rural observatories from 1995 to 1998 in Droy, Ratovoarinony and Roubaud [-@droy2000, p.133]:
+
+[![Annual budget of the rural observatories, 1995-1998 in French francs](original_costs.png)](https://horizon.documentation.ird.fr/exl-doc/pleins_textes/divers20-11/010031647.pdf)
+
+The objective of this analysis is to update and compare the annual costs of implementing rural observatories in Madagascar from 1995 to 1998 with current prices in Malagasy Ariary and Euros.
+
+The process involves:
+
+-   Converting historical costs from French francs to Malagasy francs using historical exchange rates ;
+
+-   Adjusting these values for inflation using annual consumer price indices from the World Bank ;
+
+-   Converting the inflation-adjusted values to Euros using the latest exchange rates.
+
+## Procedure
+
+### Step 1: enter the original table data
+
+We re-create the budget data by copying the original figure.
+
+```{r}
+# Load tidyverse for easier data manipulation
+library(tidyverse)
+library(gt)
+options(scipen = 999) # on désactive les notations scientifiques
+# Data from the image
+budget_data1 <- tibble(
+  Year = c(1995, 1996, 1997, 1998),
+  Preparation_of_field_operations = c(12250, NA, NA, NA),
+  Reproduction_of_questionnaires = c(5470, 5570, 4050, 3690),
+  Vehicle_running_costs = c(5010, 17130, 7010, 6620),
+  Payment_of_team_of_data_loggers = c(8330, 8120, 8430, 6680),
+  Payment_of_data_collection_team = c(52600, 57080, 58240, 69980),
+  Supplies_equipment_and_rent = c(6860, 5260, 3300, 3740),
+  Publication_of_initial_results = c(19710, 16810, 15270, 14260),
+  Total = c(110230, 109970, 96300, 104970)
+)
+gt(budget_data1)
+```
+
+## Step 2: Convert French Francs to Malagasy Francs
+
+Note that both currency have been discarded for Euros and Ariary respectively.
+
+```{r}
+# Exchange rates
+exchange_rates <- tibble(
+  Year = c(1995, 1996, 1997, 1998),
+  Exchange_Rate = c(900, 797, 884, 936)
+)
+
+# Join exchange rates and convert French francs to Malagasy francs
+budget_data2 <- budget_data1 %>%
+  left_join(exchange_rates, by = "Year") %>%
+  mutate(across(starts_with("Preparation_of_field_operations"):starts_with("Total"), 
+                ~ .x * Exchange_Rate))
+gt(budget_data2)
+```
+
+## Step 3: Retrieve inflation data from World Bank
+
+We use the WDI package and download the indicator named "Inflation, consumer prices (annual %) - Madagascar", originates from the International Monetary Fund according to the dataset metadata: https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=MG
+
+```{r}
+# Load the World data indicator package to query world bank API
+library(WDI)
+# Download inflation data from the World Bank
+if (!file.exists("inflation_data.rds")) {
+  inflation_data <- WDI(country = "MG", indicator = "FP.CPI.TOTL.ZG", start = 1995, end = 2023) %>%
+  rename(Year = year, Inflation = FP.CPI.TOTL.ZG)
+write_rds(inflation_data, "inflation_data.rds")
+} else {
+  inflation_data <- read_rds("inflation_data.rds")
+}
+```
+
+## Step 4: Apply inflation rates and convert to Ariary
+
+As of date, the most recent year for annual inflation is 2023. Conversion factor from Malagasy franc to Ariary is 1 Ariary = 5 Malagasy francs.
+
+```{r}
+# Calculate cumulative inflation from the year to the most recent year 
+current_year <- max(inflation_data$Year)
+cumulative_inflation <- inflation_data %>%
+  filter(Year >= 1995) %>%
+  arrange(desc(Year)) %>%
+  mutate(Cumulative_Inflation = cumprod(1 + Inflation / 100)) %>%
+  arrange(Year)
+
+# Apply cumulative inflation to convert Malagasy francs to current Ariary
+budget_data3 <- budget_data2 %>%
+  left_join(cumulative_inflation, by = "Year") %>%
+  mutate(across(starts_with("Preparation_of_field_operations"):starts_with("Total"), 
+                ~ .x * Cumulative_Inflation / 5)) 
+
+gt(budget_data3)
+```
+
+## Step 5: Convert to euros
+
+```{r}
+if (!file.exists("exchange_rate_usd.rds")) {
+  # Fetch the most recent exchange rate from MGA to USD
+  exchange_rate_usd <- WDI(country = "MG", indicator = "PA.NUS.FCRF", start = 2023, end = 2023) %>%
+    rename(Year = year, Exchange_Rate_to_USD = PA.NUS.FCRF)
+  write_rds(exchange_rate_usd, "exchange_rate_usd.rds")
+} else {
+  exchange_rate_usd <- read_rds("exchange_rate_usd.rds")
+}
+if (!file.exists("exchange_rate_euro.rds")) {
+  # Fetch the most recent exchange rate from USD to Euro
+  exchange_rate_euro <- WDI(country = "FR", indicator = "PA.NUS.FCRF", start = 2023, end = 2023) %>%
+    rename(Year = year, Exchange_Rate_to_Euro = PA.NUS.FCRF)
+  write_rds(exchange_rate_euro, "exchange_rate_euro.rds")
+} else {
+  exchange_rate_euro <- read_rds("exchange_rate_euro.rds")
+}
+
+# Calculate the exchange rate from MGA to Euro
+ariary_to_euro <- exchange_rate_usd$Exchange_Rate_to_USD * 
+  (1 / exchange_rate_euro$Exchange_Rate_to_Euro)
+
+# Convert to Euros
+budget_data_euros <- budget_data3 %>%
+  mutate(across(starts_with("Preparation_of_field_operations"):starts_with("Total"), 
+                ~ .x / ariary_to_euro))
+gt(budget_data_euros)
+```
+
+### Calculation summary in French for cross-validation
+
+Budget total de 1995 en Fmg : 99 207 000 francs malgaches (110 230 Francs français x taux de change de 900 Fmg/FF indiqués dans la publication).
+Budget total de 1995 en Ariary de 1995 : 19 841 400 Ariary (99 207 000 / 5)/
+Budget total de 1995 en Ariary de 2023: 309 129 012 Ariary, le taux d'inflation composé de 1995 à 2023 est de 1 558 % (309 129 012 * 15.58).
+Budget total de 1995 en € de 2023: 69 781 €, le taux de change moyen en 2023 était de 4 430 Ar/€.
+Budget par observatoire en 1995 aux prix de 2023 : 17 445
+Budget par ménage enquêté: 34,89 €
+
+## Complement: other values from an other source
+
+David-Benz et al. report the following [-@david-benz2010, p. 36]: "*Le coût annuel du ROR s’élève actuellement à 210 000 eur (pour 15 observatoires)*". They do not specify which year this corresponds to, but the report was published in January 2010, there was no data collection in 2009 (political crisis in Madagascar) and the latest year in which there was 15 observatories was 2006, so we assume that it corresponds to 2006.
+
+We convert this amount to 2006 Ariary, update with the cumulative inflation since 2007 and convert back to euros with 2023 currency rate.
+
+```{r}
+# Define the reported cost in 2006 euros
+reported_cost_eur_2006 <- 210000
+
+if (!file.exists("exchange_rate_eur_to_usd_2006.rds")) {
+  # Fetch the exchange rate from Euro to USD for 2006
+  exchange_rate_eur_to_usd_2006 <- WDI(country = "FR", indicator = "PA.NUS.FCRF", 
+                                       start = 2006, end = 2006) %>%
+    pull(PA.NUS.FCRF)
+  write_rds(exchange_rate_usd_to_eur_2006, "exchange_rate_eur_to_usd_2006.rds")
+  # Fetch the exchange rate from USD to MGA for 2006
+  exchange_rate_usd_to_mga_2006 <- WDI(country = "MG", indicator = "PA.NUS.FCRF", 
+                                       start = 2006, end = 2006) %>%
+    pull(PA.NUS.FCRF)
+  write_rds(exchange_rate_usd_to_mga_2006, "exchange_rate_usd_to_mga_2006.rds")
+} else {
+  exchange_rate_eur_to_usd_2006 <- read_rds("exchange_rate_eur_to_usd_2006.rds")
+  exchange_rate_usd_to_mga_2006 <- read_rds("exchange_rate_usd_to_mga_2006.rds")
+}
+
+# Convert the reported cost from euros to USD for 2006
+reported_cost_usd_2006 <- reported_cost_eur_2006 * (1/exchange_rate_eur_to_usd_2006)
+
+# Convert the reported cost from USD to MGA for 2006
+reported_cost_mga_2006 <- reported_cost_usd_2006 * exchange_rate_usd_to_mga_2006
+
+# Fetch the cumulative inflation from 2007 to 2023
+cumulative_inflation_2007_to_2023 <- inflation_data %>%
+  filter(Year >= 2007) %>%
+  arrange(Year) %>%
+  mutate(Cumulative_Inflation = cumprod(1 + Inflation / 100)) %>%
+  filter(Year == 2023) %>%
+  pull(Cumulative_Inflation)
+
+# Update the 2006 MGA cost with cumulative inflation to 2023
+reported_cost_mga_2023 <- reported_cost_mga_2006 * cumulative_inflation_2007_to_2023
+
+# Convert the updated MGA cost back to euros using the 2023 exchange rate
+reported_cost_eur_2023 <- reported_cost_mga_2023 / ariary_to_euro
+
+# Print the updated cost in 2023 euros
+reported_cost_eur_2023
+
+# Print the updated 2023 cost per observatory in euros
+cost_per_obs_2023 <- reported_cost_eur_2023 / 15
+cost_per_obs_2023 
+
+# Print the cost per household
+cost_per_obs_2023 / 500
+
+```
+
+### Calculation summary in French for cross-validation
+
+Budget 2006 en Ariary de 2006 : 564 900 000 Ariary (210 000€ * 2690 Ar/€ de taux de change moyen sur 2006)
+Budget 2006 en Ariary de 2023 : 1 960 203 000 Ariary (taux d'inflation cumulé de 347 % entre 2006 et 2023)
+Budget 2006 en euros de 2023 : 442 484 € (taux de change en 2023 de 4430 Ar/€4430)
+Budget 2006 par observatoire : 29499 €
+Budget 2006 par ménage enquêté : 59€
+
+### 
+
+
+## References

@@ -8,3 +8,4 @@ prep/
 *.rds
 test*
 secrets/*
+*.rds
