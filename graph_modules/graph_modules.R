@@ -35,4 +35,5 @@ plot <- ggplot(data_long %>% filter(Present),
 ggsave(filename = "chart.png", 
        plot = plot,
        path = "graph_modules",
-       width = 540, height = 550, units = "px", dpi = 300)
+       width = 1800, height = 1800, units = "px", dpi = 300)
+
