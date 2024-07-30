@@ -13,7 +13,9 @@ book:
     - 02-ros-data-attrition.qmd
     - 03-ros-data-georeferencing.qmd
     - 04-ros-data-preparation.qmd
-    - 05-bibliography.qmd
+    - 05-ros-included-modules.qmd
+    - 06-ros-cost-updating.qmd
+    - 07-bibliography.qmd
     
 bibliography: bibliography.bib
 

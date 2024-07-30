@@ -1,0 +1,2820 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Madagascar rural observatory system data validation, preparation, and georeferencing - 6&nbsp; ROS costs updating and comparison</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-bibliography.html" rel="next">
+<link href="./05-ros-included-modules.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-ros-cost-updating.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">ROS costs updating and comparison</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Madagascar rural observatory system data validation, preparation, and georeferencing</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/BETSAKA/Rural_obs_Madagascar" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-ros-data-catalogue.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data catalog</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-ros-data-attrition.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Panel attrition</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-ros-data-georeferencing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Georeferencing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ros-data-preparation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data preparation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-ros-included-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Load required libraries</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-ros-cost-updating.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">ROS costs updating and comparison</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#objective" id="toc-objective" class="nav-link active" data-scroll-target="#objective"><span class="header-section-number">6.1</span> Objective</a></li>
+  <li><a href="#procedure" id="toc-procedure" class="nav-link" data-scroll-target="#procedure"><span class="header-section-number">6.2</span> Procedure</a>
+  <ul class="collapse">
+  <li><a href="#step-1-enter-the-original-table-data" id="toc-step-1-enter-the-original-table-data" class="nav-link" data-scroll-target="#step-1-enter-the-original-table-data"><span class="header-section-number">6.2.1</span> Step 1: enter the original table data</a></li>
+  </ul></li>
+  <li><a href="#step-2-convert-french-francs-to-malagasy-francs" id="toc-step-2-convert-french-francs-to-malagasy-francs" class="nav-link" data-scroll-target="#step-2-convert-french-francs-to-malagasy-francs"><span class="header-section-number">6.3</span> Step 2: Convert French Francs to Malagasy Francs</a></li>
+  <li><a href="#step-3-retrieve-inflation-data-from-world-bank" id="toc-step-3-retrieve-inflation-data-from-world-bank" class="nav-link" data-scroll-target="#step-3-retrieve-inflation-data-from-world-bank"><span class="header-section-number">6.4</span> Step 3: Retrieve inflation data from World Bank</a></li>
+  <li><a href="#step-4-apply-inflation-rates-and-convert-to-ariary" id="toc-step-4-apply-inflation-rates-and-convert-to-ariary" class="nav-link" data-scroll-target="#step-4-apply-inflation-rates-and-convert-to-ariary"><span class="header-section-number">6.5</span> Step 4: Apply inflation rates and convert to Ariary</a></li>
+  <li><a href="#step-5-convert-to-euros" id="toc-step-5-convert-to-euros" class="nav-link" data-scroll-target="#step-5-convert-to-euros"><span class="header-section-number">6.6</span> Step 5: Convert to euros</a>
+  <ul class="collapse">
+  <li><a href="#calculation-summary-in-french-for-cross-validation" id="toc-calculation-summary-in-french-for-cross-validation" class="nav-link" data-scroll-target="#calculation-summary-in-french-for-cross-validation"><span class="header-section-number">6.6.1</span> Calculation summary in French for cross-validation</a></li>
+  </ul></li>
+  <li><a href="#complement-other-values-from-an-other-source" id="toc-complement-other-values-from-an-other-source" class="nav-link" data-scroll-target="#complement-other-values-from-an-other-source"><span class="header-section-number">6.7</span> Complement: other values from an other source</a>
+  <ul class="collapse">
+  <li><a href="#calculation-summary-in-french-for-cross-validation-1" id="toc-calculation-summary-in-french-for-cross-validation-1" class="nav-link" data-scroll-target="#calculation-summary-in-french-for-cross-validation-1"><span class="header-section-number">6.7.1</span> Calculation summary in French for cross-validation</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">ROS costs updating and comparison</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This analysis aims to provide update and compare the annual budget of rural observatories in Madagascar from 1995 to 1998 with costs reported in the following decades using current prices in Malagasy Ariary and Euros. Historical financial data, originally reported in French francs, is converted to Malagasy francs using historical exchange rates. Subsequent adjustments for inflation are made based on annual consumer price indices obtained from the World Bank. The final figures are then converted to Euros using the latest exchange rates.</p>
+<section id="objective" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="objective"><span class="header-section-number">6.1</span> Objective</h2>
+<p>We find the following report on the is the original annual budget of the rural observatories from 1995 to 1998 in Droy, Ratovoarinony and Roubaud <span class="citation" data-cites="droy2000">(<a href="07-bibliography.html#ref-droy2000" role="doc-biblioref">2000, 133</a>)</span>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://horizon.documentation.ird.fr/exl-doc/pleins_textes/divers20-11/010031647.pdf"><img src="references/original_costs.png" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Annual budget of the rural observatories, 1995-1998 in French francs</figcaption>
+</figure>
+</div>
+<p>The objective of this analysis is to update and compare the annual costs of implementing rural observatories in Madagascar from 1995 to 1998 with current prices in Malagasy Ariary and Euros.</p>
+<p>The process involves:</p>
+<ul>
+<li><p>Converting historical costs from French francs to Malagasy francs using historical exchange rates ;</p></li>
+<li><p>Adjusting these values for inflation using annual consumer price indices from the World Bank ;</p></li>
+<li><p>Converting the inflation-adjusted values to Euros using the latest exchange rates.</p></li>
+</ul>
+</section>
+<section id="procedure" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="procedure"><span class="header-section-number">6.2</span> Procedure</h2>
+<section id="step-1-enter-the-original-table-data" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="step-1-enter-the-original-table-data"><span class="header-section-number">6.2.1</span> Step 1: enter the original table data</h3>
+<p>We re-create the budget data by copying the original figure.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load tidyverse for easier data manipulation</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>) <span class="co"># on désactive les notations scientifiques</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Data from the image</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>budget_data1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">c</span>(<span class="dv">1995</span>, <span class="dv">1996</span>, <span class="dv">1997</span>, <span class="dv">1998</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">Preparation_of_field_operations =</span> <span class="fu">c</span>(<span class="dv">12250</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">Reproduction_of_questionnaires =</span> <span class="fu">c</span>(<span class="dv">5470</span>, <span class="dv">5570</span>, <span class="dv">4050</span>, <span class="dv">3690</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">Vehicle_running_costs =</span> <span class="fu">c</span>(<span class="dv">5010</span>, <span class="dv">17130</span>, <span class="dv">7010</span>, <span class="dv">6620</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">Payment_of_team_of_data_loggers =</span> <span class="fu">c</span>(<span class="dv">8330</span>, <span class="dv">8120</span>, <span class="dv">8430</span>, <span class="dv">6680</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Payment_of_data_collection_team =</span> <span class="fu">c</span>(<span class="dv">52600</span>, <span class="dv">57080</span>, <span class="dv">58240</span>, <span class="dv">69980</span>),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Supplies_equipment_and_rent =</span> <span class="fu">c</span>(<span class="dv">6860</span>, <span class="dv">5260</span>, <span class="dv">3300</span>, <span class="dv">3740</span>),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">Publication_of_initial_results =</span> <span class="fu">c</span>(<span class="dv">19710</span>, <span class="dv">16810</span>, <span class="dv">15270</span>, <span class="dv">14260</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">Total =</span> <span class="fu">c</span>(<span class="dv">110230</span>, <span class="dv">109970</span>, <span class="dv">96300</span>, <span class="dv">104970</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(budget_data1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div id="ovlgqtkeip" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ovlgqtkeip table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ovlgqtkeip thead, #ovlgqtkeip tbody, #ovlgqtkeip tfoot, #ovlgqtkeip tr, #ovlgqtkeip td, #ovlgqtkeip th {
+  border-style: none;
+}
+
+#ovlgqtkeip p {
+  margin: 0;
+  padding: 0;
+}
+
+#ovlgqtkeip .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ovlgqtkeip .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ovlgqtkeip .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ovlgqtkeip .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ovlgqtkeip .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ovlgqtkeip .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ovlgqtkeip .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ovlgqtkeip .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ovlgqtkeip .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ovlgqtkeip .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ovlgqtkeip .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ovlgqtkeip .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ovlgqtkeip .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ovlgqtkeip .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ovlgqtkeip .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ovlgqtkeip .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ovlgqtkeip .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ovlgqtkeip .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ovlgqtkeip .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ovlgqtkeip .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ovlgqtkeip .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ovlgqtkeip .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ovlgqtkeip .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ovlgqtkeip .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ovlgqtkeip .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ovlgqtkeip .gt_left {
+  text-align: left;
+}
+
+#ovlgqtkeip .gt_center {
+  text-align: center;
+}
+
+#ovlgqtkeip .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ovlgqtkeip .gt_font_normal {
+  font-weight: normal;
+}
+
+#ovlgqtkeip .gt_font_bold {
+  font-weight: bold;
+}
+
+#ovlgqtkeip .gt_font_italic {
+  font-style: italic;
+}
+
+#ovlgqtkeip .gt_super {
+  font-size: 65%;
+}
+
+#ovlgqtkeip .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ovlgqtkeip .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ovlgqtkeip .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ovlgqtkeip .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ovlgqtkeip .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ovlgqtkeip .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ovlgqtkeip .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Year">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Preparation_of_field_operations">Preparation_of_field_operations</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Reproduction_of_questionnaires">Reproduction_of_questionnaires</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Vehicle_running_costs">Vehicle_running_costs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Payment_of_team_of_data_loggers">Payment_of_team_of_data_loggers</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Payment_of_data_collection_team">Payment_of_data_collection_team</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Supplies_equipment_and_rent">Supplies_equipment_and_rent</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Publication_of_initial_results">Publication_of_initial_results</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Total">Total</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Year" class="gt_row gt_right">1995</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">12250</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">5470</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">5010</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">8330</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">52600</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">6860</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">19710</td>
+<td headers="Total" class="gt_row gt_right">110230</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1996</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">5570</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">17130</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">8120</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">57080</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">5260</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">16810</td>
+<td headers="Total" class="gt_row gt_right">109970</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1997</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">4050</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">7010</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">8430</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">58240</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">3300</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">15270</td>
+<td headers="Total" class="gt_row gt_right">96300</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1998</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">3690</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">6620</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">6680</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">69980</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">3740</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">14260</td>
+<td headers="Total" class="gt_row gt_right">104970</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-2-convert-french-francs-to-malagasy-francs" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="step-2-convert-french-francs-to-malagasy-francs"><span class="header-section-number">6.3</span> Step 2: Convert French Francs to Malagasy Francs</h2>
+<p>Note that both currency have been discarded for Euros and Ariary respectively.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exchange rates</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>exchange_rates <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">c</span>(<span class="dv">1995</span>, <span class="dv">1996</span>, <span class="dv">1997</span>, <span class="dv">1998</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Exchange_Rate =</span> <span class="fu">c</span>(<span class="dv">900</span>, <span class="dv">797</span>, <span class="dv">884</span>, <span class="dv">936</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Join exchange rates and convert French francs to Malagasy francs</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>budget_data2 <span class="ot">&lt;-</span> budget_data1 <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(exchange_rates, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Preparation_of_field_operations"</span>)<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Total"</span>), </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> .x <span class="sc">*</span> Exchange_Rate))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(budget_data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div id="vfvuxlhkcm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vfvuxlhkcm table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#vfvuxlhkcm thead, #vfvuxlhkcm tbody, #vfvuxlhkcm tfoot, #vfvuxlhkcm tr, #vfvuxlhkcm td, #vfvuxlhkcm th {
+  border-style: none;
+}
+
+#vfvuxlhkcm p {
+  margin: 0;
+  padding: 0;
+}
+
+#vfvuxlhkcm .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#vfvuxlhkcm .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vfvuxlhkcm .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vfvuxlhkcm .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#vfvuxlhkcm .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vfvuxlhkcm .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vfvuxlhkcm .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vfvuxlhkcm .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vfvuxlhkcm .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#vfvuxlhkcm .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#vfvuxlhkcm .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vfvuxlhkcm .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vfvuxlhkcm .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vfvuxlhkcm .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vfvuxlhkcm .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vfvuxlhkcm .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#vfvuxlhkcm .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#vfvuxlhkcm .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#vfvuxlhkcm .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vfvuxlhkcm .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#vfvuxlhkcm .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vfvuxlhkcm .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vfvuxlhkcm .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vfvuxlhkcm .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vfvuxlhkcm .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vfvuxlhkcm .gt_left {
+  text-align: left;
+}
+
+#vfvuxlhkcm .gt_center {
+  text-align: center;
+}
+
+#vfvuxlhkcm .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vfvuxlhkcm .gt_font_normal {
+  font-weight: normal;
+}
+
+#vfvuxlhkcm .gt_font_bold {
+  font-weight: bold;
+}
+
+#vfvuxlhkcm .gt_font_italic {
+  font-style: italic;
+}
+
+#vfvuxlhkcm .gt_super {
+  font-size: 65%;
+}
+
+#vfvuxlhkcm .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#vfvuxlhkcm .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#vfvuxlhkcm .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#vfvuxlhkcm .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#vfvuxlhkcm .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#vfvuxlhkcm .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#vfvuxlhkcm .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Year">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Preparation_of_field_operations">Preparation_of_field_operations</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Reproduction_of_questionnaires">Reproduction_of_questionnaires</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Vehicle_running_costs">Vehicle_running_costs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Payment_of_team_of_data_loggers">Payment_of_team_of_data_loggers</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Payment_of_data_collection_team">Payment_of_data_collection_team</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Supplies_equipment_and_rent">Supplies_equipment_and_rent</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Publication_of_initial_results">Publication_of_initial_results</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Total">Total</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Exchange_Rate">Exchange_Rate</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Year" class="gt_row gt_right">1995</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">11025000</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">4923000</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">4509000</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">7497000</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">47340000</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">6174000</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">17739000</td>
+<td headers="Total" class="gt_row gt_right">99207000</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">900</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1996</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">4439290</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">13652610</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">6471640</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">45492760</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">4192220</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">13397570</td>
+<td headers="Total" class="gt_row gt_right">87646090</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">797</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1997</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">3580200</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">6196840</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">7452120</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">51484160</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">2917200</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">13498680</td>
+<td headers="Total" class="gt_row gt_right">85129200</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">884</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1998</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">3453840</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">6196320</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">6252480</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">65501280</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">3500640</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">13347360</td>
+<td headers="Total" class="gt_row gt_right">98251920</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">936</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-retrieve-inflation-data-from-world-bank" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="step-3-retrieve-inflation-data-from-world-bank"><span class="header-section-number">6.4</span> Step 3: Retrieve inflation data from World Bank</h2>
+<p>We use the WDI package and download the indicator named “Inflation, consumer prices (annual %) - Madagascar”, originates from the International Monetary Fund according to the dataset metadata: https://data.worldbank.org/indicator/FP.CPI.TOTL.ZG?locations=MG</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the World data indicator package to query world bank API</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(WDI)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Download inflation data from the World Bank</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"references/inflation_data.rds"</span>)) {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  inflation_data <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">country =</span> <span class="st">"MG"</span>, <span class="at">indicator =</span> <span class="st">"FP.CPI.TOTL.ZG"</span>, <span class="at">start =</span> <span class="dv">1995</span>, <span class="at">end =</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Year =</span> year, <span class="at">Inflation =</span> FP.CPI.TOTL.ZG)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(inflation_data, <span class="st">"references/inflation_data.rds"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  inflation_data <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"references/inflation_data.rds"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="step-4-apply-inflation-rates-and-convert-to-ariary" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="step-4-apply-inflation-rates-and-convert-to-ariary"><span class="header-section-number">6.5</span> Step 4: Apply inflation rates and convert to Ariary</h2>
+<p>As of date, the most recent year for annual inflation is 2023. Conversion factor from Malagasy franc to Ariary is 1 Ariary = 5 Malagasy francs.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate cumulative inflation from the year to the most recent year </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>current_year <span class="ot">&lt;-</span> <span class="fu">max</span>(inflation_data<span class="sc">$</span>Year)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>cumulative_inflation <span class="ot">&lt;-</span> inflation_data <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">1995</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Year)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Cumulative_Inflation =</span> <span class="fu">cumprod</span>(<span class="dv">1</span> <span class="sc">+</span> Inflation <span class="sc">/</span> <span class="dv">100</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Year)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply cumulative inflation to convert Malagasy francs to current Ariary</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>budget_data3 <span class="ot">&lt;-</span> budget_data2 <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(cumulative_inflation, <span class="at">by =</span> <span class="st">"Year"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Preparation_of_field_operations"</span>)<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Total"</span>), </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> .x <span class="sc">*</span> Cumulative_Inflation <span class="sc">/</span> <span class="dv">5</span>)) </span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(budget_data3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div id="rglibdstbb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rglibdstbb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#rglibdstbb thead, #rglibdstbb tbody, #rglibdstbb tfoot, #rglibdstbb tr, #rglibdstbb td, #rglibdstbb th {
+  border-style: none;
+}
+
+#rglibdstbb p {
+  margin: 0;
+  padding: 0;
+}
+
+#rglibdstbb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rglibdstbb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rglibdstbb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rglibdstbb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rglibdstbb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rglibdstbb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rglibdstbb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rglibdstbb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rglibdstbb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#rglibdstbb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#rglibdstbb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rglibdstbb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rglibdstbb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rglibdstbb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rglibdstbb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rglibdstbb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#rglibdstbb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#rglibdstbb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#rglibdstbb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rglibdstbb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#rglibdstbb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rglibdstbb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rglibdstbb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rglibdstbb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rglibdstbb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rglibdstbb .gt_left {
+  text-align: left;
+}
+
+#rglibdstbb .gt_center {
+  text-align: center;
+}
+
+#rglibdstbb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rglibdstbb .gt_font_normal {
+  font-weight: normal;
+}
+
+#rglibdstbb .gt_font_bold {
+  font-weight: bold;
+}
+
+#rglibdstbb .gt_font_italic {
+  font-style: italic;
+}
+
+#rglibdstbb .gt_super {
+  font-size: 65%;
+}
+
+#rglibdstbb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#rglibdstbb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#rglibdstbb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#rglibdstbb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#rglibdstbb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#rglibdstbb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#rglibdstbb .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Year">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Preparation_of_field_operations">Preparation_of_field_operations</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Reproduction_of_questionnaires">Reproduction_of_questionnaires</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Vehicle_running_costs">Vehicle_running_costs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Payment_of_team_of_data_loggers">Payment_of_team_of_data_loggers</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Payment_of_data_collection_team">Payment_of_data_collection_team</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Supplies_equipment_and_rent">Supplies_equipment_and_rent</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Publication_of_initial_results">Publication_of_initial_results</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Total">Total</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Exchange_Rate">Exchange_Rate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="country">country</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="iso2c">iso2c</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="iso3c">iso3c</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Inflation, consumer prices (annual %)">Inflation, consumer prices (annual %)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Cumulative_Inflation">Cumulative_Inflation</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Year" class="gt_row gt_right">1995</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">34368751</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">15346699</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">14056118</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">23370751</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">147575208</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">19246500</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">55298619</td>
+<td headers="Total" class="gt_row gt_right">309262646</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">900</td>
+<td headers="country" class="gt_row gt_left">Madagascar</td>
+<td headers="iso2c" class="gt_row gt_left">MG</td>
+<td headers="iso3c" class="gt_row gt_left">MDG</td>
+<td headers="Inflation" class="gt_row gt_right">49.080210</td>
+<td headers="Cumulative_Inflation" class="gt_row gt_right">15.586735</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1996</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">9282793</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">28548339</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">13532546</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">95127797</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">8766156</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">28015036</td>
+<td headers="Total" class="gt_row gt_right">183272667</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">797</td>
+<td headers="country" class="gt_row gt_left">Madagascar</td>
+<td headers="iso2c" class="gt_row gt_left">MG</td>
+<td headers="iso3c" class="gt_row gt_left">MDG</td>
+<td headers="Inflation" class="gt_row gt_right">19.756355</td>
+<td headers="Cumulative_Inflation" class="gt_row gt_right">10.455268</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1997</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">6251351</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">10820239</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">13012071</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">89895969</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">5093693</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">23569908</td>
+<td headers="Total" class="gt_row gt_right">148643232</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">884</td>
+<td headers="country" class="gt_row gt_left">Madagascar</td>
+<td headers="iso2c" class="gt_row gt_left">MG</td>
+<td headers="iso3c" class="gt_row gt_left">MDG</td>
+<td headers="Inflation" class="gt_row gt_right">4.486383</td>
+<td headers="Cumulative_Inflation" class="gt_row gt_right">8.730449</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1998</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">5771771</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">10354777</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">10448626</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">109460311</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">5849979</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">22305002</td>
+<td headers="Total" class="gt_row gt_right">164190467</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">936</td>
+<td headers="country" class="gt_row gt_left">Madagascar</td>
+<td headers="iso2c" class="gt_row gt_left">MG</td>
+<td headers="iso3c" class="gt_row gt_left">MDG</td>
+<td headers="Inflation" class="gt_row gt_right">6.208016</td>
+<td headers="Cumulative_Inflation" class="gt_row gt_right">8.355586</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="step-5-convert-to-euros" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="step-5-convert-to-euros"><span class="header-section-number">6.6</span> Step 5: Convert to euros</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"references/exchange_rate_usd.rds"</span>)) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fetch the most recent exchange rate from MGA to USD</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  exchange_rate_usd <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">country =</span> <span class="st">"MG"</span>, <span class="at">indicator =</span> <span class="st">"PA.NUS.FCRF"</span>, <span class="at">start =</span> <span class="dv">2023</span>, <span class="at">end =</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Year =</span> year, <span class="at">Exchange_Rate_to_USD =</span> PA.NUS.FCRF)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_rds</span>(exchange_rate_usd, <span class="st">"references/exchange_rate_usd.rds"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  exchange_rate_usd <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"references/exchange_rate_usd.rds"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"references/exchange_rate_euro.rds"</span>)) {</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fetch the most recent exchange rate from USD to Euro</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  exchange_rate_euro <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">country =</span> <span class="st">"FR"</span>, <span class="at">indicator =</span> <span class="st">"PA.NUS.FCRF"</span>, <span class="at">start =</span> <span class="dv">2023</span>, <span class="at">end =</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(<span class="at">Year =</span> year, <span class="at">Exchange_Rate_to_Euro =</span> PA.NUS.FCRF)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_rds</span>(exchange_rate_euro, <span class="st">"references/exchange_rate_euro.rds"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  exchange_rate_euro <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"references/exchange_rate_euro.rds"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the exchange rate from MGA to Euro</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>ariary_to_euro <span class="ot">&lt;-</span> exchange_rate_usd<span class="sc">$</span>Exchange_Rate_to_USD <span class="sc">*</span> </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span> <span class="sc">/</span> exchange_rate_euro<span class="sc">$</span>Exchange_Rate_to_Euro)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to Euros</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>budget_data_euros <span class="ot">&lt;-</span> budget_data3 <span class="sc">%&gt;%</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"Preparation_of_field_operations"</span>)<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Total"</span>), </span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> .x <span class="sc">/</span> ariary_to_euro))</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(budget_data_euros)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div id="guqjjgdzcj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#guqjjgdzcj table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#guqjjgdzcj thead, #guqjjgdzcj tbody, #guqjjgdzcj tfoot, #guqjjgdzcj tr, #guqjjgdzcj td, #guqjjgdzcj th {
+  border-style: none;
+}
+
+#guqjjgdzcj p {
+  margin: 0;
+  padding: 0;
+}
+
+#guqjjgdzcj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#guqjjgdzcj .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#guqjjgdzcj .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#guqjjgdzcj .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#guqjjgdzcj .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#guqjjgdzcj .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#guqjjgdzcj .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#guqjjgdzcj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#guqjjgdzcj .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#guqjjgdzcj .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#guqjjgdzcj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#guqjjgdzcj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#guqjjgdzcj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#guqjjgdzcj .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#guqjjgdzcj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#guqjjgdzcj .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#guqjjgdzcj .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#guqjjgdzcj .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#guqjjgdzcj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#guqjjgdzcj .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#guqjjgdzcj .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#guqjjgdzcj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#guqjjgdzcj .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#guqjjgdzcj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#guqjjgdzcj .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#guqjjgdzcj .gt_left {
+  text-align: left;
+}
+
+#guqjjgdzcj .gt_center {
+  text-align: center;
+}
+
+#guqjjgdzcj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#guqjjgdzcj .gt_font_normal {
+  font-weight: normal;
+}
+
+#guqjjgdzcj .gt_font_bold {
+  font-weight: bold;
+}
+
+#guqjjgdzcj .gt_font_italic {
+  font-style: italic;
+}
+
+#guqjjgdzcj .gt_super {
+  font-size: 65%;
+}
+
+#guqjjgdzcj .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#guqjjgdzcj .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#guqjjgdzcj .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#guqjjgdzcj .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#guqjjgdzcj .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#guqjjgdzcj .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#guqjjgdzcj .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Year">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Preparation_of_field_operations">Preparation_of_field_operations</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Reproduction_of_questionnaires">Reproduction_of_questionnaires</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Vehicle_running_costs">Vehicle_running_costs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Payment_of_team_of_data_loggers">Payment_of_team_of_data_loggers</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Payment_of_data_collection_team">Payment_of_data_collection_team</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Supplies_equipment_and_rent">Supplies_equipment_and_rent</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Publication_of_initial_results">Publication_of_initial_results</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Total">Total</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Exchange_Rate">Exchange_Rate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="country">country</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="iso2c">iso2c</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="iso3c">iso3c</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Inflation, consumer prices (annual %)">Inflation, consumer prices (annual %)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Cumulative_Inflation">Cumulative_Inflation</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Year" class="gt_row gt_right">1995</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">7175.756</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">3204.195</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">2934.738</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">4879.514</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">30811.82</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">4018.423</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">11545.645</td>
+<td headers="Total" class="gt_row gt_right">64570.09</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">900</td>
+<td headers="country" class="gt_row gt_left">Madagascar</td>
+<td headers="iso2c" class="gt_row gt_left">MG</td>
+<td headers="iso3c" class="gt_row gt_left">MDG</td>
+<td headers="Inflation" class="gt_row gt_right">49.080210</td>
+<td headers="Cumulative_Inflation" class="gt_row gt_right">15.586735</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1996</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">1938.129</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">5960.528</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">2825.423</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">19861.47</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">1830.262</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">5849.182</td>
+<td headers="Total" class="gt_row gt_right">38264.99</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">797</td>
+<td headers="country" class="gt_row gt_left">Madagascar</td>
+<td headers="iso2c" class="gt_row gt_left">MG</td>
+<td headers="iso3c" class="gt_row gt_left">MDG</td>
+<td headers="Inflation" class="gt_row gt_right">19.756355</td>
+<td headers="Cumulative_Inflation" class="gt_row gt_right">10.455268</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1997</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">1305.202</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">2259.128</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">2716.754</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">18769.13</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">1063.498</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">4921.096</td>
+<td headers="Total" class="gt_row gt_right">31034.81</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">884</td>
+<td headers="country" class="gt_row gt_left">Madagascar</td>
+<td headers="iso2c" class="gt_row gt_left">MG</td>
+<td headers="iso3c" class="gt_row gt_left">MDG</td>
+<td headers="Inflation" class="gt_row gt_right">4.486383</td>
+<td headers="Cumulative_Inflation" class="gt_row gt_right">8.730449</td></tr>
+    <tr><td headers="Year" class="gt_row gt_right">1998</td>
+<td headers="Preparation_of_field_operations" class="gt_row gt_right">NA</td>
+<td headers="Reproduction_of_questionnaires" class="gt_row gt_right">1205.072</td>
+<td headers="Vehicle_running_costs" class="gt_row gt_right">2161.945</td>
+<td headers="Payment_of_team_of_data_loggers" class="gt_row gt_right">2181.540</td>
+<td headers="Payment_of_data_collection_team" class="gt_row gt_right">22853.91</td>
+<td headers="Supplies_equipment_and_rent" class="gt_row gt_right">1221.401</td>
+<td headers="Publication_of_initial_results" class="gt_row gt_right">4657.000</td>
+<td headers="Total" class="gt_row gt_right">34280.87</td>
+<td headers="Exchange_Rate" class="gt_row gt_right">936</td>
+<td headers="country" class="gt_row gt_left">Madagascar</td>
+<td headers="iso2c" class="gt_row gt_left">MG</td>
+<td headers="iso3c" class="gt_row gt_left">MDG</td>
+<td headers="Inflation" class="gt_row gt_right">6.208016</td>
+<td headers="Cumulative_Inflation" class="gt_row gt_right">8.355586</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<section id="calculation-summary-in-french-for-cross-validation" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="calculation-summary-in-french-for-cross-validation"><span class="header-section-number">6.6.1</span> Calculation summary in French for cross-validation</h3>
+<p>Budget total de 1995 en Fmg : 99 207 000 francs malgaches (110 230 Francs français x taux de change de 900 Fmg/FF indiqués dans la publication). Budget total de 1995 en Ariary de 1995 : 19 841 400 Ariary (99 207 000 / 5)/ Budget total de 1995 en Ariary de 2023: 309 129 012 Ariary, le taux d’inflation composé de 1995 à 2023 est de 1 558 % (309 129 012 * 15.58). Budget total de 1995 en € de 2023: 69 781 €, le taux de change moyen en 2023 était de 4 430 Ar/€. Budget par observatoire en 1995 aux prix de 2023 : 17 445 Budget par ménage enquêté: 34,89 €</p>
+</section>
+</section>
+<section id="complement-other-values-from-an-other-source" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="complement-other-values-from-an-other-source"><span class="header-section-number">6.7</span> Complement: other values from an other source</h2>
+<p>David-Benz et al.&nbsp;report the following <span class="citation" data-cites="david-benz2010">(<a href="07-bibliography.html#ref-david-benz2010" role="doc-biblioref">2010, 36</a>)</span>: “<em>Le coût annuel du ROR s’élève actuellement à 210 000 eur (pour 15 observatoires)</em>”. They do not specify which year this corresponds to, but the report was published in January 2010, there was no data collection in 2009 (political crisis in Madagascar) and the latest year in which there was 15 observatories was 2006, so we assume that it corresponds to 2006.</p>
+<p>We convert this amount to 2006 Ariary, update with the cumulative inflation since 2007 and convert back to euros with 2023 currency rate.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the reported cost in 2006 euros</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>reported_cost_eur_2006 <span class="ot">&lt;-</span> <span class="dv">210000</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"references/exchange_rate_eur_to_usd_2006.rds"</span>)) {</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fetch the exchange rate from Euro to USD for 2006</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  exchange_rate_eur_to_usd_2006 <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">country =</span> <span class="st">"FR"</span>, <span class="at">indicator =</span> <span class="st">"PA.NUS.FCRF"</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">start =</span> <span class="dv">2006</span>, <span class="at">end =</span> <span class="dv">2006</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(PA.NUS.FCRF)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_rds</span>(exchange_rate_usd_to_eur_2006, </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"references/exchange_rate_eur_to_usd_2006.rds"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fetch the exchange rate from USD to MGA for 2006</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  exchange_rate_usd_to_mga_2006 <span class="ot">&lt;-</span> <span class="fu">WDI</span>(<span class="at">country =</span> <span class="st">"MG"</span>, <span class="at">indicator =</span> <span class="st">"PA.NUS.FCRF"</span>, </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">start =</span> <span class="dv">2006</span>, <span class="at">end =</span> <span class="dv">2006</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(PA.NUS.FCRF)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_rds</span>(exchange_rate_usd_to_mga_2006, </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"references/exchange_rate_usd_to_mga_2006.rds"</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  exchange_rate_eur_to_usd_2006 <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"references/exchange_rate_eur_to_usd_2006.rds"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  exchange_rate_usd_to_mga_2006 <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"references/exchange_rate_usd_to_mga_2006.rds"</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the reported cost from euros to USD for 2006</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>reported_cost_usd_2006 <span class="ot">&lt;-</span> reported_cost_eur_2006 <span class="sc">*</span> (<span class="dv">1</span><span class="sc">/</span>exchange_rate_eur_to_usd_2006)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the reported cost from USD to MGA for 2006</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>reported_cost_mga_2006 <span class="ot">&lt;-</span> reported_cost_usd_2006 <span class="sc">*</span> exchange_rate_usd_to_mga_2006</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch the cumulative inflation from 2007 to 2023</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>cumulative_inflation_2007_to_2023 <span class="ot">&lt;-</span> inflation_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&gt;=</span> <span class="dv">2007</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Year) <span class="sc">%&gt;%</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Cumulative_Inflation =</span> <span class="fu">cumprod</span>(<span class="dv">1</span> <span class="sc">+</span> Inflation <span class="sc">/</span> <span class="dv">100</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(Cumulative_Inflation)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the 2006 MGA cost with cumulative inflation to 2023</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>reported_cost_mga_2023 <span class="ot">&lt;-</span> reported_cost_mga_2006 <span class="sc">*</span> cumulative_inflation_2007_to_2023</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the updated MGA cost back to euros using the 2023 exchange rate</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>reported_cost_eur_2023 <span class="ot">&lt;-</span> reported_cost_mga_2023 <span class="sc">/</span> ariary_to_euro</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the updated cost in 2023 euros</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>reported_cost_eur_2023</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 408676.8
+attr(,"label")
+[1] "Official exchange rate (LCU per US$, period average)"</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the updated 2023 cost per observatory in euros</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>cost_per_obs_2023 <span class="ot">&lt;-</span> reported_cost_eur_2023 <span class="sc">/</span> <span class="dv">15</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cost_per_obs_2023 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27245.12
+attr(,"label")
+[1] "Official exchange rate (LCU per US$, period average)"</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the cost per household</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cost_per_obs_2023 <span class="sc">/</span> <span class="dv">500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 54.49024
+attr(,"label")
+[1] "Official exchange rate (LCU per US$, period average)"</code></pre>
+</div>
+</div>
+<section id="calculation-summary-in-french-for-cross-validation-1" class="level3" data-number="6.7.1">
+<h3 data-number="6.7.1" class="anchored" data-anchor-id="calculation-summary-in-french-for-cross-validation-1"><span class="header-section-number">6.7.1</span> Calculation summary in French for cross-validation</h3>
+<ul>
+<li>Budget 2006 en Ariary de 2006 : 564 900 000 Ariary (210 000€ * 2690 Ar/€ de taux de change moyen sur 2006)</li>
+<li>Budget 2006 en Ariary de 2023 : 1 960 203 000 Ariary (taux d’inflation cumulé de 347 % entre 2006 et 2023)</li>
+<li>Budget 2006 en euros de 2023 : 442 484 € (taux de change en 2023 de 4430 Ar/€4430)</li>
+<li>Budget 2006 par observatoire : 29499 € Budget 2006 par ménage enquêté : 59€</li>
+</ul>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-david-benz2010" class="csl-entry" role="listitem">
+David-Benz, Hélène, Michel Benoit-Cattin, and Rivo Ramboarison. 2010. <em>Evaluation Du Réseau Des Observatoires Ruraux à Madagascar</em>. Montpellier: CIRAD. <a href="https://agritrop.cirad.fr/558679/1/document_558679.pdf">https://agritrop.cirad.fr/558679/1/document_558679.pdf</a>.
+</div>
+<div id="ref-droy2000" class="csl-entry" role="listitem">
+Droy, Isabelle, Raphaël Ratovoarinony, and François Roubaud. 2000. <span>“Les Observatoires Ruraux à Madagascar. Une Méthodologie Originale Pour Le Suivi Des Campagnes.”</span> <em>Stateco</em> 95: 123140.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-ros-included-modules.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Load required libraries</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-bibliography.html" class="pagination-link">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

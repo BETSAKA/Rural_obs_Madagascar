@@ -83,7 +83,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./05-bibliography.html" rel="next">
+<link href="./05-ros-included-modules.html" rel="next">
 <link href="./03-ros-data-georeferencing.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -187,7 +187,19 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-bibliography.html" class="sidebar-item-text sidebar-link">
+  <a href="./05-ros-included-modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Load required libraries</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-ros-cost-updating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">ROS costs updating and comparison</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-bibliography.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -362,7 +374,7 @@ div.csl-indent {
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ros_data_loc <span class="ot">&lt;-</span> <span class="st">"data/dta_format/"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="dv">1995</span><span class="sc">:</span><span class="dv">2015</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizing function as you've provided</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizing function </span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>normalize_name <span class="ot">&lt;-</span> <span class="cf">function</span>(name) {</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  name <span class="sc">%&gt;%</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    stringi<span class="sc">::</span><span class="fu">stri_trans_general</span>(<span class="st">"Latin-ASCII"</span>) <span class="sc">%&gt;%</span></span>
@@ -398,7 +410,7 @@ div.csl-indent {
 </div>
 <p>We have a total of 590,524 individual observations of 29,493 unique households. To match name variations within subsequent surveys of the same household, we use the Jaro-Winkler algorithm as implemented in the <code>stringdist</code> package. This algorithm is described as follows by the package author [van_der_loo_stringdist_2014, p.&nbsp;119]:</p>
 <blockquote class="blockquote">
-<p>“The Jaro distance was originally developed at the U.S. Bureau of the Census for the purpose of linking records based on inaccurate text ﬁelds. (…) It has been successfully applied to statistical matching problems concerning fairly short strings, typically name and address data <span class="citation" data-cites="jaro1989">(<a href="05-bibliography.html#ref-jaro1989" role="doc-biblioref">Jaro 1989</a>)</span>. The reasoning behind the Jaro distance is that character mismatches and transpositions are caused by typing or phonetic transcription errors but matches between remote characters are unlikely to be caused by such kind of errors. (…) Winkler <span class="citation" data-cites="winkler1990">(<a href="05-bibliography.html#ref-winkler1990" role="doc-biblioref">1990</a>)</span> extended the Jaro distance by incorporating an extra penalty for character mismatches in the first four characters. (…) The reasoning is that apparently, people are less apt to make mistakes in the first four characters or perhaps they are more easily noted, so differences in the first four characters point to a larger probability of two strings being actually different.”</p>
+<p>“The Jaro distance was originally developed at the U.S. Bureau of the Census for the purpose of linking records based on inaccurate text ﬁelds. (…) It has been successfully applied to statistical matching problems concerning fairly short strings, typically name and address data <span class="citation" data-cites="jaro1989">(<a href="07-bibliography.html#ref-jaro1989" role="doc-biblioref">Jaro 1989</a>)</span>. The reasoning behind the Jaro distance is that character mismatches and transpositions are caused by typing or phonetic transcription errors but matches between remote characters are unlikely to be caused by such kind of errors. (…) Winkler <span class="citation" data-cites="winkler1990">(<a href="07-bibliography.html#ref-winkler1990" role="doc-biblioref">1990</a>)</span> extended the Jaro distance by incorporating an extra penalty for character mismatches in the first four characters. (…) The reasoning is that apparently, people are less apt to make mistakes in the first four characters or perhaps they are more easily noted, so differences in the first four characters point to a larger probability of two strings being actually different.”</p>
 </blockquote>
 <p>We refined a procedure that applies this algorithm in three steps:</p>
 <ol type="1">
@@ -502,7 +514,7 @@ div.csl-indent {
 <span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set up parallel plan</span></span>
 <span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">6</span>)</span>
 <span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define your processing function to include progress signaling</span></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define processing function to include progress signaling</span></span>
 <span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>  process_household_with_progress <span class="ot">&lt;-</span> <span class="cf">function</span>(household_id, .progress) {</span>
 <span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.progress</span>()  <span class="co"># Signal progress update</span></span>
 <span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>    pool <span class="ot">&lt;-</span> all_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(j5 <span class="sc">==</span> household_id)</span>
@@ -608,28 +620,28 @@ div.csl-indent {
 <span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(summary_table)  <span class="sc">%&gt;%</span></span>
 <span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">FormattedValue =</span> <span class="st">"Value"</span>) <span class="sc">%&gt;%</span> <span class="co"># Renaming 'Value' to 'Formatted Value' for display</span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_hide</span>(<span class="at">column =</span> <span class="st">"Value"</span>) <span class="co"># Optionally hide the original 'Value' column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_hide</span>(<span class="at">column =</span> <span class="st">"Value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div id="tbl-ind-number-ros" class="anchored">
 
-<div id="plktppgcin" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#plktppgcin table {
+<div id="jmqjpggmpb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jmqjpggmpb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#plktppgcin thead, #plktppgcin tbody, #plktppgcin tfoot, #plktppgcin tr, #plktppgcin td, #plktppgcin th {
+#jmqjpggmpb thead, #jmqjpggmpb tbody, #jmqjpggmpb tfoot, #jmqjpggmpb tr, #jmqjpggmpb td, #jmqjpggmpb th {
   border-style: none;
 }
 
-#plktppgcin p {
+#jmqjpggmpb p {
   margin: 0;
   padding: 0;
 }
 
-#plktppgcin .gt_table {
+#jmqjpggmpb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -655,12 +667,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#plktppgcin .gt_caption {
+#jmqjpggmpb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#plktppgcin .gt_title {
+#jmqjpggmpb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -672,7 +684,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#plktppgcin .gt_subtitle {
+#jmqjpggmpb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -684,7 +696,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#plktppgcin .gt_heading {
+#jmqjpggmpb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -696,13 +708,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#plktppgcin .gt_bottom_border {
+#jmqjpggmpb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#plktppgcin .gt_col_headings {
+#jmqjpggmpb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -717,7 +729,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#plktppgcin .gt_col_heading {
+#jmqjpggmpb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -737,7 +749,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#plktppgcin .gt_column_spanner_outer {
+#jmqjpggmpb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -749,15 +761,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#plktppgcin .gt_column_spanner_outer:first-child {
+#jmqjpggmpb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#plktppgcin .gt_column_spanner_outer:last-child {
+#jmqjpggmpb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#plktppgcin .gt_column_spanner {
+#jmqjpggmpb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -769,11 +781,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#plktppgcin .gt_spanner_row {
+#jmqjpggmpb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#plktppgcin .gt_group_heading {
+#jmqjpggmpb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -799,7 +811,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#plktppgcin .gt_empty_group_heading {
+#jmqjpggmpb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -814,15 +826,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#plktppgcin .gt_from_md > :first-child {
+#jmqjpggmpb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#plktppgcin .gt_from_md > :last-child {
+#jmqjpggmpb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#plktppgcin .gt_row {
+#jmqjpggmpb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -841,7 +853,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#plktppgcin .gt_stub {
+#jmqjpggmpb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -854,7 +866,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#plktppgcin .gt_stub_row_group {
+#jmqjpggmpb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -868,15 +880,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#plktppgcin .gt_row_group_first td {
+#jmqjpggmpb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#plktppgcin .gt_row_group_first th {
+#jmqjpggmpb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#plktppgcin .gt_summary_row {
+#jmqjpggmpb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -886,16 +898,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#plktppgcin .gt_first_summary_row {
+#jmqjpggmpb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#plktppgcin .gt_first_summary_row.thick {
+#jmqjpggmpb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#plktppgcin .gt_last_summary_row {
+#jmqjpggmpb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -905,7 +917,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#plktppgcin .gt_grand_summary_row {
+#jmqjpggmpb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -915,7 +927,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#plktppgcin .gt_first_grand_summary_row {
+#jmqjpggmpb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -925,7 +937,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#plktppgcin .gt_last_grand_summary_row_top {
+#jmqjpggmpb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -935,11 +947,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#plktppgcin .gt_striped {
+#jmqjpggmpb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#plktppgcin .gt_table_body {
+#jmqjpggmpb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -948,7 +960,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#plktppgcin .gt_footnotes {
+#jmqjpggmpb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -962,7 +974,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#plktppgcin .gt_footnote {
+#jmqjpggmpb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -971,7 +983,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#plktppgcin .gt_sourcenotes {
+#jmqjpggmpb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -985,7 +997,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#plktppgcin .gt_sourcenote {
+#jmqjpggmpb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -993,63 +1005,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#plktppgcin .gt_left {
+#jmqjpggmpb .gt_left {
   text-align: left;
 }
 
-#plktppgcin .gt_center {
+#jmqjpggmpb .gt_center {
   text-align: center;
 }
 
-#plktppgcin .gt_right {
+#jmqjpggmpb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#plktppgcin .gt_font_normal {
+#jmqjpggmpb .gt_font_normal {
   font-weight: normal;
 }
 
-#plktppgcin .gt_font_bold {
+#jmqjpggmpb .gt_font_bold {
   font-weight: bold;
 }
 
-#plktppgcin .gt_font_italic {
+#jmqjpggmpb .gt_font_italic {
   font-style: italic;
 }
 
-#plktppgcin .gt_super {
+#jmqjpggmpb .gt_super {
   font-size: 65%;
 }
 
-#plktppgcin .gt_footnote_marks {
+#jmqjpggmpb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#plktppgcin .gt_asterisk {
+#jmqjpggmpb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#plktppgcin .gt_indent_1 {
+#jmqjpggmpb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#plktppgcin .gt_indent_2 {
+#jmqjpggmpb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#plktppgcin .gt_indent_3 {
+#jmqjpggmpb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#plktppgcin .gt_indent_4 {
+#jmqjpggmpb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#plktppgcin .gt_indent_5 {
+#jmqjpggmpb .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1126,7 +1138,7 @@ to 2015</p> </caption>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co"># res_ccp3.dta, rx_jn.dta, rx_tj4.dta, rx_tj5.dta </span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the base path for your folders</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the base path for  folders</span></span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>base_path <span class="ot">&lt;-</span> <span class="st">"data/dta_format"</span></span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the list of yearly folders using base R</span></span>
@@ -1463,8 +1475,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05-bibliography.html" class="pagination-link">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./05-ros-included-modules.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Load required libraries</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

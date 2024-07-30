@@ -120,20 +120,26 @@ average_wo_outliers <- attrition_rates %>%
 average_wo_outliers <- round(average_wo_outliers$mean, 1)
 compound_avg_10y <- round((1-(1-(average_wo_outliers/100))^10)*100) 
 
-ggplot(attrition_rates, 
-       aes(x = year, y = observatory_with_num, 
-           fill = attrition_rate)) +
+attrition_plot <- ggplot(attrition_rates, 
+                         aes(x = year, y = observatory_with_num, 
+                             fill = attrition_rate)) +
   geom_tile() +  # Create the heatmap tiles
   geom_text(aes(label = ifelse(is.na(attrition_rate), "", 
                                round(attrition_rate))), 
             color = "black", size = 2.5) +
   scale_fill_gradient2(low = "darkgreen", mid = "yellow", high = "red", 
                        midpoint = 30, na.value = "grey", name = "Attrition Rate (%)") +
-labs(x = "Year",
+  labs(x = "Year",
        y = "Observatory (j0)") +
   theme_minimal() +
   labs(y = NULL, x = NULL) +
   theme(axis.text.y = element_text(size = 8)) 
+
+ggsave("output/figure_3.pdf", plot = attrition_plot, 
+       width = 7, height = 4, dpi = 300)
+ggsave("output/figure_3.png", plot = attrition_plot, 
+       width = 7, height = 4, dpi = 300)
+attrition_plot
 ```
 
 Annual attrition rates superior to 75% for a specific observatory are likely to be induced by new reshuffles of the household identification codes and we hope to be able to solve such issue later on. If we discard these outliers (attrition rates over 75%), we have an average attrition year of `r print(average_wo_outliers)`%, which is very high, leading to a compound attrition rate of `r print(compound_avg_10y)`% over 10 years. Attrition on ROS data has been further studied in focused publications [@gubert2008; @vaillant2013].

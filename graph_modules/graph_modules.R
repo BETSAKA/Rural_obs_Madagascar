@@ -16,7 +16,7 @@ data_long <- data_long %>%
   mutate(Present = as.logical(Present))
 
 # Create the lollipop chart
-plot <- ggplot(data_long %>% filter(Present), 
+module_plot <- ggplot(data_long %>% filter(Present), 
                aes(x = Year, y = factor(Module, levels = rev(data$Module)))) +
   geom_segment(aes(xend = Year, yend = Module), size = 1) +
   geom_point(size = 4, color = "black") +
@@ -32,8 +32,13 @@ plot <- ggplot(data_long %>% filter(Present),
         axis.text.x.top = element_text(angle = 90, vjust = 0.5, hjust = 0)) +
   scale_x_discrete(position = "top")
 
-ggsave(filename = "chart.png", 
-       plot = plot,
-       path = "graph_modules",
+ggsave(filename = "figure_2.pdf", 
+       plot = module_plot,
+       path = "output",
+       width = 1800, height = 1800, units = "px", dpi = 300)
+ggsave(filename = "figure_2.png", 
+       plot = module_plot,
+       path = "output",
        width = 1800, height = 1800, units = "px", dpi = 300)
 
+module_plot
